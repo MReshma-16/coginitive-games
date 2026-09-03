@@ -1,0 +1,300 @@
+{
+  "caretakers": [
+    {
+      "id": "caretaker_demo_1",
+      "fullName": "Dr. Ananya Sharma",
+      "email": "care@memoryroots.in",
+      "phone": "+91 98765 43210",
+      "passwordHash": "demo123",
+      "preferredLanguage": "en",
+      "createdAt": "2026-08-15T09:00:00.000Z"
+    }
+  ],
+  "patients": [
+    {
+      "id": "patient_demo_1",
+      "caretakerId": "caretaker_demo_1",
+      "name": "Biren Sharma (Aita / Koka)",
+      "age": 74,
+      "gender": "Male",
+      "preferredLanguage": "en",
+      "state": "Assam",
+      "relationship": "Father",
+      "favoriteActivities": [
+        "Listening to Bihu folk songs",
+        "Walking in the tea garden",
+        "Reading newspapers on the verandah",
+        "Gardening local orchids"
+      ],
+      "favoriteFoods": [
+        "Assamese Pitha & Laru",
+        "Masor Tenga (Sour Fish Curry)",
+        "Khar with Raw Papaya",
+        "Hot Dudh Cha (Milk Tea) with Rice Cakes"
+      ],
+      "favoriteSongs": [
+        "Mur Ei Bator Kahini",
+        "Bhupen Hazarika Classics",
+        "Bihu Naam on Pepa",
+        "Old Goalpariya Lokageet"
+      ],
+      "favoritePlaces": [
+        "Majuli Island Brahmaputra ghats",
+        "Kaziranga grasslands",
+        "Shillong Ward's Lake",
+        "Childhood ancestral home in Tezpur"
+      ],
+      "childhoodHobbies": [
+        "Playing Guti / 5 Stones under the Banyan tree",
+        "Flying kites on Autumn afternoons",
+        "Spinning wooden tops (Latum)",
+        "Fishing by the village pond"
+      ],
+      "traditionalGames": [
+        "Five Stones (Guti)",
+        "Marbles (Goli)",
+        "Spinning Top (Latum)",
+        "Kite Flying",
+        "Seed Board Game"
+      ],
+      "importantFamilyMembers": [
+        "Daughter Ananya",
+        "Son Debojit",
+        "Granddaughter Rhea (Little Pari)",
+        "Wife Late Minati"
+      ],
+      "dailyRoutine": "Wakes at 6:30 AM, morning tea & balcony bird watching, light memory games at 10:00 AM, lunch at 1:00 PM, afternoon rest, family call at 5:30 PM.",
+      "preferredTimeForActivities": "Morning (10:00 AM - 11:30 AM)",
+      "setupCompleted": true,
+      "questionnaireCompleted": true,
+      "createdAt": "2026-08-15T09:30:00.000Z"
+    }
+  ],
+  "questionnaires": [
+    {
+      "id": "quest_demo_1",
+      "patientId": "patient_demo_1",
+      "caretakerId": "caretaker_demo_1",
+      "answers": {
+        "recentMemory": "Sometimes",
+        "dailyActivities": "Sometimes",
+        "familiarPeople": "Never",
+        "familiarPlaces": "Never",
+        "mood": "Happy",
+        "sleep": "Good",
+        "socialInteraction": "Yes"
+      },
+      "profile": {
+        "visualMemory": 85,
+        "shortTermRecall": 72,
+        "recognition": 90,
+        "attention": 80,
+        "sequenceMemory": 75,
+        "dailyRoutineRecall": 88,
+        "emotionalWellbeing": 92
+      },
+      "completedAt": "2026-08-15T10:00:00.000Z"
+    }
+  ],
+  "gameResults": [
+    {
+      "id": "gr_1",
+      "patientId": "patient_demo_1",
+      "gameId": "five-stones",
+      "gameName": "Five Stones (Guti)",
+      "category": "Childhood",
+      "score": 95,
+      "accuracy": 95,
+      "responseTimeMs": 2400,
+      "difficulty": 2,
+      "itemsCount": 5,
+      "completedAt": "2026-08-28T10:15:00.000Z"
+    },
+    {
+      "id": "gr_2",
+      "patientId": "patient_demo_1",
+      "gameId": "food-memory",
+      "gameName": "Traditional Food Memory",
+      "category": "Cultural",
+      "score": 100,
+      "accuracy": 100,
+      "responseTimeMs": 1900,
+      "difficulty": 2,
+      "itemsCount": 4,
+      "completedAt": "2026-08-29T11:00:00.000Z"
+    },
+    {
+      "id": "gr_3",
+      "patientId": "patient_demo_1",
+      "gameId": "music-memory",
+      "gameName": "Folk Music & Instruments",
+      "category": "Cultural",
+      "score": 90,
+      "accuracy": 90,
+      "responseTimeMs": 2800,
+      "difficulty": 1,
+      "itemsCount": 3,
+      "completedAt": "2026-08-30T10:45:00.000Z"
+    },
+    {
+      "id": "gr_4",
+      "patientId": "patient_demo_1",
+      "gameId": "memory-village",
+      "gameName": "Memory Village",
+      "category": "Childhood",
+      "score": 88,
+      "accuracy": 88,
+      "responseTimeMs": 3100,
+      "difficulty": 2,
+      "itemsCount": 4,
+      "completedAt": "2026-08-31T10:30:00.000Z"
+    },
+    {
+      "id": "gr_5",
+      "patientId": "patient_demo_1",
+      "gameId": "marbles",
+      "gameName": "Marbles (Goli)",
+      "category": "Childhood",
+      "score": 92,
+      "accuracy": 92,
+      "responseTimeMs": 2200,
+      "difficulty": 2,
+      "itemsCount": 4,
+      "completedAt": "2026-09-01T10:00:00.000Z"
+    }
+  ],
+  "reminders": [
+    {
+      "id": "rem_1",
+      "patientId": "patient_demo_1",
+      "title": "Morning Dudh Cha & Almonds",
+      "category": "Meal",
+      "time": "07:30",
+      "frequency": "Daily",
+      "status": "active",
+      "notes": "Warm tea with two soft rice biscuits on the balcony."
+    },
+    {
+      "id": "rem_2",
+      "patientId": "patient_demo_1",
+      "title": "Morning Memory Roots Session",
+      "category": "Memory Game",
+      "time": "10:00",
+      "frequency": "Daily",
+      "status": "active",
+      "notes": "10 minutes of gentle Five Stones and Folk Music memory."
+    },
+    {
+      "id": "rem_3",
+      "patientId": "patient_demo_1",
+      "title": "Afternoon Hydration (Fresh Coconut Water)",
+      "category": "Water",
+      "time": "12:00",
+      "frequency": "Daily",
+      "status": "active",
+      "notes": "Encourage gentle sips of water or fresh water."
+    },
+    {
+      "id": "rem_4",
+      "patientId": "patient_demo_1",
+      "title": "Doctor Recommended Multivitamin",
+      "category": "Medication",
+      "time": "13:30",
+      "frequency": "Daily",
+      "status": "active",
+      "notes": "As entered by Caretaker Dr. Ananya (Post-lunch tablet)."
+    },
+    {
+      "id": "rem_5",
+      "patientId": "patient_demo_1",
+      "title": "Evening Family Video Call with Granddaughter Rhea",
+      "category": "Family Call",
+      "time": "17:30",
+      "frequency": "Daily",
+      "status": "active",
+      "notes": "Talk about old stories and school days."
+    }
+  ],
+  "familyMemories": [
+    {
+      "id": "mem_1",
+      "patientId": "patient_demo_1",
+      "title": "Bihu Festival Celebration in Courtyard",
+      "category": "Festival & Family",
+      "imageUrl": "https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?auto=format&fit=crop&w=800&q=80",
+      "description": "Family gathered together in Tezpur wearing traditional Muga silk Mekhela Sador during Rongali Bihu festival.",
+      "personOrPlace": "Granddaughter Rhea & Daughter Ananya in Courtyard",
+      "questions": [
+        {
+          "questionText": "Who is dancing joyfully with the Bihu Dhol in this photograph?",
+          "options": [
+            "Granddaughter Rhea",
+            "Neighbor Bimal",
+            "School Teacher",
+            "Shopkeeper"
+          ],
+          "correctOption": "Granddaughter Rhea",
+          "hint": "Look at the smiling young girl in golden silk."
+        },
+        {
+          "questionText": "What traditional festival was celebrated here?",
+          "options": [
+            "Rongali Bihu",
+            "Diwali",
+            "New Year Party",
+            "Sports Day"
+          ],
+          "correctOption": "Rongali Bihu",
+          "hint": "Notice the bamboo decorations and festive sweets."
+        }
+      ],
+      "createdAt": "2026-08-16T12:00:00.000Z"
+    },
+    {
+      "id": "mem_2",
+      "patientId": "patient_demo_1",
+      "title": "Ancestral Wooden Verandah & Garden",
+      "category": "Childhood Home",
+      "imageUrl": "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80",
+      "description": "The green wooden verandah of the ancestral village home where morning tea and newspaper reading happened every day.",
+      "personOrPlace": "Tezpur Ancestral House",
+      "questions": [
+        {
+          "questionText": "What favorite morning routine took place on this verandah?",
+          "options": [
+            "Drinking morning tea & reading newspaper",
+            "Repairing bicycle",
+            "Ironing clothes",
+            "Watching television"
+          ],
+          "correctOption": "Drinking morning tea & reading newspaper",
+          "hint": "Remember the peaceful mornings with the morning birds."
+        }
+      ],
+      "createdAt": "2026-08-18T14:30:00.000Z"
+    },
+    {
+      "id": "mem_3",
+      "patientId": "patient_demo_1",
+      "title": "Scenic Afternoon at Majuli Island Brahmaputra",
+      "category": "Favorite Places",
+      "imageUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+      "description": "Tranquil boat journey across the Brahmaputra river near the famous Satras of Majuli.",
+      "personOrPlace": "Majuli Riverbank",
+      "questions": [
+        {
+          "questionText": "Which mighty river flows beside this serene island?",
+          "options": [
+            "Brahmaputra",
+            "Ganga",
+            "Yamuna",
+            "Godavari"
+          ],
+          "correctOption": "Brahmaputra",
+          "hint": "The life-giving river of Assam."
+        }
+      ],
+      "createdAt": "2026-08-20T16:00:00.000Z"
+    }
+  ]
+}
