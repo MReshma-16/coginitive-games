@@ -100,7 +100,7 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F0] text-stone-900 transition-colors">
+    <div className="min-h-screen w-full overflow-x-hidden flex flex-col bg-[#FAF7F0] text-stone-900 transition-colors">
       <Navbar
         activePage={activePage}
         setActivePage={setActivePage}

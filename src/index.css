@@ -11,10 +11,10 @@ body.font-normal {
   font-size: 16px;
 }
 body.font-large {
-  font-size: 19px;
+  font-size: 18px;
 }
 body.font-xlarge {
-  font-size: 22px;
+  font-size: 21px;
 }
 
 /* High Contrast Mode */
@@ -23,64 +23,24 @@ body.high-contrast {
   color: #FFFFFF !important;
 }
 body.high-contrast .bg-white,
-body.high-contrast .bg-heritage-cream,
-body.high-contrast .bg-heritage-paper {
+body.high-contrast .bg-amber-50,
+body.high-contrast .bg-stone-50 {
   background-color: #121212 !important;
   color: #FFFFFF !important;
   border-color: #FFD700 !important;
-}
-body.high-contrast .text-heritage-forest,
-body.high-contrast .text-gray-800,
-body.high-contrast .text-gray-700 {
-  color: #FFFFFF !important;
-}
-body.high-contrast .text-gray-600,
-body.high-contrast .text-gray-500 {
-  color: #E0E0E0 !important;
 }
 body.high-contrast button {
   border: 2px solid #FFD700 !important;
 }
 
-/* Custom Smooth Transitions & Warm Shadows */
-.heritage-card {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-.heritage-card:hover {
-  transform: translateY(-2px);
-}
-
-/* Accessible focus outlines */
+/* Clean, Smooth Interaction Styles */
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
   outline: 3px solid #C99E32;
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
-/* Traditional North-East subtle bamboo / weave pattern */
-.bg-bamboo-pattern {
-  background-color: #FAF7F0;
-  background-image: radial-gradient(#8C6D3B 0.75px, transparent 0.75px), radial-gradient(#8C6D3B 0.75px, #FAF7F0 0.75px);
-  background-size: 30px 30px;
-  background-position: 0 0, 15px 15px;
-  background-opacity: 0.05;
-}
-
-/* Calming pulse animation */
-@keyframes calm-pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.03); opacity: 0.95; }
-}
-
-.animate-calm-pulse {
-  animation: calm-pulse 3s infinite ease-in-out;
-}
-
-/* Prevent accidental text selection for elderly gaming interaction */
 .no-select {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }

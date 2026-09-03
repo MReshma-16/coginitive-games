@@ -208,13 +208,15 @@ export const FamilyMemoriesPage = ({ setActivePage }) => {
                 className="bg-white border-2 border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl hover:border-[#C99E32] transition-all flex flex-col justify-between group"
               >
                 <div>
-                  <div className="relative h-48 sm:h-52 overflow-hidden bg-stone-100">
+                  <div className="relative h-48 sm:h-52 overflow-hidden bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
+                    <span className="text-4xl text-amber-800/40">🌿</span>
                     <img
                       src={mem.imageUrl}
                       alt={mem.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      onError={(e) => { e.target.style.display = 'none'; }}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute top-3 left-3 bg-[#1E432A]/90 backdrop-blur-sm text-amber-200 px-3 py-1 rounded-full text-xs font-bold border border-amber-400/40">
+                    <div className="absolute top-3 left-3 bg-[#1B3B2B]/90 backdrop-blur-sm text-amber-200 px-3 py-1 rounded-full text-[11px] font-bold border border-amber-400/40 shadow-sm z-10">
                       {mem.category}
                     </div>
                   </div>
