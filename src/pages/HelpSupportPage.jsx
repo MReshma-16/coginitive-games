@@ -78,7 +78,7 @@ export const HelpSupportPage = ({ onOpenCulture }) => {
         <div className="bg-emerald-50/90 border-2 border-emerald-300 rounded-3xl p-5 flex items-start gap-3 shadow-sm">
           <ShieldCheck className="w-6 h-6 text-emerald-700 flex-shrink-0 mt-0.5" />
           <div className="text-xs sm:text-sm text-emerald-950 leading-relaxed font-medium">
-            <strong>Platform Purpose:</strong> Memory Roots is a cognitive comfort and reminiscence application, not a medical diagnosis or medical treatment platform. For clinical memory assessments, please contact a qualified healthcare physician or neurologist.
+            <strong>Platform Purpose:</strong> CogniCare is a cognitive comfort and reminiscence application, not a medical diagnosis or medical treatment platform. For clinical memory assessments, please contact a qualified healthcare physician or neurologist.
           </div>
         </div>
 

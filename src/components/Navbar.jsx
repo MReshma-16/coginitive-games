@@ -32,14 +32,14 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'dashboard', label: 'Dashboard', icon: HeartHandshake, requireAuth: true },
-    { id: 'games', label: 'Games', icon: Gamepad2 },
-    { id: 'family', label: 'Memories', icon: Sparkles, requireAuth: true },
-    { id: 'reminders', label: 'Reminders', icon: Clock, requireAuth: true },
-    { id: 'progress', label: 'Progress', icon: BarChart3, requireAuth: true },
-    { id: 'settings', label: 'Settings', icon: Settings },
-    { id: 'help', label: 'Help', icon: HelpCircle }
+    { id: 'home', label: t.nav?.home || 'Home', icon: Home },
+    { id: 'dashboard', label: t.nav?.dashboard || 'Dashboard', icon: HeartHandshake, requireAuth: true },
+    { id: 'games', label: t.nav?.games || 'Games', icon: Gamepad2 },
+    { id: 'family', label: t.nav?.family || 'Memories', icon: Sparkles, requireAuth: true },
+    { id: 'reminders', label: t.nav?.reminders || 'Reminders', icon: Clock, requireAuth: true },
+    { id: 'progress', label: t.nav?.progress || 'Progress', icon: BarChart3, requireAuth: true },
+    { id: 'settings', label: t.nav?.settings || 'Settings', icon: Settings },
+    { id: 'help', label: t.nav?.help || 'Help', icon: HelpCircle }
   ];
 
   const handleNavClick = (pageId) => {
@@ -61,7 +61,7 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
           <div className="flex items-center gap-2 truncate">
             <span className="text-amber-400">🌿</span>
             <span className="truncate font-serif italic text-amber-200">
-              Remember Yesterday. Enjoy Today. Connect Tomorrow.
+              {t.tagline || "when memories meet care"}
             </span>
           </div>
 
@@ -115,19 +115,16 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
       {/* Main Bar */}
       <div className="max-w-6xl mx-auto px-3 sm:px-6">
         <div className="flex items-center justify-between h-16">
-          {/* Brand */}
+          {/* Brand with CogniCare Logo Image */}
           <div
             onClick={() => setActivePage('home')}
             className="flex items-center gap-2.5 cursor-pointer select-none"
           >
-            <div className="w-9 h-9 rounded-xl bg-[#1B3B2B] text-amber-300 text-xl shadow-sm flex items-center justify-center border border-[#C99E32]">
-              🌿
-            </div>
-            <div>
-              <span className="font-serif text-lg sm:text-xl font-bold text-[#1B3B2B] tracking-tight">
-                Memory Roots
-              </span>
-            </div>
+            <img
+              src="/logo.png"
+              alt="CogniCare Logo"
+              className="h-9 sm:h-10 object-contain drop-shadow-xs"
+            />
           </div>
 
           {/* Desktop Navigation Links */}
@@ -169,7 +166,7 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
               {langDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-56 bg-white border border-[#C99E32] rounded-2xl shadow-xl py-1.5 z-50 animate-fadeIn">
                   <div className="px-3 py-1 border-b border-stone-100 text-[10px] font-bold text-stone-500 uppercase">
-                    Select Language
+                    {t.hero?.chooseLanguage || "Select Language"}
                   </div>
                   <div className="max-h-64 overflow-y-auto">
                     {languages.map((lang) => (
@@ -217,7 +214,7 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
                   title="Logout"
                 >
                   <LogOut className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Logout</span>
+                  <span className="hidden sm:inline">{t.nav?.logout || "Logout"}</span>
                 </button>
               </div>
             ) : (
@@ -226,7 +223,7 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
                 className="flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-xs shadow-sm transition-all border border-[#C99E32]"
               >
                 <LogIn className="w-3.5 h-3.5 text-amber-300" />
-                <span>Login</span>
+                <span>{t.nav?.login || "Login"}</span>
               </button>
             )}
 
@@ -274,7 +271,7 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#1B3B2B] text-white font-bold text-sm mt-2"
             >
               <LogIn className="w-4 h-4 text-amber-300" />
-              <span>Caretaker Login / Register</span>
+              <span>{t.nav?.login || "Caretaker Login / Register"}</span>
             </button>
           )}
         </div>

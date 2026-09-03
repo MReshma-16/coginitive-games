@@ -16,12 +16,11 @@ import { adaptiveEngine, DIFFICULTY_LEVELS } from '../services/adaptiveEngine';
 import { GameScoreModal } from '../components/GameScoreModal';
 import { VoiceButton } from '../components/VoiceButton';
 
-// The 6 Game Components
+// The 5 Specific Games
 import { MemoryBasketGame } from '../components/games/MemoryBasketGame';
 import { MyOldVillageGame } from '../components/games/MyOldVillageGame';
 import { RhythmRecallGame } from '../components/games/RhythmRecallGame';
 import { PatternMatchGame } from '../components/games/PatternMatchGame';
-import { FolkSongGuessGame } from '../components/games/FolkSongGuessGame';
 import { MemoryPathGame } from '../components/games/MemoryPathGame';
 
 export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
@@ -35,61 +34,51 @@ export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
   const games = [
     {
       id: 'memory-basket',
-      title: 'Memory Basket',
+      title: t.games?.memoryBasket || 'Memory Basket',
       nativeTitle: 'স্মৃতিৰ ডলা 🧺',
       icon: '🧺',
-      desc: 'Remember traditional objects in the bamboo basket before it closes.',
+      desc: t.games?.memoryBasketDesc || 'Remember traditional objects in the bamboo basket before it closes.',
       component: MemoryBasketGame,
       focus: 'Visual Recall'
     },
     {
       id: 'my-old-village',
-      title: 'My Old Village',
+      title: t.games?.myOldVillage || 'My Old Village',
       nativeTitle: 'মোৰ পুৰণি গাঁও 🏡',
       icon: '🏡',
-      desc: 'Explore the traditional village scene and remember where items were placed.',
+      desc: t.games?.myOldVillageDesc || 'Explore the traditional village scene and remember where items were placed.',
       component: MyOldVillageGame,
       focus: 'Spatial Memory'
     },
     {
       id: 'rhythm-recall',
-      title: 'Rhythm Recall',
+      title: t.games?.rhythmRecall || 'Rhythm Recall',
       nativeTitle: 'সুৰ আৰু তাল 🥁',
       icon: '🥁',
-      desc: 'Listen carefully to gentle bell and drum rhythms, then tap in order.',
+      desc: t.games?.rhythmRecallDesc || 'Listen carefully to gentle bell and drum rhythms, then tap in order.',
       component: RhythmRecallGame,
       focus: 'Audio Sequence'
     },
     {
       id: 'pattern-match',
-      title: 'Pattern Match',
+      title: t.games?.patternMatch || 'Traditional Pattern Match',
       nativeTitle: 'বয়ন আৰু চানেকি 🎨',
       icon: '🎨',
-      desc: 'Recognize traditional North-Eastern textile weaves, motifs, and patterns.',
+      desc: t.games?.patternMatchDesc || 'Recognize traditional North-Eastern textile weaves, motifs, and patterns.',
       component: PatternMatchGame,
       focus: 'Pattern Recognition'
     },
     {
-      id: 'folk-song-guess',
-      title: 'Folk Song Guess',
-      nativeTitle: 'লোকগীত সোঁৱৰণী 🎵',
-      icon: '🎵',
-      desc: 'Listen to short folk melody clips (Pepa, Dhol, Duitara) and identify the tune.',
-      component: FolkSongGuessGame,
-      focus: 'Musical Memory'
-    },
-    {
       id: 'memory-path',
-      title: 'Memory Path',
+      title: t.games?.memoryPath || 'Memory Path',
       nativeTitle: 'স্মৃতিৰ বাট 🛤️',
       icon: '🛤️',
-      desc: 'Follow the gentle steps across the village path and recreate the sequence.',
+      desc: t.games?.memoryPathDesc || 'Follow the gentle steps across the village path and recreate the sequence.',
       component: MemoryPathGame,
       focus: 'Step Sequence'
     }
   ];
 
-  // Refresh adaptive stats for each game
   useEffect(() => {
     refreshStats();
   }, [selectedGameId]);
@@ -109,7 +98,7 @@ export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
   const handleCompleteRound = async (roundStats) => {
     const adaptiveResult = adaptiveEngine.recordRoundResult(selectedGameId, roundStats);
 
-    // Save to patient backend database
+    // Save to patient database via context API
     await recordGameResult({
       gameId: selectedGameId,
       gameName: currentGameObj?.title || 'Cognitive Game',
@@ -149,7 +138,7 @@ export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-sm border border-stone-300 transition-all"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>All Games</span>
+                <span>{t.games?.allGames || 'All Games'}</span>
               </button>
 
               <div className="flex items-center gap-2">
@@ -161,7 +150,7 @@ export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
               </div>
 
               <div className="text-xs text-stone-500 font-medium hidden sm:block">
-                Auto-Adaptive Progression
+                Immediate Adaptive Level
               </div>
             </div>
 
@@ -174,30 +163,29 @@ export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
             </div>
           </div>
         ) : (
-          /* Clean, Neat 6-Games Hub Grid */
+          /* Clean, Neat 5-Games Hub Grid */
           <div className="space-y-8">
             {/* Header */}
             <div className="text-center space-y-2 max-w-2xl mx-auto">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider">
-                <span>🌿 Cognitive Support & Reminiscence</span>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider">
+                <span>🌿 CogniCare Activities</span>
               </div>
 
               <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#1B3B2B]">
-                Memory Roots Activities
+                {t.games?.headerTitle || 'Cognitive Games Suite'}
               </h1>
 
               <p className="text-stone-600 text-base">
-                6 peaceful cognitive exercises designed with automatic 3-round adaptive difficulty for our elders.
+                {t.games?.headerSubtitle || '5 peaceful activities with immediate Easy → Medium → Hard adaptive progression.'}
               </p>
             </div>
 
-            {/* Games Grid (2 x 3 Layout) */}
+            {/* Games Grid (5 Games) */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {games.map((g) => {
                 const stats = gameStatsMap[g.id] || {};
                 const level = stats.currentDifficulty || DIFFICULTY_LEVELS.EASY;
                 const best = stats.bestScore || 0;
-                const roundCount = stats.recentRounds?.length || 0;
 
                 return (
                   <div
@@ -228,8 +216,8 @@ export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
 
                     <div className="pt-5 border-t border-stone-100 mt-4 space-y-3">
                       <div className="flex items-center justify-between text-xs text-stone-500">
-                        <span>Best Score: <strong className="text-stone-800">{best}%</strong></span>
-                        <span>Round: <strong className="text-stone-800">{roundCount}/3</strong></span>
+                        <span>Best: <strong className="text-stone-800">{best}%</strong></span>
+                        <span>Level: <strong className="text-stone-800">{level}</strong></span>
                       </div>
 
                       <button

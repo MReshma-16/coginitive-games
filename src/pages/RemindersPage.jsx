@@ -99,7 +99,7 @@ export const RemindersPage = ({ setActivePage }) => {
         <div className="bg-amber-50 border-2 border-amber-300 rounded-3xl p-5 shadow-sm flex items-start gap-3">
           <AlertTriangle className="w-6 h-6 text-amber-700 flex-shrink-0 mt-0.5" />
           <div className="text-xs sm:text-sm text-stone-800 leading-relaxed font-medium">
-            <strong>Medication Safety Policy:</strong> {t.reminders?.medNotice || "Medication reminders reflect information entered directly by the caretaker. Memory Roots never prescribes, calculates dosages, or adjusts pharmaceutical regimens."}
+            <strong>Medication Safety Policy:</strong> {t.reminders?.medNotice || "Medication reminders reflect information entered directly by the caretaker. CogniCare never prescribes, calculates dosages, or adjusts pharmaceutical regimens."}
           </div>
         </div>
 

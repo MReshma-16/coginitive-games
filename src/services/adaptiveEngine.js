@@ -1,5 +1,8 @@
-// Adaptive Difficulty & Multi-Round Scoring Engine
-// Implements 3 difficulty levels (Easy, Medium, Hard) and 3-round moving average progression/downgrade
+// Immediate Adaptive Difficulty & Scoring Engine for CogniCare
+// Difficulty changes immediately based on the score of the completed round:
+// Score < 50%   => EASY (with supportive note)
+// Score 50%-79% => MEDIUM
+// Score >= 80%  => HARD
 
 export const DIFFICULTY_LEVELS = {
   EASY: 'EASY',
@@ -9,7 +12,7 @@ export const DIFFICULTY_LEVELS = {
 
 class AdaptiveEngine {
   constructor() {
-    this.storageKey = 'memoryroots_adaptive_data';
+    this.storageKey = 'cognicare_adaptive_data';
   }
 
   // Get data for a specific game
@@ -18,7 +21,6 @@ class AdaptiveEngine {
       const all = JSON.parse(localStorage.getItem(this.storageKey) || '{}');
       return all[gameId] || {
         currentDifficulty: DIFFICULTY_LEVELS.EASY,
-        recentRounds: [], // stores last round scores: e.g. [80, 85, 90]
         totalPlayed: 0,
         bestScore: 0,
         history: []
@@ -26,7 +28,6 @@ class AdaptiveEngine {
     } catch (e) {
       return {
         currentDifficulty: DIFFICULTY_LEVELS.EASY,
-        recentRounds: [],
         totalPlayed: 0,
         bestScore: 0,
         history: []
@@ -45,63 +46,54 @@ class AdaptiveEngine {
     }
   }
 
-  // Process a completed round and determine adaptive level
+  // Process a completed round and determine immediate adaptive level
   recordRoundResult(gameId, { correctAnswers, totalQuestions, timeTakenSeconds }) {
     const gameData = this.getGameData(gameId);
     const incorrectAnswers = Math.max(0, totalQuestions - correctAnswers);
     const percentageScore = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
 
     const previousDifficulty = gameData.currentDifficulty || DIFFICULTY_LEVELS.EASY;
-    const newRecentRounds = [...gameData.recentRounds, percentageScore];
 
     let nextDifficulty = previousDifficulty;
-    let averageScore = percentageScore;
     let isAdaptiveShift = false;
     let shiftDirection = null; // 'upgrade' | 'downgrade' | null
     let supportiveMessage = null;
 
-    // Check if player has completed at least 3 rounds at the current level
-    if (newRecentRounds.length >= 3) {
-      const last3 = newRecentRounds.slice(-3);
-      averageScore = Math.round(last3.reduce((a, b) => a + b, 0) / 3);
-
-      // Adaptive Progression Rule:
-      // IF averageScore < 50 => EASY
-      // ELSE IF averageScore >= 50 AND averageScore < 80 => MEDIUM
-      // ELSE IF averageScore >= 80 => HARD
-      if (averageScore < 50) {
-        nextDifficulty = DIFFICULTY_LEVELS.EASY;
-        if (previousDifficulty !== DIFFICULTY_LEVELS.EASY) {
-          isAdaptiveShift = true;
-          shiftDirection = 'downgrade';
-          supportiveMessage = "Let's try a simpler activity. Take your time! 🌿";
-        }
-      } else if (averageScore >= 50 && averageScore < 80) {
-        nextDifficulty = DIFFICULTY_LEVELS.MEDIUM;
-        if (previousDifficulty === DIFFICULTY_LEVELS.EASY) {
-          isAdaptiveShift = true;
-          shiftDirection = 'upgrade';
-          supportiveMessage = "Great progress! Moving to Medium activities. 🌟";
-        } else if (previousDifficulty === DIFFICULTY_LEVELS.HARD) {
-          isAdaptiveShift = true;
-          shiftDirection = 'downgrade';
-          supportiveMessage = "Let's practice at a comfortable Medium level. Take your time! 🌿";
-        }
-      } else if (averageScore >= 80) {
-        nextDifficulty = DIFFICULTY_LEVELS.HARD;
-        if (previousDifficulty !== DIFFICULTY_LEVELS.HARD) {
-          isAdaptiveShift = true;
-          shiftDirection = 'upgrade';
-          supportiveMessage = "Wonderful memory! Moving to Hard activities. 🏆";
-        }
+    // Immediate Adaptive Progression Logic:
+    // IF score < 50 => EASY
+    // ELSE IF score >= 50 AND score < 80 => MEDIUM
+    // ELSE IF score >= 80 => HARD
+    if (percentageScore < 50) {
+      nextDifficulty = DIFFICULTY_LEVELS.EASY;
+      if (previousDifficulty !== DIFFICULTY_LEVELS.EASY) {
+        isAdaptiveShift = true;
+        shiftDirection = 'downgrade';
+        supportiveMessage = "Let's try a simpler activity. Take your time! 🌿";
+      } else {
+        supportiveMessage = "Take your time. Practicing at a comfortable pace. 🌿";
       }
-
-      // Reset recent rounds buffer after 3-round adaptation check
-      gameData.recentRounds = [];
-    } else {
-      // Still gathering 3 rounds at current level
-      gameData.recentRounds = newRecentRounds;
-      averageScore = Math.round(newRecentRounds.reduce((a, b) => a + b, 0) / newRecentRounds.length);
+    } else if (percentageScore >= 50 && percentageScore < 80) {
+      nextDifficulty = DIFFICULTY_LEVELS.MEDIUM;
+      if (previousDifficulty === DIFFICULTY_LEVELS.EASY) {
+        isAdaptiveShift = true;
+        shiftDirection = 'upgrade';
+        supportiveMessage = "Great progress! Unlocked Medium level. 🌟";
+      } else if (previousDifficulty === DIFFICULTY_LEVELS.HARD) {
+        isAdaptiveShift = true;
+        shiftDirection = 'downgrade';
+        supportiveMessage = "Let's practice at a comfortable Medium level. Take your time! 🌿";
+      } else {
+        supportiveMessage = "Good job! Keeping up with Medium level. 🌟";
+      }
+    } else if (percentageScore >= 80) {
+      nextDifficulty = DIFFICULTY_LEVELS.HARD;
+      if (previousDifficulty !== DIFFICULTY_LEVELS.HARD) {
+        isAdaptiveShift = true;
+        shiftDirection = 'upgrade';
+        supportiveMessage = "Wonderful memory! Unlocked Hard level. 🏆";
+      } else {
+        supportiveMessage = "Mastering Hard level with wonderful memory! 🏆";
+      }
     }
 
     gameData.currentDifficulty = nextDifficulty;
@@ -117,20 +109,19 @@ class AdaptiveEngine {
       timeTakenSeconds,
       difficulty: previousDifficulty,
       nextDifficulty,
-      averageScore,
       timestamp: new Date().toISOString()
     };
 
-    gameData.history = [roundRecord, ...(gameData.history || []).slice(0, 19)];
+    gameData.history = [roundRecord, ...(gameData.history || []).slice(0, 29)];
     this.saveGameData(gameId, gameData);
 
     return {
       roundRecord,
       currentDifficulty: previousDifficulty,
       nextDifficulty,
-      averageScore,
+      percentageScore,
       bestScore: gameData.bestScore,
-      roundsInCurrentLevel: gameData.recentRounds.length,
+      totalPlayed: gameData.totalPlayed,
       isAdaptiveShift,
       shiftDirection,
       supportiveMessage

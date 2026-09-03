@@ -96,7 +96,7 @@ export const CulturalAboutModal = ({ isOpen, onClose }) => {
         <div className="my-4 bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-4 flex items-start gap-3">
           <ShieldCheck className="w-6 h-6 text-emerald-700 flex-shrink-0 mt-0.5" />
           <p className="text-sm md:text-base text-emerald-950 font-medium">
-            <strong>Memory Roots</strong> is culturally inspired by authentic childhood and community experiences from all eight sister states. Every activity is respectfully designed to evoke happy, familiar reminiscence for elders.
+            <strong>CogniCare</strong> is culturally inspired by authentic childhood and community experiences from all eight sister states. Every activity is respectfully designed to evoke happy, familiar reminiscence for elders.
           </p>
         </div>
 
@@ -134,7 +134,7 @@ export const CulturalAboutModal = ({ isOpen, onClose }) => {
             onClick={onClose}
             className="px-6 py-3 rounded-2xl bg-[#1E432A] hover:bg-[#2C5E3B] text-white font-bold text-base transition-all border-2 border-[#C99E32]"
           >
-            Close & Return to Memory Roots
+            Close & Return to CogniCare
           </button>
         </div>
       </div>

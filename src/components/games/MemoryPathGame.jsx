@@ -15,30 +15,45 @@ const PATH_ITEMS = [
 ];
 
 export const MemoryPathGame = ({ difficulty = 'EASY', onCompleteRound }) => {
-  const [phase, setPhase] = useState('show'); // 'show' | 'input'
+  const [phase, setPhase] = useState('show'); // 'show' | 'input' | 'evaluating'
   const [pathSequence, setPathSequence] = useState([]);
   const [currentStepIndex, setCurrentStepIndex] = useState(-1);
   const [playerInput, setPlayerInput] = useState([]);
+  const [isProcessingClick, setIsProcessingClick] = useState(false);
   const startTimeRef = useRef(Date.now());
+  const timerRefs = useRef([]);
 
   const pathLength = difficulty === 'HARD' ? 7 : difficulty === 'MEDIUM' ? 5 : 3;
 
   useEffect(() => {
     startRound();
+    return () => {
+      timerRefs.current.forEach(t => clearInterval(t));
+    };
   }, [difficulty]);
 
+  const clearAllTimers = () => {
+    timerRefs.current.forEach(t => {
+      clearTimeout(t);
+      clearInterval(t);
+    });
+    timerRefs.current = [];
+  };
+
   const startRound = () => {
+    clearAllTimers();
     startTimeRef.current = Date.now();
     setPhase('show');
     setPlayerInput([]);
     setCurrentStepIndex(-1);
+    setIsProcessingClick(false);
 
-    // Pick random sequence of pathLength items
+    // Pick unique sequence of pathLength items
     const shuffled = [...PATH_ITEMS].sort(() => 0.5 - Math.random());
     const seq = shuffled.slice(0, pathLength);
     setPathSequence(seq);
 
-    // Animate sequence step by step
+    // Light up each step sequentially
     let step = 0;
     const interval = setInterval(() => {
       if (step < seq.length) {
@@ -47,41 +62,62 @@ export const MemoryPathGame = ({ difficulty = 'EASY', onCompleteRound }) => {
         step++;
       } else {
         clearInterval(interval);
-        setTimeout(() => {
+        const t = setTimeout(() => {
           setCurrentStepIndex(-1);
           setPhase('input');
         }, 800);
+        timerRefs.current.push(t);
       }
     }, 1100);
+
+    timerRefs.current.push(interval);
   };
 
   const handlePickStep = (item) => {
-    if (phase !== 'input') return;
+    // Strictly prevent duplicate clicks, clicks during processing, or clicks outside input phase
+    if (phase !== 'input' || isProcessingClick) return;
+
+    // Lock click immediately
+    setIsProcessingClick(true);
     soundManager.playTap();
 
+    const expectedIndex = playerInput.length;
     const nextInput = [...playerInput, item];
     setPlayerInput(nextInput);
 
-    const stepIdx = nextInput.length - 1;
-
-    // Check mistake
-    if (nextInput[stepIdx].id !== pathSequence[stepIdx].id) {
+    // Verify whether this specific step is correct
+    if (item.id !== pathSequence[expectedIndex].id) {
+      // Mistake made: gently restart the path after a short pause
       soundManager.playChime();
-      setTimeout(() => {
+      const t = setTimeout(() => {
         setPlayerInput([]);
+        setIsProcessingClick(false);
         startRound();
-      }, 700);
+      }, 750);
+      timerRefs.current.push(t);
       return;
     }
 
-    // Finished path
+    // If path fully completed
     if (nextInput.length === pathSequence.length) {
+      setPhase('evaluating');
+      soundManager.playSuccess();
       const elapsed = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
-      onCompleteRound({
-        correctAnswers: pathSequence.length,
-        totalQuestions: pathSequence.length,
-        timeTakenSeconds: elapsed
-      });
+
+      const t = setTimeout(() => {
+        onCompleteRound({
+          correctAnswers: pathSequence.length,
+          totalQuestions: pathSequence.length,
+          timeTakenSeconds: elapsed
+        });
+      }, 500);
+      timerRefs.current.push(t);
+    } else {
+      // Re-enable click for next step after small debounce delay
+      const t = setTimeout(() => {
+        setIsProcessingClick(false);
+      }, 300);
+      timerRefs.current.push(t);
     }
   };
 
@@ -109,7 +145,7 @@ export const MemoryPathGame = ({ difficulty = 'EASY', onCompleteRound }) => {
         <p className="text-stone-600 text-sm">
           {phase === 'show'
             ? `Follow the ${pathLength} steps across the village path.`
-            : `Completed ${playerInput.length} of ${pathLength} steps.`}
+            : `Completed ${playerInput.length} of ${pathLength} steps. Each step can only be selected once.`}
         </p>
       </div>
 
@@ -139,8 +175,8 @@ export const MemoryPathGame = ({ difficulty = 'EASY', onCompleteRound }) => {
         </div>
       )}
 
-      {/* Input Phase: Tap in Order */}
-      {phase === 'input' && (
+      {/* Input Phase: Tap in Order (with Single-Click Lock) */}
+      {(phase === 'input' || phase === 'evaluating') && (
         <div className="space-y-4 animate-fadeIn">
           {/* Progress Path */}
           <div className="flex flex-wrap items-center justify-center gap-2 min-h-[56px] bg-stone-100 p-3 rounded-2xl border border-stone-200">
@@ -148,7 +184,7 @@ export const MemoryPathGame = ({ difficulty = 'EASY', onCompleteRound }) => {
               <span className="text-xs text-stone-500 italic">Tap the first object in the path...</span>
             ) : (
               playerInput.map((p, idx) => (
-                <span key={idx} className="inline-flex items-center gap-1 bg-white px-2.5 py-1 rounded-xl border border-stone-300 text-sm font-bold text-[#1B3B2B]">
+                <span key={idx} className="inline-flex items-center gap-1 bg-white px-3 py-1 rounded-xl border border-stone-300 text-sm font-bold text-[#1B3B2B] shadow-sm">
                   <span>{p.icon}</span>
                   <span>{p.name}</span>
                 </span>
@@ -162,7 +198,8 @@ export const MemoryPathGame = ({ difficulty = 'EASY', onCompleteRound }) => {
               <button
                 key={item.id}
                 onClick={() => handlePickStep(item)}
-                className="bg-white border-2 border-stone-200 hover:border-[#C99E32] rounded-2xl p-4 flex flex-col items-center justify-center gap-1.5 shadow-sm hover:bg-amber-50/50 active:scale-95 transition-all"
+                disabled={isProcessingClick || phase !== 'input'}
+                className="bg-white border-2 border-stone-200 hover:border-[#C99E32] rounded-2xl p-4 flex flex-col items-center justify-center gap-1.5 shadow-sm hover:bg-amber-50/50 active:scale-95 transition-all disabled:opacity-50"
               >
                 <span className="text-4xl">{item.icon}</span>
                 <span className="font-bold text-xs text-stone-800">{item.name}</span>

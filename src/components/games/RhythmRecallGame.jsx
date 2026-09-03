@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Volume2, Play, RotateCcw, VolumeX, ArrowRight } from 'lucide-react';
+import { Volume2, Play, RotateCcw, VolumeX, ArrowRight, Sparkles } from 'lucide-react';
 import { soundManager } from '../../services/audioSynthesizer';
 import { VoiceButton } from '../VoiceButton';
 
 const SOUND_PADS = [
-  { id: 'bell', name: 'Bell', icon: '🔔', sound: () => soundManager.playBell(), color: 'bg-amber-100 border-amber-400 text-amber-900' },
-  { id: 'drum', name: 'Drum', icon: '🥁', sound: () => soundManager.playDrum(), color: 'bg-emerald-100 border-emerald-400 text-emerald-900' },
-  { id: 'clap', name: 'Clap', icon: '👏', sound: () => soundManager.playClap(), color: 'bg-sky-100 border-sky-400 text-sky-900' },
-  { id: 'chime', name: 'Chime', icon: '🎶', sound: () => soundManager.playChime(), color: 'bg-purple-100 border-purple-400 text-purple-900' }
+  { id: 'bell', name: 'Bell', icon: '🔔', sound: () => soundManager.playBell(), color: 'bg-amber-100 border-amber-400 text-amber-950' },
+  { id: 'drum', name: 'Drum', icon: '🥁', sound: () => soundManager.playDrum(), color: 'bg-emerald-100 border-emerald-400 text-emerald-950' },
+  { id: 'clap', name: 'Clap', icon: '👏', sound: () => soundManager.playClap(), color: 'bg-sky-100 border-sky-400 text-sky-950' },
+  { id: 'chime', name: 'Chime', icon: '🎶', sound: () => soundManager.playChime(), color: 'bg-purple-100 border-purple-400 text-purple-950' }
 ];
 
 export const RhythmRecallGame = ({ difficulty = 'EASY', onCompleteRound }) => {
@@ -15,56 +15,85 @@ export const RhythmRecallGame = ({ difficulty = 'EASY', onCompleteRound }) => {
   const [playerSequence, setPlayerSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activePadId, setActivePadId] = useState(null);
-  const [volume, setVolume] = useState(0.7);
+  const [volume, setVolume] = useState(0.8);
+  const [hasStartedFirstTime, setHasStartedFirstTime] = useState(false);
   const startTimeRef = useRef(Date.now());
+  const playTimeoutRef = useRef([]);
 
   const sequenceLength = difficulty === 'HARD' ? 6 : difficulty === 'MEDIUM' ? 4 : 3;
 
   useEffect(() => {
     startRound();
+    return () => {
+      // Clear any pending timeouts
+      playTimeoutRef.current.forEach(t => clearTimeout(t));
+    };
   }, [difficulty]);
 
+  const clearPendingTimeouts = () => {
+    playTimeoutRef.current.forEach(t => clearTimeout(t));
+    playTimeoutRef.current = [];
+  };
+
   const startRound = () => {
+    clearPendingTimeouts();
     startTimeRef.current = Date.now();
     setPlayerSequence([]);
+    setIsPlaying(false);
+    setActivePadId(null);
 
-    // Generate random sequence
-    const pads = ['bell', 'drum', 'clap', 'chime'];
+    // Generate clean sequence based on length
+    const padIds = ['bell', 'drum', 'clap', 'chime'];
     const newSeq = [];
     for (let i = 0; i < sequenceLength; i++) {
-      newSeq.push(pads[Math.floor(Math.random() * pads.length)]);
+      newSeq.push(padIds[Math.floor(Math.random() * padIds.length)]);
     }
     setSequence(newSeq);
-
-    // Play sequence after a short delay
-    setTimeout(() => {
-      playSequence(newSeq);
-    }, 600);
   };
 
   const playSequence = (seq = sequence) => {
+    if (isPlaying) return;
+    clearPendingTimeouts();
+
+    // Ensure audio context is ready on user gesture
+    soundManager.ensureContext();
     setIsPlaying(true);
     setPlayerSequence([]);
+    setHasStartedFirstTime(true);
+
+    const stepDelay = 900; // Comfortable spacing for elderly users
 
     seq.forEach((padId, index) => {
-      setTimeout(() => {
+      const t1 = setTimeout(() => {
         const pad = SOUND_PADS.find(p => p.id === padId);
         if (pad) {
           pad.sound();
           setActivePadId(padId);
         }
-        setTimeout(() => setActivePadId(null), 400);
+
+        const t2 = setTimeout(() => {
+          setActivePadId(null);
+        }, 450);
+        playTimeoutRef.current.push(t2);
 
         if (index === seq.length - 1) {
-          setTimeout(() => setIsPlaying(false), 500);
+          const t3 = setTimeout(() => {
+            setIsPlaying(false);
+          }, 600);
+          playTimeoutRef.current.push(t3);
         }
-      }, index * 900);
+      }, index * stepDelay + 300);
+
+      playTimeoutRef.current.push(t1);
     });
   };
 
   const handlePadTap = (pad) => {
+    // Prevent interaction while audio sequence is actively playing
     if (isPlaying) return;
 
+    // Play pad sound immediately
+    soundManager.ensureContext();
     pad.sound();
     setActivePadId(pad.id);
     setTimeout(() => setActivePadId(null), 300);
@@ -72,19 +101,21 @@ export const RhythmRecallGame = ({ difficulty = 'EASY', onCompleteRound }) => {
     const nextPlayerSeq = [...playerSequence, pad.id];
     setPlayerSequence(nextPlayerSeq);
 
-    const stepIdx = nextPlayerSeq.length - 1;
+    const currentStepIndex = nextPlayerSeq.length - 1;
 
-    // Check mistake
-    if (nextPlayerSeq[stepIdx] !== sequence[stepIdx]) {
+    // Check if user made a mistake on current step
+    if (nextPlayerSeq[currentStepIndex] !== sequence[currentStepIndex]) {
+      // Soft gentle tone, then replay sequence
       soundManager.playChime();
-      setTimeout(() => {
+      const t = setTimeout(() => {
         setPlayerSequence([]);
         playSequence(sequence);
-      }, 700);
+      }, 800);
+      playTimeoutRef.current.push(t);
       return;
     }
 
-    // Finished sequence
+    // Sequence completed successfully
     if (nextPlayerSeq.length === sequence.length) {
       const elapsed = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
       onCompleteRound({
@@ -110,7 +141,7 @@ export const RhythmRecallGame = ({ difficulty = 'EASY', onCompleteRound }) => {
             🥁 Rhythm Recall • Level: {difficulty}
           </span>
 
-          {/* Volume Control (Requirement 1 & 3) */}
+          {/* Working Volume Control */}
           <div className="flex items-center gap-2 bg-stone-100 px-3 py-1.5 rounded-full border border-stone-300">
             <Volume2 className="w-4 h-4 text-stone-700" />
             <input
@@ -127,14 +158,32 @@ export const RhythmRecallGame = ({ difficulty = 'EASY', onCompleteRound }) => {
         </div>
 
         <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#1B3B2B]">
-          {isPlaying ? "Listen to the Rhythm..." : "Now Tap the Rhythm in Order"}
+          {!hasStartedFirstTime
+            ? "Ready to Listen to the Rhythm?"
+            : isPlaying
+            ? "Listen to the Rhythm..."
+            : "Now Tap the Pads in the Same Order"}
         </h3>
 
         <p className="text-stone-600 text-sm">
-          {isPlaying
-            ? `Listening to ${sequenceLength} peaceful sounds.`
+          {!hasStartedFirstTime
+            ? `Tap "Listen to Rhythm" below to hear the ${sequenceLength} peaceful sounds.`
+            : isPlaying
+            ? `Playing ${sequenceLength} peaceful sounds. Please listen carefully.`
             : `Tapped ${playerSequence.length} of ${sequenceLength} sounds.`}
         </p>
+      </div>
+
+      {/* Start / Replay Button */}
+      <div className="flex justify-center gap-3">
+        <button
+          onClick={() => playSequence()}
+          disabled={isPlaying}
+          className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-amber-200 font-bold text-base border-2 border-[#C99E32] shadow-md transition-all active:scale-98 disabled:opacity-50"
+        >
+          <Volume2 className="w-5 h-5 text-amber-300" />
+          <span>{hasStartedFirstTime ? "🔊 Listen / Replay Sound" : "🔊 Listen to Rhythm"}</span>
+        </button>
       </div>
 
       {/* 4 Sound Pads Grid */}
@@ -145,11 +194,11 @@ export const RhythmRecallGame = ({ difficulty = 'EASY', onCompleteRound }) => {
             <button
               key={pad.id}
               onClick={() => handlePadTap(pad)}
-              disabled={isPlaying}
+              disabled={isPlaying || !hasStartedFirstTime}
               className={`p-6 sm:p-8 rounded-3xl border-3 font-serif font-bold text-lg sm:text-xl transition-all flex flex-col items-center justify-center gap-2 shadow-md ${
                 isActive
-                  ? 'bg-amber-300 border-[#1B3B2B] scale-110 ring-4 ring-amber-400'
-                  : `${pad.color} hover:scale-103 active:scale-95`
+                  ? 'bg-amber-300 border-[#1B3B2B] scale-110 ring-4 ring-amber-400 shadow-xl'
+                  : `${pad.color} hover:scale-103 active:scale-95 disabled:opacity-60`
               }`}
             >
               <span className="text-4xl sm:text-5xl">{pad.icon}</span>
@@ -157,18 +206,6 @@ export const RhythmRecallGame = ({ difficulty = 'EASY', onCompleteRound }) => {
             </button>
           );
         })}
-      </div>
-
-      {/* Play Again Button */}
-      <div className="flex justify-center gap-3 pt-2">
-        <button
-          onClick={() => playSequence()}
-          disabled={isPlaying}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold text-sm border border-amber-300 transition-all"
-        >
-          <RotateCcw className="w-4 h-4" />
-          <span>Listen Again</span>
-        </button>
       </div>
     </div>
   );

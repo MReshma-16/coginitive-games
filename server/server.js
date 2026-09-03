@@ -16,7 +16,7 @@ app.use(express.json({ limit: '10mb' }));
 
 // Health Check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', time: new Date().toISOString(), platform: 'Memory Roots' });
+  res.json({ status: 'ok', time: new Date().toISOString(), platform: 'CogniCare', tagline: 'when memories meet care' });
 });
 
 // ================= AUTHENTICATION ROUTES =================
@@ -53,7 +53,7 @@ app.post('/api/auth/register', (req, res) => {
   });
 
   res.status(201).json({
-    message: 'Account successfully created! Welcome to Memory Roots.',
+    message: 'Account successfully created! Welcome to CogniCare.',
     caretaker: {
       id: newCaretaker.id,
       fullName: newCaretaker.fullName,
@@ -420,5 +420,5 @@ if (fs.existsSync(distPath)) {
 }
 
 app.listen(PORT, () => {
-  console.log(`Memory Roots Backend Server running on http://localhost:${PORT}`);
+  console.log(`CogniCare Backend Server running on http://localhost:${PORT}`);
 });
