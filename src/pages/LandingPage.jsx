@@ -20,6 +20,14 @@ import heroBg from '../assets/hero-bg.png';
 import sacredTemple from '../assets/sacred-temple.png';
 import mountainValley from '../assets/mountain-valley.png';
 import loktakLake from '../assets/loktak-lake.png';
+import assamImg from '../assets/states/assam.png';
+import arunachalImg from '../assets/states/arunachal.png';
+import manipurImg from '../assets/states/manipur.png';
+import meghalayaImg from '../assets/states/meghalaya.png';
+import mizoramImg from '../assets/states/mizoram.png';
+import nagalandImg from '../assets/states/nagaland.png';
+import tripuraImg from '../assets/states/tripura.png';
+import sikkimImg from '../assets/states/sikkim.png';
 
 export const LandingPage = ({ setActivePage, onOpenCulture }) => {
   const { currentLang, setLanguage, languages, t } = useLanguage();
@@ -38,7 +46,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
     { title: '🧩 ' + (t.games?.jigsawTitle || 'Jigsaw Puzzle'), desc: t.games?.jigsawDesc || 'Arrange puzzle pieces correctly to complete a picture and exercise visual-spatial thinking.' }
   ];
 
-  // 8 North-Eastern States Heritage Data
+  // 8 North-Eastern States Heritage Data with Real Photos
   const northEastStates = [
     {
       name: "Assam",
@@ -46,6 +54,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
       theme: "Golden Muga Silk & Bihu Melodies",
       desc: "Home to the mighty Brahmaputra river, lush tea plantations, and joyful Bihu folk harvest celebrations.",
       icon: "🦏",
+      image: assamImg,
       color: "from-amber-500/20 to-yellow-600/20",
       border: "border-amber-300"
     },
@@ -55,6 +64,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
       theme: "Land of the Dawn-Lit Mountains",
       desc: "Pristine snow peaks, ancient Tawang monastery, and exquisite traditional tribal cane and bamboo handicrafts.",
       icon: "🏔️",
+      image: arunachalImg,
       color: "from-emerald-500/20 to-teal-600/20",
       border: "border-emerald-300"
     },
@@ -63,7 +73,8 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
       nativeName: "মণিপুর",
       theme: "The Jewel of Serene Lakes & Dance",
       desc: "Famous for the floating phumdis of Loktak Lake, classical Raas Leela dance, and sacred Pena folk string music.",
-      icon: "🪷",
+      icon: "🌸",
+      image: manipurImg,
       color: "from-purple-500/20 to-indigo-600/20",
       border: "border-purple-300"
     },
@@ -73,6 +84,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
       theme: "The Abode of Clouds & Living Bridges",
       desc: "Misty pine hills, indigenous living root bridges, cascading waterfalls, and melodic Khasi Duitara folk tunes.",
       icon: "🌧️",
+      image: meghalayaImg,
       color: "from-sky-500/20 to-blue-600/20",
       border: "border-sky-300"
     },
@@ -82,6 +94,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
       theme: "Rolling Hills & Bamboo Rhythm",
       desc: "Land of gentle rolling hills, vibrant Cheraw bamboo dance, and colorful handwoven traditional Puan textiles.",
       icon: "🎋",
+      image: mizoramImg,
       color: "from-rose-500/20 to-amber-600/20",
       border: "border-rose-300"
     },
@@ -90,7 +103,8 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
       nativeName: "নাগালেণ্ড",
       theme: "Heritage of Festivals & Artistry",
       desc: "Celebrated for the grand Hornbill festival, rich warrior shawl motifs, ancient village traditions, and hill songs.",
-      icon: "🪶",
+      icon: "🥁",
+      image: nagalandImg,
       color: "from-red-500/20 to-orange-600/20",
       border: "border-red-300"
     },
@@ -100,6 +114,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
       theme: "Royal Palaces & Ancient Carvings",
       desc: "Water palace of Neermahal, ancient rock carvings of Unakoti, and vibrant handloom Rignai weaving traditions.",
       icon: "🏰",
+      image: tripuraImg,
       color: "from-teal-500/20 to-cyan-600/20",
       border: "border-teal-300"
     },
@@ -109,6 +124,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
       theme: "Sacred Peaks & Peaceful Monasteries",
       desc: "Guarded by the majestic Mount Kanchenjunga, serene prayer flags, organic alpine valleys, and sacred heritage.",
       icon: "☸️",
+      image: sikkimImg,
       color: "from-blue-500/20 to-violet-600/20",
       border: "border-blue-300"
     }
@@ -402,34 +418,53 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {northEastStates.map((st, idx) => (
             <div
               key={idx}
-              className={`bg-white border-2 ${st.border} rounded-3xl p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group`}
+              className={`bg-white border-2 ${st.border} rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1.5`}
             >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-3xl p-2.5 rounded-2xl bg-amber-50/80 border border-amber-200 group-hover:scale-110 transition-transform">
+              {/* Photo Banner with Badges */}
+              <div className="relative h-44 w-full overflow-hidden bg-stone-100">
+                <img
+                  src={st.image}
+                  alt={st.name}
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+
+                {/* Cultural Icon Badge */}
+                <div className="absolute top-3 left-3">
+                  <span className="text-xl p-1.5 rounded-xl bg-white/90 backdrop-blur-sm border border-white/60 shadow-sm inline-flex items-center justify-center">
                     {st.icon}
                   </span>
-                  <span className="text-xs font-serif font-bold text-amber-800 bg-amber-100/70 px-2.5 py-0.5 rounded-full">
+                </div>
+
+                {/* Native Script Badge */}
+                <div className="absolute top-3 right-3">
+                  <span className="text-xs font-serif font-bold text-amber-100 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-amber-300/40 shadow-xs">
                     {st.nativeName}
                   </span>
                 </div>
 
-                <div>
-                  <h3 className="font-serif font-bold text-lg text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
+                {/* State Name overlay at bottom of photo */}
+                <div className="absolute bottom-2.5 left-3.5 right-3.5">
+                  <h3 className="font-serif font-bold text-lg text-white drop-shadow-md leading-tight">
                     {st.name}
                   </h3>
-                  <span className="text-xs font-semibold text-[#8C6D3B] block mt-0.5">
+                </div>
+              </div>
+
+              {/* Card Body */}
+              <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
+                <div className="space-y-1">
+                  <span className="text-xs font-bold text-[#8C6D3B] block">
                     {st.theme}
                   </span>
+                  <p className="text-xs text-stone-600 leading-relaxed">
+                    {st.desc}
+                  </p>
                 </div>
-
-                <p className="text-xs text-stone-600 leading-relaxed">
-                  {st.desc}
-                </p>
               </div>
             </div>
           ))}
