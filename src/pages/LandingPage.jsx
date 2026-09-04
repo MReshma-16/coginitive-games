@@ -116,78 +116,76 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
 
   return (
     <div className="bg-[#FAF7F0] min-h-screen">
-      {/* Scenic Sunrise Lake & Park Bench Hero (Matching Image 1) */}
-      <section
-        className="relative pt-12 pb-16 md:pt-16 md:pb-20 bg-cover bg-center border-b border-[#E5DFD5] overflow-hidden"
-        style={{ backgroundImage: `url(${heroLake})`, backgroundPosition: 'center 45%' }}
-      >
-        {/* Soft atmospheric gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-[#FAF7F0]/90" />
+      {/* Scenic Sunrise Lake & Park Bench Hero (Matching Image 2 exactly) */}
+      <section className="relative w-full overflow-hidden bg-[#FAF7F0] border-b border-[#E5DFD5]">
+        <div className="relative w-full max-w-[1400px] mx-auto">
+          {/* Pristine High-Resolution Hero Graphic */}
+          <img
+            src={heroLake}
+            alt="CogniCare - when memories meet care"
+            className="w-full h-auto block select-none"
+          />
 
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5">
-          {/* CogniCare Logo (Clean, Transparent, Seamless) */}
-          <div className="flex justify-center mb-1">
-            <img
-              src={logoImg}
-              alt="CogniCare Logo"
-              className="h-20 sm:h-24 md:h-28 object-contain hover:scale-102 transition-transform duration-300 drop-shadow-sm"
-            />
+          {/* Interactive Voice Button Overlay aligned with 'Listen to Introduction' in image */}
+          <div className="absolute inset-0 flex flex-col items-center justify-end pb-[5.5%] sm:pb-[6%] md:pb-[6.5%]">
+            <button
+              onClick={() => {
+                const text = "Welcome to CogniCare, when memories meet care. A warm, peaceful, culturally rooted space designed for our beloved elders to revisit joyful memories, exercise visual attention, and stimulate word recall with gentle cognitive games.";
+                if ('speechSynthesis' in window) {
+                  window.speechSynthesis.cancel();
+                  const utterance = new SpeechSynthesisUtterance(text);
+                  utterance.rate = 0.9;
+                  window.speechSynthesis.speak(utterance);
+                }
+              }}
+              title="Listen to Introduction"
+              className="px-5 py-2 sm:px-7 sm:py-2.5 rounded-full bg-[#1B3B2B] hover:bg-[#132E20] text-white font-medium text-xs sm:text-sm shadow-lg border border-[#C99E32]/50 inline-flex items-center gap-2 cursor-pointer transition-all hover:scale-105 active:scale-95"
+            >
+              <Volume2 className="w-4 h-4 text-amber-300" />
+              <span>Listen to Introduction</span>
+            </button>
           </div>
+        </div>
+      </section>
 
-          {/* Tagline Badge */}
-          <div className="flex justify-center">
-            <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#1B3B2B] text-amber-200 text-xs sm:text-sm font-serif font-semibold tracking-wide shadow-md">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>when memories meet care</span>
-            </div>
-          </div>
-
-          {/* Main Title */}
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#1B3B2B] leading-tight tracking-tight">
-            {t.hero?.title || "when memories meet care"}
-          </h1>
-
-          {/* Description */}
-          <p className="text-base sm:text-lg text-stone-800 max-w-2xl mx-auto leading-relaxed font-medium">
-            {t.hero?.desc || "A warm, peaceful, culturally rooted space designed for our beloved elders to revisit joyful memories, exercise visual attention, and stimulate word recall with gentle cognitive games."}
-          </p>
-
-          {/* Listen to Introduction Button */}
-          <div className="flex justify-center pt-2">
-            <div className="bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white px-2 py-1 rounded-full shadow-md transition-all">
-              <VoiceButton
-                textToRead="Welcome to CogniCare, when memories meet care. A peaceful cognitive support and reminiscence platform for our beloved elders."
-                label="Listen to Introduction"
-              />
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-3">
+      {/* Quick Action Navigation Bar */}
+      <section className="py-6 bg-white border-b border-[#E5DFD5]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => setActivePage('games')}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-base border-2 border-[#C99E32] shadow-md hover:shadow-lg transition-all active:scale-98 group"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-sm border-2 border-[#C99E32] shadow-sm hover:shadow-md transition-all active:scale-98 cursor-pointer"
             >
-              <Gamepad2 className="w-5 h-5 text-amber-300 group-hover:scale-110 transition-transform" />
-              <span>Explore Cognitive Games</span>
-              <ArrowRight className="w-4 h-4 text-amber-300 group-hover:translate-x-1 transition-transform" />
+              <Gamepad2 className="w-4 h-4 text-amber-300" />
+              <span>Explore 5 Cognitive Games</span>
+              <ArrowRight className="w-4 h-4 text-amber-300" />
             </button>
 
             {isAuthenticated ? (
-              <button
-                onClick={() => setActivePage('dashboard')}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold text-base border-2 border-amber-300 shadow-md transition-all"
-              >
-                <Heart className="w-5 h-5 text-amber-700" />
-                <span>{t.hero?.caretakerPortal || "Caretaker Dashboard"}</span>
-              </button>
+              <>
+                <button
+                  onClick={() => setActivePage('dashboard')}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold text-sm border-2 border-amber-300 shadow-sm transition-all cursor-pointer"
+                >
+                  <Heart className="w-4 h-4 text-amber-700" />
+                  <span>Caretaker Dashboard</span>
+                </button>
+
+                <button
+                  onClick={() => setActivePage('progress')}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-950 font-bold text-sm border-2 border-emerald-300 shadow-sm transition-all cursor-pointer"
+                >
+                  <BarChart3 className="w-4 h-4 text-emerald-700" />
+                  <span>View Progress Dashboard</span>
+                </button>
+              </>
             ) : (
               <button
                 onClick={handleDemoStart}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-white hover:bg-amber-50 text-stone-900 font-bold text-base border-2 border-stone-300 shadow-md transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white hover:bg-amber-50 text-stone-900 font-bold text-sm border-2 border-stone-300 shadow-sm transition-all cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 text-amber-600" />
-                <span>{t.hero?.tryDemo || "1-Click Demo Caregiver"}</span>
+                <span>1-Click Demo Caregiver</span>
               </button>
             )}
           </div>
@@ -195,7 +193,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
       </section>
 
       {/* Prominent Language Selection */}
-      <section className="py-8 bg-white border-b border-[#E5DFD5]">
+      <section className="py-8 bg-[#FAF7F0] border-b border-[#E5DFD5]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-5">
             <h2 className="text-xl font-serif font-bold text-[#1B3B2B]">
@@ -213,14 +211,14 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
                 <button
                   key={lang.code}
                   onClick={() => setLanguage(lang.code)}
-                  className={`p-3 rounded-2xl border-2 transition-all flex flex-col items-center gap-1 ${
+                  className={`p-3 rounded-2xl border-2 transition-all flex flex-col items-center gap-1 cursor-pointer ${
                     isSelected
                       ? 'bg-[#1B3B2B] text-white border-[#C99E32] shadow-md ring-2 ring-amber-300/40 scale-102'
-                      : 'bg-stone-50 hover:bg-amber-50/70 text-stone-800 border-stone-200'
+                      : 'bg-white hover:bg-amber-50/70 text-stone-800 border-stone-200'
                   }`}
                 >
                   <span className="text-xl">{lang.flag}</span>
-                  <span className="font-serif font-bold text-sm">{lang.native}</span>
+                  <span className="font-sans font-bold text-sm">{lang.native}</span>
                   <span className={`text-[10px] ${isSelected ? 'text-amber-200' : 'text-stone-400'}`}>
                     {lang.name}
                   </span>

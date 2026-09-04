@@ -8,7 +8,7 @@ const VERIFIED_PUZZLES = {
   EASY: [
     {
       id: 'easy-1',
-      title: 'Level 1 • Peace & Nature',
+      title: 'Level 1 • Peace & Care',
       gridSize: 6,
       words: [
         { id: '1A', word: 'CARE', clue: 'Loving attention and warm kindness', dir: 'across', row: 1, col: 1, number: 1 },
@@ -30,13 +30,13 @@ const VERIFIED_PUZZLES = {
     },
     {
       id: 'easy-3',
-      title: 'Level 3 • Forest Birds & Roses',
+      title: 'Level 3 • Forest Birds & Nature',
       gridSize: 6,
       words: [
         { id: '1A', word: 'BIRD', clue: 'A feathered singing creature of the trees', dir: 'across', row: 1, col: 1, number: 1 },
         { id: '1D', word: 'BEAR', clue: 'Strong gentle woodland animal', dir: 'down', row: 1, col: 1, number: 1 },
-        { id: '2D', word: 'ROSE', clue: 'Fragrant sweet flower in the garden', dir: 'down', row: 1, col: 3, number: 2 },
-        { id: '3A', word: 'REST', clue: 'To relax quietly and restore strength', dir: 'across', row: 4, col: 1, number: 3 }
+        { id: '2D', word: 'RUST', clue: 'Reddish-brown color of autumn iron', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3A', word: 'RATE', clue: 'Steady peaceful pace of life', dir: 'across', row: 4, col: 1, number: 3 }
       ]
     },
     {
@@ -46,19 +46,19 @@ const VERIFIED_PUZZLES = {
       words: [
         { id: '1A', word: 'LAKE', clue: 'Calm shimmering body of fresh water', dir: 'across', row: 1, col: 1, number: 1 },
         { id: '1D', word: 'LEAF', clue: 'Green foliage growing on tea trees', dir: 'down', row: 1, col: 1, number: 1 },
-        { id: '2D', word: 'KIND', clue: 'Gentle, warm-hearted and considerate', dir: 'down', row: 1, col: 3, number: 2 },
-        { id: '3A', word: 'FIND', clue: 'To discover something joyful and pleasant', dir: 'across', row: 4, col: 1, number: 3 }
+        { id: '2D', word: 'KITE', clue: 'Flies gracefully in windy sky', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3A', word: 'FEET', clue: 'What we walk gently on the grass with', dir: 'across', row: 4, col: 1, number: 3 }
       ]
     },
     {
       id: 'easy-5',
-      title: 'Level 5 • Warm Breeze & Dear Friends',
+      title: 'Level 5 • Warm Breeze & Sunshine',
       gridSize: 6,
       words: [
         { id: '1A', word: 'WARM', clue: 'Comforting mild heat like morning tea', dir: 'across', row: 1, col: 1, number: 1 },
         { id: '1D', word: 'WIND', clue: 'Gentle moving breeze across the hills', dir: 'down', row: 1, col: 1, number: 1 },
-        { id: '2D', word: 'ROAD', clue: 'A pathway leading to village home', dir: 'down', row: 1, col: 3, number: 2 },
-        { id: '3A', word: 'DEAR', clue: 'Precious and beloved to our hearts', dir: 'across', row: 4, col: 1, number: 3 }
+        { id: '2D', word: 'ROOT', clue: 'Underground base of an ancient banyan tree', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3A', word: 'DATE', clue: 'A memorable day on the calendar', dir: 'across', row: 4, col: 1, number: 3 }
       ]
     }
   ],
@@ -78,28 +78,26 @@ const VERIFIED_PUZZLES = {
     },
     {
       id: 'med-2',
-      title: 'Level 2 • Morning Sunshine',
+      title: 'Level 2 • Morning Sunshine & Stars',
       gridSize: 7,
       words: [
-        { id: '1A', word: 'SWEET', clue: 'Pleasant sugary taste like honey or ripe fruit', dir: 'across', row: 1, col: 1, number: 1 },
-        { id: '1D', word: 'SHINE', clue: 'To give off bright and cheerful light', dir: 'down', row: 1, col: 1, number: 1 },
-        { id: '2D', word: 'EARLY', clue: 'Near the beginning of the morning day', dir: 'down', row: 1, col: 3, number: 2 },
-        { id: '3D', word: 'TREES', clue: 'Tall woody plants with green branches and leaves', dir: 'down', row: 1, col: 5, number: 3 },
-        { id: '4A', word: 'INNER', clue: 'Located inside or deep within the heart', dir: 'across', row: 3, col: 1, number: 4 },
-        { id: '5A', word: 'EYES', clue: 'Organs of sight that allow us to see beauty', dir: 'across', row: 5, col: 1, number: 5 }
+        { id: '1A', word: 'STARS', clue: 'Twinkling lights in the night sky', dir: 'across', row: 1, col: 1, number: 1 },
+        { id: '1D', word: 'SMILE', clue: 'A warm joyful expression on the face', dir: 'down', row: 1, col: 1, number: 1 },
+        { id: '2D', word: 'AUDIT', clue: 'Careful inspection and review of accounts', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3D', word: 'SUNNY', clue: 'Bright day filled with warm sunlight', dir: 'down', row: 1, col: 5, number: 3 },
+        { id: '4A', word: 'ENTRY', clue: 'A welcoming doorway to the home', dir: 'across', row: 5, col: 1, number: 4 }
       ]
     },
     {
       id: 'med-3',
-      title: 'Level 3 • Tea Gardens & Harvest',
+      title: 'Level 3 • Green Tea Estate & Hills',
       gridSize: 7,
       words: [
-        { id: '1A', word: 'GREEN', clue: 'Fresh vibrant color of tea leaves', dir: 'across', row: 1, col: 1, number: 1 },
-        { id: '1D', word: 'GRASS', clue: 'Soft green lawn under foot', dir: 'down', row: 1, col: 1, number: 1 },
-        { id: '2D', word: 'EARTH', clue: 'Rich soil nurturing our garden', dir: 'down', row: 1, col: 3, number: 2 },
-        { id: '3D', word: 'NIGHT', clue: 'Time when stars sparkle in the sky', dir: 'down', row: 1, col: 5, number: 3 },
-        { id: '4A', word: 'AURA', clue: 'Gentle glowing radiance of peace', dir: 'across', row: 3, col: 1, number: 4 },
-        { id: '5A', word: 'SEAT', clue: 'A comfortable chair to rest upon', dir: 'across', row: 5, col: 1, number: 5 }
+        { id: '1A', word: 'GRASS', clue: 'Soft green lawn in the village courtyard', dir: 'across', row: 1, col: 1, number: 1 },
+        { id: '1D', word: 'GREEN', clue: 'Fresh vibrant color of tea gardens', dir: 'down', row: 1, col: 1, number: 1 },
+        { id: '2D', word: 'ADORE', clue: 'To love and cherish with great affection', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3D', word: 'SHINE', clue: 'To give off radiant bright light', dir: 'down', row: 1, col: 5, number: 3 },
+        { id: '4A', word: 'NIECE', clue: 'Daughter of one brother or sister', dir: 'across', row: 5, col: 1, number: 4 }
       ]
     },
     {
@@ -108,10 +106,10 @@ const VERIFIED_PUZZLES = {
       gridSize: 7,
       words: [
         { id: '1A', word: 'RIVER', clue: 'Flowing body of fresh mountain water', dir: 'across', row: 1, col: 1, number: 1 },
-        { id: '1D', word: 'ROSES', clue: 'Fragrant blooming garden flowers', dir: 'down', row: 1, col: 1, number: 1 },
-        { id: '2D', word: 'VALE', clue: 'Peaceful green valley between hills', dir: 'down', row: 1, col: 3, number: 2 },
-        { id: '3D', word: 'RAIN', clue: 'Cool showers nourishing plants', dir: 'down', row: 1, col: 5, number: 3 },
-        { id: '4A', word: 'SEAL', clue: 'To close securely with care', dir: 'across', row: 3, col: 1, number: 4 }
+        { id: '1D', word: 'ROUND', clue: 'Circular and whole shape like full moon', dir: 'down', row: 1, col: 1, number: 1 },
+        { id: '2D', word: 'VIDEO', clue: 'Moving visual film recording cherished memories', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3D', word: 'ROSES', clue: 'Fragrant blooming garden flowers', dir: 'down', row: 1, col: 5, number: 3 },
+        { id: '4A', word: 'DOORS', clue: 'Passageways welcoming friends into home', dir: 'across', row: 5, col: 1, number: 4 }
       ]
     },
     {
@@ -121,24 +119,23 @@ const VERIFIED_PUZZLES = {
       words: [
         { id: '1A', word: 'MUSIC', clue: 'Harmonious sounds played on instruments', dir: 'across', row: 1, col: 1, number: 1 },
         { id: '1D', word: 'MANGO', clue: 'Sweet golden tropical summer fruit', dir: 'down', row: 1, col: 1, number: 1 },
-        { id: '2D', word: 'SONG', clue: 'Melodic tune sung with heartfelt joy', dir: 'down', row: 1, col: 3, number: 2 },
-        { id: '3D', word: 'CARE', clue: 'Devotion and kind attention to loved ones', dir: 'down', row: 1, col: 5, number: 3 },
-        { id: '4A', word: 'NEAR', clue: 'Close by in distance or memory', dir: 'across', row: 3, col: 1, number: 4 }
+        { id: '2D', word: 'SPOON', clue: 'Eating utensil used for warm soups and tea', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3D', word: 'CLOUD', clue: 'Soft white shape drifting in blue sky', dir: 'down', row: 1, col: 5, number: 3 },
+        { id: '4A', word: 'OWNED', clue: 'Possessed or cared for as ones own', dir: 'across', row: 5, col: 1, number: 4 }
       ]
     }
   ],
   HARD: [
     {
       id: 'hard-1',
-      title: 'Level 1 • Wisdom & Golden Harmony',
+      title: 'Level 1 • Wisdom & Harmony',
       gridSize: 8,
       words: [
         { id: '1A', word: 'SPRING', clue: 'Season of blossoming flowers and fresh renewal', dir: 'across', row: 1, col: 1, number: 1 },
-        { id: '1D', word: 'SMILE', clue: 'A warm, happy expression across the face', dir: 'down', row: 1, col: 1, number: 1 },
-        { id: '2D', word: 'RIVER', clue: 'A flowing stream of fresh water to the sea', dir: 'down', row: 1, col: 3, number: 2 },
-        { id: '3D', word: 'GREEN', clue: 'The rich color of healthy tea leaves and grass', dir: 'down', row: 1, col: 6, number: 3 },
-        { id: '4A', word: 'IMAGE', clue: 'A visual likeness, photograph, or picture', dir: 'across', row: 3, col: 1, number: 4 },
-        { id: '5A', word: 'EARN', clue: 'To gain or receive through sincere effort', dir: 'across', row: 5, col: 1, number: 5 }
+        { id: '1D', word: 'SILVER', clue: 'Shiny bright precious metal like moonlight', dir: 'down', row: 1, col: 1, number: 1 },
+        { id: '2D', word: 'ROUNDS', clue: 'Series of enjoyable game levels', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3D', word: 'GARDEN', clue: 'Lush plot filled with flowers and tea bushes', dir: 'down', row: 1, col: 6, number: 3 },
+        { id: '4A', word: 'RESIGN', clue: 'To accept peacefully with calm patience', dir: 'across', row: 6, col: 1, number: 4 }
       ]
     },
     {
@@ -155,26 +152,27 @@ const VERIFIED_PUZZLES = {
     },
     {
       id: 'hard-3',
-      title: 'Level 3 • Ancient Temples & Valleys',
+      title: 'Level 3 • Ancient Temples & Nature',
       gridSize: 8,
       words: [
-        { id: '1A', word: 'NATURE', clue: 'The physical world including plants and animals', dir: 'across', row: 1, col: 1, number: 1 },
+        { id: '1A', word: 'NATURE', clue: 'The physical world of plants, animals, and lakes', dir: 'across', row: 1, col: 1, number: 1 },
         { id: '1D', word: 'NOBLE', clue: 'Having fine personal qualities or high dignity', dir: 'down', row: 1, col: 1, number: 1 },
         { id: '2D', word: 'TREES', clue: 'Tall green pine and bamboo groves', dir: 'down', row: 1, col: 3, number: 2 },
         { id: '3D', word: 'REST', clue: 'Tranquil peaceful repose after daily activities', dir: 'down', row: 1, col: 5, number: 3 },
-        { id: '4A', word: 'BEAT', clue: 'Rhythm of folk drums during festival dance', dir: 'across', row: 3, col: 1, number: 4 }
+        { id: '4A', word: 'BEET', clue: 'Sweet reddish root vegetable eaten in salads', dir: 'across', row: 3, col: 1, number: 4 },
+        { id: '5A', word: 'EAST', clue: 'Direction where the golden sunrise rises', dir: 'across', row: 5, col: 1, number: 5 }
       ]
     },
     {
       id: 'hard-4',
-      title: 'Level 4 • Sacred Mountains & Rivers',
+      title: 'Level 4 • Sacred Mountains & Sky',
       gridSize: 8,
       words: [
         { id: '1A', word: 'SILVER', clue: 'Shiny white precious metal like moonlight', dir: 'across', row: 1, col: 1, number: 1 },
         { id: '1D', word: 'SERENE', clue: 'Peaceful, untroubled and tranquil state', dir: 'down', row: 1, col: 1, number: 1 },
-        { id: '2D', word: 'LIGHT', clue: 'Bright illumination from the golden sun', dir: 'down', row: 1, col: 3, number: 2 },
-        { id: '3D', word: 'EARTH', clue: 'The fertile soil of North-Eastern hills', dir: 'down', row: 1, col: 5, number: 3 },
-        { id: '4A', word: 'RING', clue: 'Circular ornament or phumdi on Loktak Lake', dir: 'across', row: 3, col: 1, number: 4 }
+        { id: '2D', word: 'LIGHTS', clue: 'Bright illuminations from evening lamps', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3D', word: 'RETURN', clue: 'To come back home to the family courtyard', dir: 'down', row: 1, col: 6, number: 3 },
+        { id: '4A', word: 'ENSIGN', clue: 'A symbolic badge, emblem, or flag of honor', dir: 'across', row: 6, col: 1, number: 4 }
       ]
     },
     {
@@ -184,9 +182,9 @@ const VERIFIED_PUZZLES = {
       words: [
         { id: '1A', word: 'GOLDEN', clue: 'Shining yellow color of Muga silk and morning sun', dir: 'across', row: 1, col: 1, number: 1 },
         { id: '1D', word: 'GARDEN', clue: 'Planted area with blooming flowers and orchids', dir: 'down', row: 1, col: 1, number: 1 },
-        { id: '2D', word: 'LAKE', clue: 'Vast peaceful water body like Loktak Lake', dir: 'down', row: 1, col: 3, number: 2 },
-        { id: '3D', word: 'DEAR', clue: 'Beloved family member held close in heart', dir: 'down', row: 1, col: 4, number: 3 },
-        { id: '4A', word: 'RAIN', clue: 'Gentle raindrops falling over the tea hills', dir: 'across', row: 3, col: 1, number: 4 }
+        { id: '2D', word: 'LOCUST', clue: 'Grasshopper-like winged insect of the countryside', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3D', word: 'NATION', clue: 'A large community of people under one homeland', dir: 'down', row: 1, col: 6, number: 3 },
+        { id: '4A', word: 'NATION', clue: 'People united by shared culture, heritage, and land', dir: 'across', row: 6, col: 1, number: 4 }
       ]
     }
   ]
@@ -194,36 +192,26 @@ const VERIFIED_PUZZLES = {
 
 function validateCrosswordPuzzle(puzzle) {
   if (!puzzle || !puzzle.words || puzzle.words.length === 0) return false;
-
   const letterGrid = {};
-
   for (const w of puzzle.words) {
     if (!w.word || w.word.length === 0) return false;
     const len = w.word.length;
-
     for (let i = 0; i < len; i++) {
       const r = w.dir === 'across' ? w.row : w.row + i;
       const c = w.dir === 'across' ? w.col + i : w.col;
       const char = w.word[i].toUpperCase();
-
-      if (r < 0 || r >= puzzle.gridSize || c < 0 || c >= puzzle.gridSize) {
-        return false;
-      }
-
+      if (r < 0 || r >= puzzle.gridSize || c < 0 || c >= puzzle.gridSize) return false;
       const key = `${r},${c}`;
-      if (letterGrid[key] && letterGrid[key] !== char) {
-        return false;
-      }
-
+      if (letterGrid[key] && letterGrid[key] !== char) return false;
       letterGrid[key] = char;
     }
   }
-
   return true;
 }
 
 export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) => {
   const { t } = useLanguage();
+  const [currentLevel, setCurrentLevel] = useState(1);
   const [puzzle, setPuzzle] = useState(null);
   const [userGrid, setUserGrid] = useState([]);
   const [selectedCell, setSelectedCell] = useState(null);
@@ -231,28 +219,21 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
   const [completedWordIds, setCompletedWordIds] = useState([]);
   const [hintsUsed, setHintsUsed] = useState(0);
   const [showRestartConfirm, setShowRestartConfirm] = useState(false);
-  const [validationError, setValidationError] = useState(false);
   const startTimeRef = useRef(Date.now());
 
   useEffect(() => {
-    initPuzzle();
-  }, [difficulty]);
+    initPuzzle(currentLevel);
+  }, [difficulty, currentLevel]);
 
-  const initPuzzle = () => {
+  const initPuzzle = (lvl = currentLevel) => {
     startTimeRef.current = Date.now();
     setCompletedWordIds([]);
     setHintsUsed(0);
     setShowRestartConfirm(false);
-    setValidationError(false);
 
     const puzzleList = VERIFIED_PUZZLES[difficulty] || VERIFIED_PUZZLES.EASY;
-    const chosenPuzzle = puzzleList[Math.floor(Math.random() * puzzleList.length)];
-
-    const isValid = validateCrosswordPuzzle(chosenPuzzle);
-    if (!isValid) {
-      setValidationError(true);
-      return;
-    }
+    const puzzleIdx = (lvl - 1) % puzzleList.length;
+    const chosenPuzzle = puzzleList[puzzleIdx];
 
     setPuzzle(chosenPuzzle);
 
@@ -407,18 +388,24 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
       const elapsed = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
       const penalty = hintsUsed * 5;
       const finalScore = Math.max(50, 100 - penalty);
-      const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
 
-      setTimeout(() => {
-        onCompleteRound({
-          correctAnswers: puzzle.words.length,
-          totalQuestions: puzzle.words.length,
-          timeTakenSeconds: elapsed,
-          score: finalScore,
-          accuracy: 100,
-          nextDifficulty: nextLvl
-        });
-      }, 800);
+      if (currentLevel < 5) {
+        setTimeout(() => {
+          setCurrentLevel(prev => prev + 1);
+        }, 1000);
+      } else {
+        const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
+        setTimeout(() => {
+          onCompleteRound({
+            correctAnswers: puzzle.words.length * 5,
+            totalQuestions: puzzle.words.length * 5,
+            timeTakenSeconds: elapsed,
+            score: finalScore,
+            accuracy: 100,
+            nextDifficulty: nextLvl
+          });
+        }, 1000);
+      }
     }
   };
 
@@ -434,20 +421,7 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedCell, selectedClue, userGrid, puzzle]);
 
-  if (validationError || !puzzle) {
-    return (
-      <div className="p-8 text-center bg-white rounded-3xl border-2 border-rose-300 space-y-4">
-        <AlertCircle className="w-10 h-10 text-rose-500 mx-auto" />
-        <h3 className="text-lg font-bold text-rose-800">Generating Crossword Puzzle...</h3>
-        <button
-          onClick={initPuzzle}
-          className="px-6 py-2.5 rounded-xl bg-[#1B3B2B] text-white font-bold text-sm cursor-pointer"
-        >
-          Load Puzzle
-        </button>
-      </div>
-    );
-  }
+  if (!puzzle) return null;
 
   const acrossClues = puzzle.words.filter(w => w.dir === 'across');
   const downClues = puzzle.words.filter(w => w.dir === 'down');
@@ -461,22 +435,45 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
   return (
     <div className="space-y-6 text-center max-w-3xl mx-auto select-none">
       {/* Header */}
-      <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-2">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
-            📰 {t.games?.crosswordsTitle || "Crosswords"} • {difficulty} ({puzzle.title})
-          </span>
+      <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
+              📰 {t.games?.crosswordsTitle || "Crosswords"} • {difficulty}
+            </span>
+            <span className="text-xs font-bold bg-[#1B3B2B] text-white px-2.5 py-1 rounded-full">
+              Level {currentLevel} of 5
+            </span>
+          </div>
 
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-stone-600">
               {t.games?.wordsSolved || "Words Solved"}: <strong className="text-emerald-800 text-sm">{completedWordIds.length} / {puzzle.words.length}</strong>
             </span>
-            <VoiceButton textToRead={`${t.games?.crosswordsTitle || 'Crosswords'}. ${selectedClue ? selectedClue.clue : 'Select a clue to begin.'}`} />
+            <VoiceButton textToRead={`${t.games?.crosswordsTitle || 'Crosswords'}. Level ${currentLevel}. ${selectedClue ? selectedClue.clue : 'Select a clue to begin.'}`} />
           </div>
         </div>
 
+        {/* Level 1-5 selector pills */}
+        <div className="flex items-center justify-center gap-1.5 pt-1 border-t border-stone-100">
+          <span className="text-xs font-bold text-stone-500 mr-1">Level:</span>
+          {[1, 2, 3, 4, 5].map((lvl) => (
+            <button
+              key={lvl}
+              onClick={() => setCurrentLevel(lvl)}
+              className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                currentLevel === lvl
+                  ? 'bg-[#1B3B2B] text-white shadow-xs scale-105'
+                  : 'bg-stone-100 hover:bg-stone-200 text-stone-700'
+              }`}
+            >
+              Lvl {lvl}
+            </button>
+          ))}
+        </div>
+
         <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#1B3B2B]">
-          {t.games?.crosswordsInstruction || "Complete the Crossword Puzzle"}
+          {puzzle.title}
         </h3>
 
         {selectedClue && (

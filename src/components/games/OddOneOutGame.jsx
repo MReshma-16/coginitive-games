@@ -75,46 +75,45 @@ export const OddOneOutGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) 
 
   const handleItemClick = (index) => {
     if (isLocked) return;
-    setIsLocked(true);
 
     const clickedItem = items[index];
+    if (!clickedItem) return;
+
     const isCorrect = clickedItem.isOdd;
 
-    let newCorrect = correctCount;
-    let newScore = score;
-
     if (isCorrect) {
+      setIsLocked(true);
       soundManager.playSuccess();
-      newCorrect++;
-      newScore += 20;
+      const newCorrect = correctCount + 1;
+      const newScore = score + 20;
       setCorrectCount(newCorrect);
       setScore(newScore);
       setFeedback({ isCorrect: true, message: `Wonderful observation! Level ${currentLevel} Complete! 🌟` });
+
+      setTimeout(() => {
+        if (currentLevel < 5) {
+          setCurrentLevel(prev => prev + 1);
+          setFeedback(null);
+          setIsLocked(false);
+        } else {
+          const elapsed = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
+          const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
+
+          onCompleteRound({
+            correctAnswers: 5,
+            totalQuestions: 5,
+            timeTakenSeconds: elapsed,
+            score: 100,
+            accuracy: 100,
+            level: 5,
+            nextDifficulty: nextLvl
+          });
+        }
+      }, 1000);
     } else {
       soundManager.playTap();
-      setFeedback({ isCorrect: false, message: t.games?.lovelyEffort || "Good try! Look closely. 🌿" });
+      setFeedback({ isCorrect: false, message: t.games?.lovelyEffort || "Good try! Look closely for the different item. 🌿" });
     }
-
-    setTimeout(() => {
-      if (currentLevel < 5) {
-        setCurrentLevel(prev => prev + 1);
-        setFeedback(null);
-        setIsLocked(false);
-      } else {
-        const elapsed = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
-        const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
-
-        onCompleteRound({
-          correctAnswers: 5,
-          totalQuestions: 5,
-          timeTakenSeconds: elapsed,
-          score: 100,
-          accuracy: 100,
-          level: 5,
-          nextDifficulty: nextLvl
-        });
-      }
-    }, 1100);
   };
 
   const gridCols = difficulty === 'HARD' ? 'grid-cols-4' : difficulty === 'MEDIUM' ? 'grid-cols-4' : 'grid-cols-2 sm:grid-cols-4';
@@ -200,7 +199,7 @@ export const OddOneOutGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) 
       {/* Score & Controls */}
       <div className="flex justify-between items-center bg-white border border-stone-200 rounded-2xl p-4">
         <div className="text-left text-xs text-stone-600 font-semibold">
-          {t.games?.score || "Score"}: <strong className="text-emerald-800 text-sm">{score}</strong> • {t.games?.correct || "Correct"}: <strong className="text-stone-900 text-sm">{correctCount}/{currentRound + 1}</strong>
+          {t.games?.score || "Score"}: <strong className="text-emerald-800 text-sm">{score}</strong> • {t.games?.correct || "Correct"}: <strong className="text-stone-900 text-sm">{correctCount}/5</strong>
         </div>
 
         <div className="flex items-center gap-2">

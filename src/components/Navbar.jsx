@@ -23,7 +23,7 @@ export const Navbar = ({ activePage, setActivePage }) => {
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Navigation Items: Home, Dashboard, Progress, Settings, Help & Support
+  // Navigation Items matching Image 2
   const navItems = [
     { id: 'home', label: t.nav?.home || 'Home', icon: Home },
     { id: 'dashboard', label: t.nav?.dashboard || 'Dashboard', icon: HeartHandshake, requireAuth: true },
@@ -44,42 +44,42 @@ export const Navbar = ({ activePage, setActivePage }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#FAF7F0] border-b border-[#E5DFD5] shadow-sm">
-      {/* Top Clean Minimalist Utility Bar */}
-      <div className="w-full bg-[#1B3B2B] text-[#FAF7F0] px-3 sm:px-6 py-1.5 text-xs">
-        <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
-          {/* Top Left: Clean soothing sparkle icon */}
-          <div className="flex items-center gap-2 truncate">
-            <span className="text-amber-400 text-sm">✨</span>
-            <span className="truncate font-serif italic text-amber-200">
-              {t.tagline || "when memories meet care"}
+    <header className="sticky top-0 z-40 w-full bg-white border-b border-[#E5DFD5] shadow-xs">
+      {/* Top Green Bar matching Image 2 */}
+      <div className="w-full bg-[#132E20] text-[#FAF7F0] px-4 sm:px-8 py-1.5 text-xs">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
+          {/* Top Left */}
+          <div className="flex items-center gap-1.5 truncate">
+            <span className="text-[#FDE68A] text-xs">🌿</span>
+            <span className="font-serif text-[#FDE68A] tracking-wide text-xs">
+              when memories meet care
             </span>
           </div>
 
-          {/* Top Right: Clean brand mark */}
-          <div className="text-[11px] text-amber-200/80 font-medium">
+          {/* Top Right */}
+          <div className="text-[11px] text-[#FDE68A] font-medium tracking-wide">
             CogniCare Platform
           </div>
         </div>
       </div>
 
       {/* Main Navbar */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo */}
           <div
             onClick={() => setActivePage('home')}
-            className="flex items-center gap-2 cursor-pointer select-none group py-1"
+            className="flex items-center cursor-pointer select-none py-1"
           >
             <img
               src={logoImg}
-              alt="CogniCare Logo"
-              className="h-10 sm:h-11 object-contain hover:scale-102 transition-transform duration-200"
+              alt="CogniCare - when memories meet care"
+              className="h-10 sm:h-11 object-contain hover:opacity-90 transition-opacity"
             />
           </div>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1.5">
+          <nav className="hidden md:flex items-center gap-2">
             {navItems.map((item) => {
               if (item.requireAuth && !isAuthenticated) return null;
               const Icon = item.icon;
@@ -88,13 +88,13 @@ export const Navbar = ({ activePage, setActivePage }) => {
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+                  className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full font-medium text-xs sm:text-sm transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-[#1B3B2B] text-white shadow-sm'
-                      : 'text-stone-700 hover:bg-amber-100/60 hover:text-[#1B3B2B]'
+                      ? 'bg-[#1B3B2B] text-white shadow-xs'
+                      : 'text-stone-700 hover:text-[#1B3B2B] hover:bg-stone-100/70'
                   }`}
                 >
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-amber-300' : 'text-stone-500'}`} />
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-stone-500'}`} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -103,22 +103,22 @@ export const Navbar = ({ activePage, setActivePage }) => {
 
           {/* Right Action Bar: Language Change, Username, Logout */}
           <div className="flex items-center gap-2">
-            {/* Language Change Option with Name */}
+            {/* Language Pill */}
             <div className="relative">
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white border border-stone-300 text-[#1B3B2B] font-bold text-xs hover:border-[#C99E32] shadow-sm transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-stone-300 text-stone-800 font-medium text-xs hover:border-[#1B3B2B] shadow-xs transition-all cursor-pointer"
                 title="Change Language"
               >
-                <Globe className="w-3.5 h-3.5 text-amber-700" />
-                <span className="text-sm">{currentLangObj.flag}</span>
-                <span className="font-serif hidden sm:inline">{currentLangObj.name}</span>
+                <Globe className="w-3.5 h-3.5 text-stone-600" />
+                <span>🌿</span>
+                <span className="font-sans font-medium">{currentLangObj.name}</span>
               </button>
 
               {langDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-white border border-[#C99E32] rounded-2xl shadow-xl py-1.5 z-50 animate-fadeIn">
+                <div className="absolute right-0 mt-2 w-56 bg-white border border-stone-200 rounded-2xl shadow-xl py-1.5 z-50 animate-fadeIn">
                   <div className="px-3 py-1 border-b border-stone-100 text-[10px] font-bold text-stone-500 uppercase">
-                    {t.hero?.chooseLanguage || "Select Language"}
+                    Select Language
                   </div>
                   <div className="max-h-64 overflow-y-auto">
                     {languages.map((lang) => (
@@ -128,7 +128,7 @@ export const Navbar = ({ activePage, setActivePage }) => {
                           setLanguage(lang.code);
                           setLangDropdownOpen(false);
                         }}
-                        className={`w-full text-left px-3.5 py-2 flex items-center justify-between text-xs ${
+                        className={`w-full text-left px-3.5 py-2 flex items-center justify-between text-xs cursor-pointer ${
                           currentLang === lang.code
                             ? 'bg-[#1B3B2B] text-white font-bold'
                             : 'text-stone-800 hover:bg-amber-50'
@@ -136,7 +136,7 @@ export const Navbar = ({ activePage, setActivePage }) => {
                       >
                         <span className="flex items-center gap-2">
                           <span>{lang.flag}</span>
-                          <span className="font-serif">{lang.native}</span>
+                          <span className="font-sans">{lang.native}</span>
                         </span>
                         <span className={`text-[10px] ${currentLang === lang.code ? 'text-amber-300' : 'text-stone-400'}`}>
                           {lang.name}
@@ -148,32 +148,32 @@ export const Navbar = ({ activePage, setActivePage }) => {
               )}
             </div>
 
-            {/* Username & Logout */}
+            {/* Authenticated: Username & Logout Pills | Unauthenticated: Login Button Only */}
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
-                {/* Username */}
-                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-100/90 border border-amber-300 text-stone-800 text-xs font-bold shadow-xs">
-                  <User className="w-3.5 h-3.5 text-[#1B3B2B]" />
-                  <span className="truncate max-w-[80px] sm:max-w-[100px]">{caretaker.fullName || 'User'}</span>
+                {/* Username Pill */}
+                <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FDE68A] border border-amber-300 text-[#78350F] text-xs font-bold shadow-xs">
+                  <User className="w-3.5 h-3.5 text-[#78350F]" />
+                  <span className="truncate max-w-[100px]">{caretaker?.fullName || 'Caretaker'}</span>
                 </div>
 
-                {/* Logout Option */}
+                {/* Logout Pill */}
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#A84B29] hover:bg-[#7C3218] text-white font-bold text-xs shadow-sm transition-all"
+                  className="flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-[#991B1B] hover:bg-[#7F1D1D] text-white font-bold text-xs shadow-xs transition-all cursor-pointer"
                   title="Logout"
                 >
                   <LogOut className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">{t.nav?.logout || "Logout"}</span>
+                  <span>Logout</span>
                 </button>
               </div>
             ) : (
               <button
                 onClick={() => setActivePage('auth')}
-                className="flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-xs shadow-sm transition-all border border-[#C99E32]"
+                className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-xs shadow-xs transition-all cursor-pointer border border-[#C99E32]"
               >
-                <LogIn className="w-4 h-4 text-amber-300" />
-                <span>{t.nav?.login || "Login"}</span>
+                <LogIn className="w-3.5 h-3.5 text-amber-300" />
+                <span>{t.nav?.login || "Caretaker Login"}</span>
               </button>
             )}
 
