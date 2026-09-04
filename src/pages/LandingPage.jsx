@@ -26,11 +26,11 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
   };
 
   const simpleGamePills = [
-    { title: '🧺 ' + (t.games?.memoryBasket || 'Memory Basket'), desc: t.games?.memoryBasketDesc || 'Remember traditional objects in the bamboo basket before it closes.' },
-    { title: '🏡 ' + (t.games?.myOldVillage || 'My Old Village'), desc: t.games?.myOldVillageDesc || 'Explore the traditional village scene & object placements.' },
-    { title: '🥁 ' + (t.games?.rhythmRecall || 'Rhythm Recall'), desc: t.games?.rhythmRecallDesc || 'Listen and reproduce gentle bell and drum rhythms.' },
-    { title: '🎨 ' + (t.games?.patternMatch || 'Traditional Pattern Match'), desc: t.games?.patternMatchDesc || 'Recognize traditional North-Eastern weaves and motifs.' },
-    { title: '🛤️ ' + (t.games?.memoryPath || 'Memory Path'), desc: t.games?.memoryPathDesc || 'Recreate step-by-step memory walks through the village.' }
+    { title: '🌲 ' + (t.games?.wordSearchTitle || 'Alaska Word Search'), desc: t.games?.wordSearchDesc || 'Find hidden words in a letter grid to improve concentration and word recognition.' },
+    { title: '🔍 ' + (t.games?.oddOneOutTitle || 'Find Odd One Out'), desc: t.games?.oddOneOutDesc || 'Observe a group of similar objects and identify the one item that is different.' },
+    { title: '🔤 ' + (t.games?.letterCTitle || 'Letter C Word Game'), desc: t.games?.letterCDesc || 'Find or create words beginning with the letter C to exercise vocabulary and word recall.' },
+    { title: '📰 ' + (t.games?.crosswordsTitle || 'Crosswords'), desc: t.games?.crosswordsDesc || 'Use clues to complete a crossword puzzle and exercise vocabulary and reasoning.' },
+    { title: '🧩 ' + (t.games?.jigsawTitle || 'Jigsaw Puzzle'), desc: t.games?.jigsawDesc || 'Arrange puzzle pieces correctly to complete a picture and exercise visual-spatial thinking.' }
   ];
 
   // 8 North-Eastern States Heritage Data (Requirement 2)

@@ -669,6 +669,58 @@
       "difficulty": 1,
       "itemsCount": 2,
       "completedAt": "2026-09-03T15:09:30.931Z"
+    },
+    {
+      "id": "gr_1788491561948",
+      "patientId": "patient_1788446388312",
+      "gameId": "alaska-word-search",
+      "gameName": "Alaska Word Search",
+      "category": "Cognitive",
+      "score": 100,
+      "accuracy": 100,
+      "responseTimeMs": 25000,
+      "difficulty": 1,
+      "itemsCount": 3,
+      "completedAt": "2026-09-04T03:12:41.948Z"
+    },
+    {
+      "id": "gr_1788491594069",
+      "patientId": "patient_1788446388312",
+      "gameId": "odd-one-out",
+      "gameName": "Find Odd One Out",
+      "category": "Cognitive",
+      "score": 40,
+      "accuracy": 80,
+      "responseTimeMs": 13000,
+      "difficulty": 1,
+      "itemsCount": 5,
+      "completedAt": "2026-09-04T03:13:14.069Z"
+    },
+    {
+      "id": "gr_1788491652273",
+      "patientId": "patient_1788446388312",
+      "gameId": "letter-c-word",
+      "gameName": "Letter C Word Game",
+      "category": "Cognitive",
+      "score": 50,
+      "accuracy": 100,
+      "responseTimeMs": 41000,
+      "difficulty": 1,
+      "itemsCount": 5,
+      "completedAt": "2026-09-04T03:14:12.273Z"
+    },
+    {
+      "id": "gr_1788491870832",
+      "patientId": "patient_1788446388312",
+      "gameId": "jigsaw-puzzle",
+      "gameName": "Jigsaw Puzzle",
+      "category": "Cognitive",
+      "score": 100,
+      "accuracy": 100,
+      "responseTimeMs": 15000,
+      "difficulty": 1,
+      "itemsCount": 4,
+      "completedAt": "2026-09-04T03:17:50.832Z"
     }
   ],
   "reminders": [

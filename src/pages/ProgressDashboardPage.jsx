@@ -25,7 +25,7 @@ export const ProgressDashboardPage = ({ setActivePage }) => {
     const list = Array.isArray(gameResults) ? [...gameResults] : [];
 
     // Also collect from adaptiveEngine history for the 5 games
-    const gameIds = ['memory-basket', 'my-old-village', 'rhythm-recall', 'pattern-match', 'memory-path'];
+    const gameIds = ['alaska-word-search', 'odd-one-out', 'letter-c-word', 'crosswords', 'jigsaw-puzzle'];
     gameIds.forEach(id => {
       const gData = adaptiveEngine.getGameData(id);
       if (Array.isArray(gData.history)) {
@@ -34,10 +34,10 @@ export const ProgressDashboardPage = ({ setActivePage }) => {
           if (!list.some(item => item.timestamp === h.timestamp || item.completedAt === h.timestamp)) {
             list.push({
               gameId: id,
-              gameName: id === 'memory-basket' ? 'Memory Basket' :
-                        id === 'my-old-village' ? 'My Old Village' :
-                        id === 'rhythm-recall' ? 'Rhythm Recall' :
-                        id === 'pattern-match' ? 'Pattern Match' : 'Memory Path',
+              gameName: id === 'alaska-word-search' ? 'Alaska Word Search' :
+                        id === 'odd-one-out' ? 'Find Odd One Out' :
+                        id === 'letter-c-word' ? 'Letter C Word Game' :
+                        id === 'crosswords' ? 'Crosswords' : 'Jigsaw Puzzle',
               accuracy: h.percentageScore,
               score: h.percentageScore,
               responseTimeMs: (h.timeTakenSeconds || 5) * 1000,
@@ -92,7 +92,7 @@ export const ProgressDashboardPage = ({ setActivePage }) => {
 
   // Compute Most Enjoyed Game accurately from play counts
   const mostEnjoyedGame = useMemo(() => {
-    if (allSessions.length === 0) return 'Memory Basket';
+    if (allSessions.length === 0) return 'Alaska Word Search';
 
     const countMap = {};
     allSessions.forEach(s => {
@@ -100,7 +100,7 @@ export const ProgressDashboardPage = ({ setActivePage }) => {
       countMap[name] = (countMap[name] || 0) + 1;
     });
 
-    let topGame = 'Memory Basket';
+    let topGame = 'Alaska Word Search';
     let topCount = -1;
     Object.entries(countMap).forEach(([name, count]) => {
       if (count > topCount) {
@@ -115,11 +115,11 @@ export const ProgressDashboardPage = ({ setActivePage }) => {
   // Compute Practice Areas Breakdown accurately from scores in each domain
   const memoryDomains = useMemo(() => {
     const domainDef = [
-      { key: 'memory-basket', name: 'Visual Memory (Memory Basket)', color: 'bg-emerald-500' },
-      { key: 'my-old-village', name: 'Spatial Memory (My Old Village)', color: 'bg-amber-500' },
-      { key: 'rhythm-recall', name: 'Rhythm & Audio (Rhythm Recall)', color: 'bg-teal-500' },
-      { key: 'pattern-match', name: 'Pattern Recognition (Pattern Match)', color: 'bg-indigo-500' },
-      { key: 'memory-path', name: 'Sequence Path (Memory Path)', color: 'bg-rose-500' }
+      { key: 'alaska-word-search', name: 'Visual Attention (Word Search)', color: 'bg-emerald-500' },
+      { key: 'odd-one-out', name: 'Visual Perception (Odd One Out)', color: 'bg-amber-500' },
+      { key: 'letter-c-word', name: 'Vocabulary & Recall (Letter C)', color: 'bg-teal-500' },
+      { key: 'crosswords', name: 'Reasoning & Language (Crosswords)', color: 'bg-indigo-500' },
+      { key: 'jigsaw-puzzle', name: 'Visual-Spatial (Jigsaw Puzzle)', color: 'bg-rose-500' }
     ];
 
     return domainDef.map(dom => {
