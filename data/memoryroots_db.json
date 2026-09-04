@@ -721,6 +721,71 @@
       "difficulty": 1,
       "itemsCount": 4,
       "completedAt": "2026-09-04T03:17:50.832Z"
+    },
+    {
+      "id": "gr_1788495699435",
+      "patientId": "patient_1788446388312",
+      "gameId": "alaska-word-search",
+      "gameName": "Alaska Word Search",
+      "category": "Cognitive",
+      "score": 100,
+      "accuracy": 100,
+      "responseTimeMs": 16000,
+      "difficulty": 1,
+      "itemsCount": 3,
+      "completedAt": "2026-09-04T04:21:39.435Z"
+    },
+    {
+      "id": "gr_1788495734916",
+      "patientId": "patient_1788446388312",
+      "gameId": "odd-one-out",
+      "gameName": "Find Odd One Out",
+      "category": "Cognitive",
+      "score": 50,
+      "accuracy": 100,
+      "responseTimeMs": 17000,
+      "difficulty": 1,
+      "itemsCount": 5,
+      "completedAt": "2026-09-04T04:22:14.917Z"
+    },
+    {
+      "id": "gr_1788495766387",
+      "patientId": "patient_1788446388312",
+      "gameId": "odd-one-out",
+      "gameName": "Find Odd One Out",
+      "category": "Cognitive",
+      "score": 50,
+      "accuracy": 100,
+      "responseTimeMs": 23000,
+      "difficulty": 3,
+      "itemsCount": 5,
+      "completedAt": "2026-09-04T04:22:46.387Z"
+    },
+    {
+      "id": "gr_1788495799507",
+      "patientId": "patient_1788446388312",
+      "gameId": "letter-c-word",
+      "gameName": "Letter C Word Game",
+      "category": "Cognitive",
+      "score": 40,
+      "accuracy": 100,
+      "responseTimeMs": 19000,
+      "difficulty": 1,
+      "itemsCount": 4,
+      "completedAt": "2026-09-04T04:23:19.507Z"
+    },
+    {
+      "id": "gr_1788495904204",
+      "patientId": "patient_1788446388312",
+      "gameId": "crosswords",
+      "gameName": "Crosswords",
+      "category": "Cognitive",
+      "score": 50,
+      "accuracy": 100,
+      "responseTimeMs": 84000,
+      "difficulty": 1,
+      "itemsCount": 4,
+      "completedAt": "2026-09-04T04:25:04.204Z"
     }
   ],
   "reminders": [

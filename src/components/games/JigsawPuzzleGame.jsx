@@ -1,58 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Eye, EyeOff, CheckCircle2, RotateCcw, Sparkles, Image as ImageIcon, Check, RefreshCw } from 'lucide-react';
+import { Eye, CheckCircle2, RotateCcw, Image as ImageIcon, Upload, ArrowRight, Sparkles } from 'lucide-react';
 import { soundManager } from '../../services/audioSynthesizer';
 import { VoiceButton } from '../VoiceButton';
-
-// High quality curated elderly-friendly nature & cultural images
-const PUZZLE_IMAGES = [
-  {
-    id: 'tea-garden',
-    title: 'Peaceful Tea Estate, Assam',
-    description: 'Lush green tea gardens with morning mist over rolling hills',
-    url: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=800&q=80',
-    fallbackBg: 'linear-gradient(135deg, #134e4a 0%, #15803d 40%, #a3e635 100%)'
-  },
-  {
-    id: 'lotus-lake',
-    title: 'Blooming Lotus Pond',
-    description: 'Vibrant pink water lilies and lotus flowers resting on serene water',
-    url: 'https://images.unsplash.com/photo-1508873696983-2df5703bc222?auto=format&fit=crop&w=800&q=80',
-    fallbackBg: 'linear-gradient(135deg, #831843 0%, #ec4899 40%, #67e8f9 100%)'
-  },
-  {
-    id: 'mountain-sunrise',
-    title: 'Himalayan Golden Sunrise',
-    description: 'Golden morning sunlight illuminating peaceful mountain peaks',
-    url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80',
-    fallbackBg: 'linear-gradient(135deg, #7c2d12 0%, #f97316 40%, #fed7aa 100%)'
-  },
-  {
-    id: 'bamboo-cottage',
-    title: 'Traditional Wooden Village Cottage',
-    description: 'Warm rural home surrounded by flourishing nature and flowers',
-    url: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800&q=80',
-    fallbackBg: 'linear-gradient(135deg, #78350f 0%, #d97706 40%, #fef3c7 100%)'
-  }
-];
+import { DEFAULT_PUZZLE_IMAGES, sliceImageToPieces } from '../../assets/puzzleImages';
 
 export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) => {
-  const [selectedImage, setSelectedImage] = useState(PUZZLE_IMAGES[0]);
+  const [selectedImage, setSelectedImage] = useState(DEFAULT_PUZZLE_IMAGES[0]);
   const [gridDim, setGridDim] = useState(2); // 2=Easy (2x2), 3=Med (3x3), 4=Hard (4x4)
   const [boardSlots, setBoardSlots] = useState([]); // Array of piece indices currently in each board slot (or null if empty)
   const [trayPieces, setTrayPieces] = useState([]); // Array of piece indices still in the tray
+  const [pieceSlices, setPieceSlices] = useState([]); // Array of data URLs (one for each sliced piece)
   const [selectedItem, setSelectedItem] = useState(null); // { source: 'tray'|'board', index: number, pieceIdx: number }
   const [moveCount, setMoveCount] = useState(0);
   const [showReferenceModal, setShowReferenceModal] = useState(false);
   const [showRestartConfirm, setShowRestartConfirm] = useState(false);
+  const [customImages, setCustomImages] = useState([]);
+  const fileInputRef = useRef(null);
   const startTimeRef = useRef(Date.now());
 
   const totalPieces = gridDim * gridDim;
 
   useEffect(() => {
     initPuzzle();
-  }, [difficulty]);
+  }, [difficulty, selectedImage]);
 
-  const initPuzzle = () => {
+  const initPuzzle = async () => {
     startTimeRef.current = Date.now();
     setMoveCount(0);
     setSelectedItem(null);
@@ -62,17 +34,17 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
     const dim = difficulty === 'HARD' ? 4 : difficulty === 'MEDIUM' ? 3 : 2;
     setGridDim(dim);
 
-    // Pick random image
-    const randomImg = PUZZLE_IMAGES[Math.floor(Math.random() * PUZZLE_IMAGES.length)];
-    setSelectedImage(randomImg);
+    // Slice current image into exact piece images
+    const slices = await sliceImageToPieces(selectedImage.dataUrl, dim);
+    setPieceSlices(slices);
 
     const count = dim * dim;
     const pieces = Array.from({ length: count }, (_, i) => i);
-    
+
     // Shuffle pieces randomly for the tray
     let shuffled = [...pieces];
     shuffled.sort(() => 0.5 - Math.random());
-    
+
     // Initial state: board is empty, all pieces are in tray
     setBoardSlots(Array(count).fill(null));
     setTrayPieces(shuffled);
@@ -82,12 +54,33 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
   // Switch to another image
   const handleChangeImage = (img) => {
     setSelectedImage(img);
-    initPuzzle();
+  };
+
+  // Upload custom user image
+  const handleCustomImageUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (uploadEvent) => {
+      const dataUrl = uploadEvent.target?.result;
+      if (dataUrl) {
+        const newCustom = {
+          id: `custom-${Date.now()}`,
+          title: file.name.replace(/\.[^/.]+$/, "") || 'My Picture',
+          description: 'Custom picture uploaded by user',
+          dataUrl: dataUrl
+        };
+        setCustomImages(prev => [newCustom, ...prev]);
+        setSelectedImage(newCustom);
+        soundManager.playSuccess();
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   // --- INTERACTION LOGIC (Click-to-place & Drag-and-drop) ---
 
-  // Handle click on tray piece
   const handleTrayPieceClick = (pieceIdx, trayIndex) => {
     soundManager.playTap();
     if (selectedItem && selectedItem.source === 'tray' && selectedItem.index === trayIndex) {
@@ -97,30 +90,24 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
     }
   };
 
-  // Handle click on board slot
   const handleBoardSlotClick = (slotIdx) => {
     soundManager.playTap();
     const currentPieceInSlot = boardSlots[slotIdx];
 
     if (!selectedItem) {
-      // If no item selected, select this board piece (if slot is not empty)
       if (currentPieceInSlot !== null) {
         setSelectedItem({ source: 'board', index: slotIdx, pieceIdx: currentPieceInSlot });
       }
       return;
     }
 
-    // If an item was already selected:
     const newBoard = [...boardSlots];
     const newTray = [...trayPieces];
 
     if (selectedItem.source === 'tray') {
-      // Moving from tray to board slot
       const pieceToPlace = selectedItem.pieceIdx;
-      // Remove from tray
       newTray.splice(selectedItem.index, 1);
 
-      // If slot had an existing piece, return it to tray
       if (currentPieceInSlot !== null) {
         newTray.push(currentPieceInSlot);
       }
@@ -131,7 +118,6 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
       setMoveCount(prev => prev + 1);
       setSelectedItem(null);
 
-      // Sound feedback on snap
       if (pieceToPlace === slotIdx) {
         soundManager.playSuccess();
       }
@@ -140,12 +126,10 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
     } else if (selectedItem.source === 'board') {
       const sourceSlot = selectedItem.index;
       if (sourceSlot === slotIdx) {
-        // Clicked same slot -> deselect
         setSelectedItem(null);
         return;
       }
 
-      // Swap pieces between sourceSlot and slotIdx
       newBoard[sourceSlot] = currentPieceInSlot;
       newBoard[slotIdx] = selectedItem.pieceIdx;
 
@@ -161,7 +145,6 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
     }
   };
 
-  // Return piece from board back to tray
   const handleReturnToTray = (slotIdx, e) => {
     e.stopPropagation();
     soundManager.playTap();
@@ -236,50 +219,50 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
       const elapsed = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
       const score = Math.max(70, 100 - Math.max(0, moveCount - totalPieces) * 2);
 
+      // Automatic progression level mapping
+      const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
+
       setTimeout(() => {
         onCompleteRound({
           correctAnswers: totalPieces,
           totalQuestions: totalPieces,
           timeTakenSeconds: elapsed,
           score,
-          accuracy: 100
+          accuracy: 100,
+          nextDifficulty: nextLvl
         });
-      }, 800);
+      }, 700);
     }
   };
 
-  // Helper to render an authentic jigsaw piece containing actual image coordinates
+  // Render sliced puzzle piece
   const renderImagePiece = (pieceIdx, isSelected = false, isSnapped = false) => {
     if (pieceIdx === null || pieceIdx === undefined) return null;
-
-    const row = Math.floor(pieceIdx / gridDim);
-    const col = pieceIdx % gridDim;
-    const percentage = 100 / (gridDim - 1 || 1);
-    const bgPosX = col * percentage;
-    const bgPosY = row * percentage;
-    const bgSize = `${gridDim * 100}% ${gridDim * 100}%`;
+    const sliceSrc = pieceSlices[pieceIdx];
 
     return (
       <div
-        className={`w-full h-full relative rounded-2xl overflow-hidden transition-all duration-200 ${
+        className={`w-full h-full relative rounded-2xl overflow-hidden transition-all duration-200 bg-amber-50 ${
           isSelected
             ? 'ring-4 ring-amber-400 scale-105 shadow-2xl z-20 border-2 border-amber-500'
             : isSnapped
             ? 'border-2 border-emerald-400 shadow-md'
             : 'border-2 border-stone-300 shadow-sm hover:border-amber-400'
         }`}
-        style={{
-          backgroundImage: `url(${selectedImage.url})`,
-          backgroundPosition: `${bgPosX}% ${bgPosY}%`,
-          backgroundSize: bgSize,
-          backgroundRepeat: 'no-repeat',
-          backgroundColor: '#15803d'
-        }}
       >
-        {/* Subtle jigsaw piece inner shadow and bevel to give real puzzle depth */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-white/20 pointer-events-none" />
+        {sliceSrc ? (
+          <img
+            src={sliceSrc}
+            alt={`Piece ${pieceIdx + 1}`}
+            className="w-full h-full object-cover rounded-xl select-none pointer-events-none"
+          />
+        ) : (
+          <div className="w-full h-full bg-amber-100 flex items-center justify-center font-bold text-amber-900">
+            🧩
+          </div>
+        )}
 
-        {/* Snapped check badge */}
+        {/* Snapped Checkmark Badge */}
         {isSnapped && (
           <div className="absolute top-1 right-1 w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-md animate-fadeIn">
             <CheckCircle2 className="w-3.5 h-3.5" />
@@ -290,9 +273,19 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
   };
 
   const correctlyPlacedCount = boardSlots.filter((pieceIdx, slotIdx) => pieceIdx !== null && pieceIdx === slotIdx).length;
+  const allImages = [...customImages, ...DEFAULT_PUZZLE_IMAGES];
 
   return (
     <div className="space-y-6 text-center max-w-3xl mx-auto select-none">
+      {/* Hidden File Input for Custom User Images */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleCustomImageUpload}
+        accept="image/*"
+        className="hidden"
+      />
+
       {/* Header Info */}
       <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-2">
         <div className="flex items-center justify-between">
@@ -313,26 +306,34 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
         </h3>
 
         <p className="text-stone-600 text-xs sm:text-sm">
-          {selectedImage.description}. Drag pieces into the board slots, or tap a piece and then tap a slot to place it.
+          {selectedImage.description}. Drag pieces into board slots, or tap a piece and then tap a slot to place it.
         </p>
 
-        {/* Quick Action: Show Reference & Switch Image */}
-        <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+        {/* Action Bar: Reference Image + Image Selector + Upload Button */}
+        <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
           <button
             onClick={() => setShowReferenceModal(true)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold text-xs sm:text-sm border border-amber-300 shadow-xs cursor-pointer transition-all active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold text-xs border border-amber-300 shadow-xs cursor-pointer transition-all active:scale-95"
           >
             <Eye className="w-4 h-4 text-amber-700" />
             <span>Show Reference Picture 🖼️</span>
           </button>
 
-          <div className="flex items-center gap-1.5 bg-stone-50 p-1 rounded-2xl border border-stone-200">
-            <span className="text-[11px] font-bold text-stone-500 px-2">Image:</span>
-            {PUZZLE_IMAGES.map((img) => (
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-emerald-100 hover:bg-emerald-200 text-emerald-950 font-bold text-xs border border-emerald-300 shadow-xs cursor-pointer transition-all active:scale-95"
+          >
+            <Upload className="w-4 h-4 text-emerald-700" />
+            <span>Upload Your Own Picture 📁</span>
+          </button>
+
+          <div className="flex items-center gap-1 bg-stone-50 p-1 rounded-2xl border border-stone-200 max-w-full overflow-x-auto">
+            <span className="text-[11px] font-bold text-stone-500 px-1.5">Picture:</span>
+            {allImages.map((img) => (
               <button
                 key={img.id}
                 onClick={() => handleChangeImage(img)}
-                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer truncate max-w-[100px] ${
                   selectedImage.id === img.id
                     ? 'bg-[#1B3B2B] text-white shadow-xs'
                     : 'text-stone-600 hover:bg-stone-200'
@@ -345,9 +346,9 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
         </div>
       </div>
 
-      {/* Main Play Area: Puzzle Board + Unplaced Pieces Tray */}
+      {/* Main Play Area: Puzzle Board + Pieces Tray */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left/Top: Puzzle Board */}
+        {/* Left: Puzzle Board */}
         <div className="lg:col-span-7 flex flex-col items-center">
           <div className="w-full bg-white border-3 border-[#C99E32] rounded-3xl p-4 sm:p-6 shadow-md">
             <div className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-3 flex items-center justify-between">
@@ -359,7 +360,7 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
 
             {/* Grid Board */}
             <div
-              className="grid gap-2 sm:gap-3 mx-auto justify-center bg-stone-100/70 p-3 sm:p-4 rounded-2xl border-2 border-dashed border-stone-300"
+              className="grid gap-2 sm:gap-3 mx-auto justify-center bg-stone-100/80 p-3 sm:p-4 rounded-2xl border-2 border-dashed border-stone-300"
               style={{
                 gridTemplateColumns: `repeat(${gridDim}, minmax(0, 1fr))`,
                 maxWidth: gridDim === 2 ? '280px' : gridDim === 3 ? '340px' : '380px',
@@ -390,11 +391,11 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
                       >
                         {renderImagePiece(pieceIdx, isSelected, isCorrect)}
 
-                        {/* Quick return button on hover/touch */}
+                        {/* Return to tray button */}
                         <button
                           onClick={(e) => handleReturnToTray(slotIdx, e)}
                           title="Return to tray"
-                          className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-stone-800/80 text-white text-[10px] font-bold flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10"
+                          className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-stone-800/80 text-white text-[10px] font-bold flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 cursor-pointer"
                         >
                           ✕
                         </button>
@@ -411,11 +412,11 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
           </div>
         </div>
 
-        {/* Right/Bottom: Pieces Tray */}
+        {/* Right: Pieces Tray */}
         <div className="lg:col-span-5 bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-3">
           <div className="flex items-center justify-between border-b pb-2 border-stone-100">
             <h4 className="font-serif font-bold text-sm text-[#1B3B2B]">
-              🧩 Pieces Tray ({trayPieces.length} remaining)
+              🧩 Pieces Tray ({trayPieces.length} left)
             </h4>
             <span className="text-[11px] text-stone-500 font-medium">
               Tap or drag to board
@@ -472,11 +473,11 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
               </button>
             </div>
 
-            <div className="w-full h-64 rounded-2xl overflow-hidden shadow-inner border-2 border-stone-200">
+            <div className="w-full aspect-square rounded-2xl overflow-hidden shadow-inner border-2 border-stone-200 bg-stone-50 flex items-center justify-center">
               <img
-                src={selectedImage.url}
+                src={selectedImage.dataUrl}
                 alt={selectedImage.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
             </div>
 

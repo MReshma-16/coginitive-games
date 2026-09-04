@@ -33,10 +33,7 @@ export const GameScoreModal = ({
   const timeTakenSeconds = record.timeTakenSeconds ?? 0;
 
   const currentDifficulty = resultData?.currentDifficulty || record.difficulty || 'EASY';
-  const nextDifficulty = resultData?.nextDifficulty || currentDifficulty;
-  const bestScore = resultData?.bestScore ?? percentageScore;
-  const isAdaptiveShift = resultData?.isAdaptiveShift || false;
-  const shiftDirection = resultData?.shiftDirection || null;
+  const nextDifficulty = resultData?.nextDifficulty || (currentDifficulty === 'EASY' ? 'MEDIUM' : currentDifficulty === 'MEDIUM' ? 'HARD' : 'EASY');
   const supportiveMessage = resultData?.supportiveMessage || null;
 
   useEffect(() => {
@@ -140,15 +137,15 @@ export const GameScoreModal = ({
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={onPlayNextRound}
-            className="flex-1 py-3.5 px-5 rounded-2xl bg-[#1E432A] hover:bg-[#2C5E3B] text-white font-bold text-base border-2 border-[#C99E32] transition-all shadow-md active:scale-98 flex items-center justify-center gap-2"
+            className="flex-1 py-3.5 px-5 rounded-2xl bg-[#1E432A] hover:bg-[#2C5E3B] text-white font-bold text-base border-2 border-[#C99E32] transition-all shadow-md active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
           >
-            <span>{t.games?.nextRound || "Next Round"}</span>
+            <span>Play Next Level ({nextBadge.label})</span>
             <ArrowRight className="w-5 h-5 text-amber-300" />
           </button>
 
           <button
             onClick={onClose}
-            className="py-3.5 px-5 rounded-2xl bg-stone-200 hover:bg-stone-300 text-stone-800 font-bold text-sm transition-all"
+            className="py-3.5 px-5 rounded-2xl bg-stone-200 hover:bg-stone-300 text-stone-800 font-bold text-sm transition-all cursor-pointer"
           >
             {t.games?.backToGames || "Back to Games"}
           </button>

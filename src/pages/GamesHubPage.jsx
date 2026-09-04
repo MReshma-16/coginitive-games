@@ -116,16 +116,20 @@ export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
       itemsCount: roundStats.totalQuestions
     });
 
+    const nextLevel = roundStats?.nextDifficulty || (selectedDifficulty === 'EASY' ? 'MEDIUM' : selectedDifficulty === 'MEDIUM' ? 'HARD' : 'EASY');
+
     setActiveScoreResult({
       ...adaptiveResult,
       currentDifficulty: selectedDifficulty,
+      nextDifficulty: nextLevel,
       roundRecord: {
         ...adaptiveResult.roundRecord,
         score: roundStats.score ?? adaptiveResult.roundRecord.percentageScore,
         accuracy: roundStats.accuracy ?? adaptiveResult.roundRecord.percentageScore,
         correctAnswers: roundStats.correctAnswers,
         totalQuestions: roundStats.totalQuestions,
-        timeTakenSeconds: roundStats.timeTakenSeconds
+        timeTakenSeconds: roundStats.timeTakenSeconds,
+        difficulty: selectedDifficulty
       }
     });
 
@@ -308,6 +312,8 @@ export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
             setSelectedGameId(null);
           }}
           onPlayNextRound={() => {
+            const nextLvl = activeScoreResult?.nextDifficulty || (selectedDifficulty === 'EASY' ? 'MEDIUM' : selectedDifficulty === 'MEDIUM' ? 'HARD' : 'EASY');
+            setSelectedDifficulty(nextLvl);
             setActiveScoreResult(null);
           }}
           gameTitle={currentGameObj?.title || 'Cognitive Game'}
