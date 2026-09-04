@@ -15,6 +15,9 @@ import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { VoiceButton } from '../components/VoiceButton';
 import logoImg from '../assets/logo.png';
+import heroBg from '../assets/hero-bg.png';
+import sacredTemple from '../assets/sacred-temple.png';
+import mountainValley from '../assets/mountain-valley.png';
 
 export const LandingPage = ({ setActivePage, onOpenCulture }) => {
   const { currentLang, setLanguage, languages, t } = useLanguage();
@@ -33,7 +36,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
     { title: '🧩 ' + (t.games?.jigsawTitle || 'Jigsaw Puzzle'), desc: t.games?.jigsawDesc || 'Arrange puzzle pieces correctly to complete a picture and exercise visual-spatial thinking.' }
   ];
 
-  // 8 North-Eastern States Heritage Data (Requirement 2)
+  // 8 North-Eastern States Heritage Data
   const northEastStates = [
     {
       name: "Assam",
@@ -111,67 +114,75 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
 
   return (
     <div className="bg-[#FAF7F0] min-h-screen">
-      {/* Clean, Neat Hero with CogniCare Branding */}
-      <section className="pt-10 pb-14 md:pt-14 md:pb-16 border-b border-[#E5DFD5]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5">
-          {/* Logo Showcase */}
-          <div className="flex justify-center mb-2">
-            <img
-              src={logoImg}
-              alt="CogniCare Logo"
-              className="h-20 sm:h-24 md:h-28 object-contain drop-shadow-sm hover:scale-102 transition-transform duration-300"
-            />
+      {/* Majestic Full-Background Hero with CogniCare Branding */}
+      <section
+        className="relative pt-12 pb-16 md:pt-16 md:pb-20 bg-cover bg-center border-b-4 border-[#C99E32] overflow-hidden"
+        style={{ backgroundImage: `url(${heroBg})` }}
+      >
+        {/* Rich Atmospheric Gradient Overlay for Crystal-Clear Text & Deep Ambience */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B1E15]/92 via-[#143224]/85 to-[#FAF7F0]/95" />
+        
+        {/* Subtle Warm Radial Glow Accent */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(201,158,50,0.15)_0,transparent_70%)] pointer-events-none" />
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          {/* Beautiful & Elegant Logo Presentation */}
+          <div className="flex flex-col items-center justify-center">
+            <div className="bg-white/95 backdrop-blur-md px-6 py-4 sm:px-8 sm:py-5 rounded-3xl border-2 border-amber-300 shadow-2xl ring-4 ring-amber-400/25 hover:scale-103 transition-all duration-300 flex items-center justify-center">
+              <img
+                src={logoImg}
+                alt="CogniCare Logo"
+                className="h-20 sm:h-24 md:h-28 object-contain drop-shadow-sm"
+              />
+            </div>
+            <div className="mt-3.5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/25 border border-amber-300/60 backdrop-blur-sm text-amber-200 text-xs sm:text-sm font-serif font-semibold tracking-wide shadow-sm">
+              <Sparkles className="w-4 h-4 text-amber-300" />
+              <span className="italic">when memories meet care</span>
+            </div>
           </div>
 
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#1B3B2B] leading-tight tracking-tight">
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-amber-100 leading-tight tracking-tight drop-shadow-md">
             {t.hero?.title || "when memories meet care"}
           </h1>
 
-          <p className="text-base sm:text-lg text-stone-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-emerald-100/90 max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-sm">
             {t.hero?.desc || "A warm, peaceful, culturally rooted space designed for our beloved elders in North-Eastern India to revisit traditional games, familiar village life, and cherished moments with gentle adaptive memory activities."}
           </p>
 
           {/* Voice Prompt */}
           <div className="flex justify-center pt-1">
-            <VoiceButton
-              textToRead="Welcome to CogniCare, when memories meet care. A peaceful cognitive support and reminiscence platform for our beloved elders in North-Eastern India."
-              label="Listen to Introduction"
-            />
+            <div className="bg-[#1B3B2B]/90 backdrop-blur-sm p-1 rounded-2xl border border-amber-300/50 shadow-md">
+              <VoiceButton
+                textToRead="Welcome to CogniCare, when memories meet care. A peaceful cognitive support and reminiscence platform for our beloved elders in North-Eastern India."
+                label="Listen to Introduction"
+              />
+            </div>
           </div>
 
           {/* Clean Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
             <button
               onClick={() => setActivePage('games')}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-base border-2 border-[#C99E32] shadow-sm transition-all active:scale-98"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-[#1B3B2B] hover:bg-[#275338] text-white font-bold text-base border-2 border-[#C99E32] shadow-xl hover:shadow-2xl transition-all active:scale-98 group"
             >
-              <Gamepad2 className="w-5 h-5 text-amber-300" />
+              <Gamepad2 className="w-5 h-5 text-amber-300 group-hover:scale-110 transition-transform" />
               <span>Explore Cognitive Games</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 text-amber-300 group-hover:translate-x-1 transition-transform" />
             </button>
 
             {isAuthenticated ? (
               <button
                 onClick={() => setActivePage('dashboard')}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold text-base border border-amber-300 shadow-sm transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-amber-100/95 hover:bg-amber-200 text-stone-900 font-bold text-base border-2 border-amber-300 shadow-xl transition-all"
               >
                 <Heart className="w-5 h-5 text-amber-700" />
                 <span>{t.hero?.caretakerPortal || "Caretaker Dashboard"}</span>
-              </button>
-            ) : (
-              <button
-                onClick={handleDemoStart}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-white hover:bg-amber-50 text-stone-800 font-bold text-base border-2 border-stone-300 shadow-sm transition-all"
-              >
-                <Sparkles className="w-4 h-4 text-amber-600" />
-                <span>{t.hero?.tryDemo || "1-Click Demo Caregiver"}</span>
-              </button>
             )}
           </div>
         </div>
       </section>
 
-      {/* Prominent Language Selection (Requirement 3) */}
+      {/* Prominent Language Selection */}
       <section className="py-8 bg-white border-b border-[#E5DFD5]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-5">
@@ -208,7 +219,129 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
         </div>
       </section>
 
-      {/* 8 North-Eastern States Heritage Section (Requirement 2) */}
+      {/* Featured Real Cultural Photography & Visual Memories */}
+      <section className="py-12 bg-white/70 border-b border-[#E5DFD5]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8 space-y-1.5">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-100 text-[#7C3218] font-bold text-xs">
+              <ImageIcon className="w-3.5 h-3.5 text-amber-700" />
+              <span>Authentic Cultural Photography</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#1B3B2B]">
+              Cherished Heritage Sights & Mountain Landscapes
+            </h2>
+            <p className="text-xs sm:text-sm text-stone-600 max-w-2xl mx-auto">
+              Real high-definition photographs celebrating sacred architecture and serene pine valleys — playable directly in the Jigsaw Puzzle.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1: Ancient Sun Temple */}
+            <div className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
+              <div>
+                <div className="relative h-48 sm:h-52 overflow-hidden">
+                  <img
+                    src={heroBg}
+                    alt="Ancient Sun Temple Architecture"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 left-3 bg-[#1B3B2B]/90 backdrop-blur-xs text-amber-200 text-[11px] px-3 py-1 rounded-full font-bold border border-amber-300/40">
+                    🏛️ Sacred Heritage
+                  </div>
+                </div>
+                <div className="p-5 space-y-2">
+                  <h3 className="font-serif font-bold text-lg text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
+                    Grand Sun Temple Architecture
+                  </h3>
+                  <p className="text-xs text-stone-600 leading-relaxed">
+                    Carved ancient chariot wheels and majestic stone architecture inspiring cultural pride and peaceful reminiscence.
+                  </p>
+                </div>
+              </div>
+              <div className="p-5 pt-0">
+                <button
+                  onClick={() => setActivePage('games')}
+                  className="w-full py-2.5 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <Gamepad2 className="w-4 h-4 text-amber-700" />
+                  <span>Play as Jigsaw Puzzle</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-amber-700" />
+                </button>
+              </div>
+            </div>
+
+            {/* Card 2: Sacred Twilight Temple */}
+            <div className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
+              <div>
+                <div className="relative h-48 sm:h-52 overflow-hidden">
+                  <img
+                    src={sacredTemple}
+                    alt="Sacred Twilight Stone Temple"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 left-3 bg-[#1B3B2B]/90 backdrop-blur-xs text-amber-200 text-[11px] px-3 py-1 rounded-full font-bold border border-amber-300/40">
+                    🛕 Twilight Sanctum
+                  </div>
+                </div>
+                <div className="p-5 space-y-2">
+                  <h3 className="font-serif font-bold text-lg text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
+                    Sacred Twilight Stone Temple
+                  </h3>
+                  <p className="text-xs text-stone-600 leading-relaxed">
+                    Atmospheric sacred red stone temple glowing gently under the twilight evening sky, bringing soothing nostalgia.
+                  </p>
+                </div>
+              </div>
+              <div className="p-5 pt-0">
+                <button
+                  onClick={() => setActivePage('games')}
+                  className="w-full py-2.5 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <Gamepad2 className="w-4 h-4 text-amber-700" />
+                  <span>Play as Jigsaw Puzzle</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-amber-700" />
+                </button>
+              </div>
+            </div>
+
+            {/* Card 3: Mountain Valley & Pine Hills */}
+            <div className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
+              <div>
+                <div className="relative h-48 sm:h-52 overflow-hidden">
+                  <img
+                    src={mountainValley}
+                    alt="Himalayan Valley & Pine Hills"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 left-3 bg-[#1B3B2B]/90 backdrop-blur-xs text-amber-200 text-[11px] px-3 py-1 rounded-full font-bold border border-amber-300/40">
+                    🌲 Misty Valleys
+                  </div>
+                </div>
+                <div className="p-5 space-y-2">
+                  <h3 className="font-serif font-bold text-lg text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
+                    Himalayan Valley & Pine Hills
+                  </h3>
+                  <p className="text-xs text-stone-600 leading-relaxed">
+                    Rolling emerald mountain ridges, misty pine canopies, and serene hill settlement bathed in pure morning light.
+                  </p>
+                </div>
+              </div>
+              <div className="p-5 pt-0">
+                <button
+                  onClick={() => setActivePage('games')}
+                  className="w-full py-2.5 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <Gamepad2 className="w-4 h-4 text-amber-700" />
+                  <span>Play as Jigsaw Puzzle</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-amber-700" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8 North-Eastern States Heritage Section */}
       <section className="py-14 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-[#7C3218] font-bold text-xs">

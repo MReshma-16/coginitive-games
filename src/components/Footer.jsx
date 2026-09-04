@@ -1,6 +1,7 @@
 import React from 'react';
 import { Heart, ShieldCheck, Globe, Sparkles, MapPin } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import logoImg from '../assets/logo.png';
 
 export const Footer = ({ onOpenCulture, setActivePage }) => {
   const { t, languages, setLanguage, currentLang } = useLanguage();
@@ -28,11 +29,13 @@ export const Footer = ({ onOpenCulture, setActivePage }) => {
           {/* Col 1: Brand & Tagline */}
           <div className="md:col-span-2 space-y-3">
             <div className="flex items-center gap-2">
-              <img
-                src="/logo.png"
-                alt="CogniCare Logo"
-                className="h-10 object-contain brightness-0 invert"
-              />
+              <div className="bg-white/95 backdrop-blur-sm px-3.5 py-2 rounded-2xl border border-amber-300 shadow-md inline-flex items-center">
+                <img
+                  src={logoImg}
+                  alt="CogniCare Logo"
+                  className="h-9 sm:h-10 object-contain"
+                />
+              </div>
             </div>
             <p className="text-amber-200 font-serif italic text-sm max-w-md">
               "{t.tagline || 'when memories meet care'}"

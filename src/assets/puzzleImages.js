@@ -1,3 +1,7 @@
+import heroBg from './hero-bg.png';
+import sacredTemple from './sacred-temple.png';
+import mountainValley from './mountain-valley.png';
+
 // High Quality, Fully Self-Contained Offline Puzzle Images for CogniCare
 // Guaranteed to render visibly in all network conditions, with custom upload support
 
@@ -237,6 +241,24 @@ const VILLAGE_COTTAGE_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.o
 </svg>`;
 
 export const DEFAULT_PUZZLE_IMAGES = [
+  {
+    id: 'sun-temple-odisha',
+    title: 'Grand Sun Temple Architecture',
+    description: 'Magnificent ancient carved temple stone wheels & historic sanctum',
+    dataUrl: heroBg
+  },
+  {
+    id: 'sacred-red-temple',
+    title: 'Sacred Twilight Stone Temple',
+    description: 'Atmospheric sacred red stone temple glowing under a peaceful twilight sky',
+    dataUrl: sacredTemple
+  },
+  {
+    id: 'mountain-pine-valley',
+    title: 'Himalayan Valley & Pine Hills',
+    description: 'Serene rolling green mountains, pine forests and vibrant valley town',
+    dataUrl: mountainValley
+  },
   {
     id: 'tea-garden',
     title: 'Peaceful Tea Estate, Assam',
