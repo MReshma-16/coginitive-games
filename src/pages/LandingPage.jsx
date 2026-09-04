@@ -177,6 +177,15 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
               >
                 <Heart className="w-5 h-5 text-amber-700" />
                 <span>{t.hero?.caretakerPortal || "Caretaker Dashboard"}</span>
+              </button>
+            ) : (
+              <button
+                onClick={handleDemoStart}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-white/95 hover:bg-amber-50 text-stone-900 font-bold text-base border-2 border-stone-300 shadow-xl transition-all"
+              >
+                <Sparkles className="w-4 h-4 text-amber-600" />
+                <span>{t.hero?.tryDemo || "1-Click Demo Caregiver"}</span>
+              </button>
             )}
           </div>
         </div>
