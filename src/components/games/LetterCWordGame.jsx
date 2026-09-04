@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { BookOpen, CheckCircle2, RotateCcw, ArrowRight, Sparkles, HelpCircle, ArrowLeft } from 'lucide-react';
 import { soundManager } from '../../services/audioSynthesizer';
 import { VoiceButton } from '../VoiceButton';
+import { useLanguage } from '../../context/LanguageContext';
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
@@ -139,30 +140,22 @@ const LETTER_VOCABULARY = {
   }
 };
 
-/**
- * Generate 4 distinct, engaging rounds dynamically based on chosen letter
- */
-function generateLetterRounds(letter) {
+function generateLetterRounds(letter, t) {
   const data = LETTER_VOCABULARY[letter] || LETTER_VOCABULARY.C;
   const targetWords = [...data.words];
   const distractors = [...data.distractors];
 
-  // Helper shuffle
   const shuffle = (arr) => [...arr].sort(() => 0.5 - Math.random());
 
-  // Round 1: "Which word begins with [Letter]?"
   const r1Correct = targetWords[0];
   const r1Options = shuffle([r1Correct, distractors[0], distractors[1], distractors[2]]);
 
-  // Round 2: "Select all words that begin with [Letter]."
   const r2Correct = [targetWords[1] || targetWords[0], targetWords[2] || targetWords[1], targetWords[3] || targetWords[2]];
   const r2Distractors = [distractors[3] || distractors[0], distractors[4] || distractors[1]];
   const r2Options = shuffle([...r2Correct, ...r2Distractors]);
 
-  // Round 3: "Complete the word."
   const r3Data = data.complete;
 
-  // Round 4: "Which word belongs to the selected letter?"
   const r4Correct = targetWords[4] || targetWords[1] || targetWords[0];
   const r4Options = shuffle([r4Correct, distractors[5] || distractors[0], distractors[6] || distractors[1], distractors[7] || distractors[2]]);
 
@@ -170,46 +163,47 @@ function generateLetterRounds(letter) {
     {
       roundNum: 1,
       type: 'single',
-      prompt: `Which word begins with ${letter}?`,
+      prompt: `${t.games?.whichWordBegins || "Which word begins with"} ${letter}?`,
       options: r1Options,
       correct: r1Correct,
-      explanation: `"${r1Correct}" begins with the letter ${letter}.`
+      explanation: `"${r1Correct}" (${letter})`
     },
     {
       roundNum: 2,
       type: 'multi',
-      prompt: `Select all words that begin with ${letter}:`,
+      prompt: `${t.games?.selectAllWordsBegins || "Select all words that begin with"} ${letter}:`,
       options: r2Options,
       correct: r2Correct,
-      explanation: `Words starting with ${letter}: ${r2Correct.join(', ')}`
+      explanation: `${r2Correct.join(', ')}`
     },
     {
       roundNum: 3,
       type: 'complete',
-      prompt: `Complete the word: ${r3Data.incomplete}`,
+      prompt: `${t.games?.completeTheWord || "Complete the word"}: ${r3Data.incomplete}`,
       subPrompt: r3Data.hint ? `(${r3Data.hint})` : '',
       incomplete: r3Data.incomplete,
       options: r3Data.options,
       correct: r3Data.correct,
       fullWord: r3Data.word,
-      explanation: `${r3Data.word} is spelled with "${r3Data.correct}".`
+      explanation: `${r3Data.word}`
     },
     {
       roundNum: 4,
       type: 'single',
-      prompt: `Which word belongs to the letter ${letter}?`,
+      prompt: `${t.games?.whichWordBelongs || "Which word belongs to the letter"} ${letter}?`,
       options: r4Options,
       correct: r4Correct,
-      explanation: `"${r4Correct}" belongs to the letter ${letter}.`
+      explanation: `"${r4Correct}" (${letter})`
     }
   ];
 }
 
 export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) => {
-  const [selectedLetter, setSelectedLetter] = useState(null); // null means on "Choose a Letter" screen
+  const { t } = useLanguage();
+  const [selectedLetter, setSelectedLetter] = useState(null);
   const [rounds, setRounds] = useState([]);
   const [currentRoundIdx, setCurrentRoundIdx] = useState(0);
-  const [multiSelected, setMultiSelected] = useState([]); // for Round 2 multi-select
+  const [multiSelected, setMultiSelected] = useState([]);
   const [score, setScore] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [feedback, setFeedback] = useState(null);
@@ -217,11 +211,10 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
   const [showRestartConfirm, setShowRestartConfirm] = useState(false);
   const startTimeRef = useRef(Date.now());
 
-  // Pick letter & start game
   const handleSelectLetter = (letter) => {
     soundManager.playTap();
     setSelectedLetter(letter);
-    const generated = generateLetterRounds(letter);
+    const generated = generateLetterRounds(letter, t);
     setRounds(generated);
     setCurrentRoundIdx(0);
     setScore(0);
@@ -234,7 +227,6 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
     soundManager.playChime();
   };
 
-  // Return to letter selection screen
   const handleChooseAnotherLetter = () => {
     soundManager.playTap();
     setSelectedLetter(null);
@@ -253,7 +245,6 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
     }
   };
 
-  // Toggle multi-select word in Round 2
   const handleToggleMultiWord = (word) => {
     if (isLocked) return;
     soundManager.playTap();
@@ -264,18 +255,15 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
     }
   };
 
-  // Submit single option for Round 1, Round 3, Round 4
   const handleSelectSingleOption = (opt) => {
     if (isLocked) return;
-    setIsLocked(true); // Single click lock
+    setIsLocked(true);
 
     const currentRound = rounds[currentRoundIdx];
     const isCorrect = opt === currentRound.correct;
-
     finalizeRound(isCorrect, currentRound);
   };
 
-  // Submit multi-select for Round 2
   const handleSubmitMultiSelect = () => {
     if (isLocked || multiSelected.length === 0) return;
     setIsLocked(true);
@@ -284,9 +272,7 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
     const targetSet = new Set(currentRound.correct);
     const userSet = new Set(multiSelected);
 
-    // Accurate validation: all correct words chosen and zero incorrect distractors
     const isCorrect = targetSet.size === userSet.size && [...userSet].every(w => targetSet.has(w));
-
     finalizeRound(isCorrect, currentRound);
   };
 
@@ -300,10 +286,10 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
       newScore += 10;
       setCorrectCount(newCorrect);
       setScore(newScore);
-      setFeedback({ isCorrect: true, message: `Excellent! ${currentRound.explanation} 🌟` });
+      setFeedback({ isCorrect: true, message: `${t.games?.wonderful || "Wonderful!"} ${currentRound.explanation} 🌟` });
     } else {
       soundManager.playChime();
-      setFeedback({ isCorrect: false, message: `Good try! ${currentRound.explanation} 🌿` });
+      setFeedback({ isCorrect: false, message: `${t.games?.lovelyEffort || "Good try!"} ${currentRound.explanation} 🌿` });
     }
 
     setTimeout(() => {
@@ -316,41 +302,40 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
       } else {
         const elapsed = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
         const accuracy = Math.round((newCorrect / rounds.length) * 100);
+        const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
+
         onCompleteRound({
           correctAnswers: newCorrect,
           totalQuestions: rounds.length,
           timeTakenSeconds: elapsed,
           score: newScore,
-          accuracy
+          accuracy,
+          nextDifficulty: nextLvl
         });
       }
     }, 1300);
   };
 
-  // ==========================================
-  // SCREEN 1: CHOOSE A LETTER (A to Z)
-  // ==========================================
+  // SCREEN 1: CHOOSE A LETTER
   if (!selectedLetter || rounds.length === 0) {
     return (
       <div className="space-y-6 text-center max-w-3xl mx-auto select-none animate-fadeIn">
-        {/* Header */}
         <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-6 shadow-sm space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider">
-            <span>🔤 Letter Word Game</span>
+            <span>🔤 {t.games?.letterCTitle || "Letter Word Game"}</span>
           </div>
 
           <h2 className="font-serif font-bold text-2xl sm:text-3xl text-[#1B3B2B]">
-            Choose a Letter
+            {t.games?.chooseLetter || "Choose a Letter"}
           </h2>
 
           <p className="text-stone-600 text-sm sm:text-base max-w-lg mx-auto">
-            Select any letter below to begin. All 4 rounds will be customized for your chosen letter!
+            {t.games?.chooseLetterSub || "Select any letter below to begin. All 4 rounds will be customized for your chosen letter!"}
           </p>
 
-          <VoiceButton textToRead="Choose a letter to begin your word game. Tap any letter from A to Z." />
+          <VoiceButton textToRead={`${t.games?.chooseLetter || 'Choose a Letter'}. ${t.games?.chooseLetterSub || 'Select any letter to begin'}`} />
         </div>
 
-        {/* 26 Large Elderly-Friendly Letter Buttons (A–Z) */}
         <div className="bg-white border-3 border-[#C99E32] rounded-3xl p-6 sm:p-8 shadow-md">
           <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7 gap-3 sm:gap-4 max-w-2xl mx-auto">
             {ALPHABET.map((char) => (
@@ -365,14 +350,13 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
           </div>
         </div>
 
-        {/* Exit option */}
         {onExit && (
           <div className="flex justify-center">
             <button
               onClick={onExit}
               className="px-6 py-2.5 rounded-2xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-sm border border-stone-300 transition-all cursor-pointer"
             >
-              Back to Games
+              {t.games?.backToGames || "Back to Games"}
             </button>
           </div>
         )}
@@ -380,9 +364,7 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
     );
   }
 
-  // ==========================================
-  // SCREEN 2: ACTIVE GAMEPLAY (Rounds 1–4)
-  // ==========================================
+  // SCREEN 2: ACTIVE GAMEPLAY
   const currentRound = rounds[currentRoundIdx];
 
   return (
@@ -392,19 +374,18 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold uppercase tracking-wider text-amber-900 bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
-              🔤 Letter {selectedLetter} Word Game • {difficulty}
+              🔤 {t.games?.letterCTitle || "Letter"} {selectedLetter} • {difficulty}
             </span>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-stone-600">
-              Round: <strong className="text-[#1B3B2B] text-sm">{currentRoundIdx + 1} of {rounds.length}</strong>
+              {t.games?.round || "Round"}: <strong className="text-[#1B3B2B] text-sm">{currentRoundIdx + 1} {t.games?.of || "of"} {rounds.length}</strong>
             </span>
             <VoiceButton textToRead={`${currentRound.prompt} ${currentRound.subPrompt || ''}`} />
           </div>
         </div>
 
-        {/* Selected Letter Badge & Prompt */}
         <div className="space-y-1">
           <div className="w-12 h-12 rounded-2xl bg-[#1B3B2B] text-amber-200 font-serif font-black text-2xl mx-auto flex items-center justify-center shadow-xs">
             {selectedLetter}
@@ -418,7 +399,6 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
         </div>
       </div>
 
-      {/* Instant Feedback Banner */}
       {feedback && (
         <div className={`p-4 rounded-2xl border-2 font-bold text-sm sm:text-base animate-fadeIn ${
           feedback.isCorrect
@@ -429,7 +409,7 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
         </div>
       )}
 
-      {/* ROUND 1 & ROUND 4: Single Word Selection */}
+      {/* Single Selection (R1 & R4) */}
       {currentRound.type === 'single' && (
         <div className="bg-white border-3 border-[#C99E32] rounded-3xl p-6 shadow-md space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -447,7 +427,7 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
         </div>
       )}
 
-      {/* ROUND 2: Multi-Word Selection */}
+      {/* Multi-Word Selection (R2) */}
       {currentRound.type === 'multi' && (
         <div className="bg-white border-3 border-[#C99E32] rounded-3xl p-6 shadow-md space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -476,22 +456,21 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
             disabled={isLocked || multiSelected.length === 0}
             className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-base border-2 border-[#C99E32] shadow-sm disabled:opacity-50 transition-all active:scale-95 cursor-pointer"
           >
-            Submit Selection ({multiSelected.length} selected)
+            {t.games?.submitSelection || "Submit Selection"} ({multiSelected.length} {t.games?.selected || "selected"})
           </button>
         </div>
       )}
 
-      {/* ROUND 3: Complete the Word */}
+      {/* Complete the Word (R3) */}
       {currentRound.type === 'complete' && (
         <div className="bg-white border-3 border-[#C99E32] rounded-3xl p-6 sm:p-8 shadow-md space-y-6">
-          {/* Incomplete Word Display */}
           <div className="p-4 sm:p-5 rounded-2xl bg-stone-100 border-2 border-stone-300 inline-block font-mono font-black text-2xl sm:text-4xl text-[#1B3B2B] tracking-widest">
             {currentRound.incomplete}
           </div>
 
           <div className="space-y-2">
             <span className="text-xs font-bold text-stone-500 uppercase tracking-wider block">
-              Choose the missing letter:
+              {t.games?.chooseMissingLetter || "Choose the missing letter:"}
             </span>
             <div className="flex justify-center gap-3 sm:gap-4">
               {currentRound.options.map((letterOpt) => (
@@ -509,14 +488,14 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
         </div>
       )}
 
-      {/* Bottom Bar Controls: Choose Another Letter, Restart & Exit */}
+      {/* Bottom Controls */}
       <div className="flex flex-wrap justify-between items-center bg-white border border-stone-200 rounded-2xl p-4 gap-3">
         <button
           onClick={handleChooseAnotherLetter}
           className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold text-xs sm:text-sm border border-amber-300 shadow-xs cursor-pointer transition-all"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Choose Another Letter</span>
+          <span>{t.games?.chooseAnotherLetter || "Choose Another Letter"}</span>
         </button>
 
         <div className="flex items-center gap-2">
@@ -542,7 +521,7 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
               className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              <span>Restart</span>
+              <span>{t.games?.restartGame || "Restart"}</span>
             </button>
           )}
 
@@ -551,7 +530,7 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
               onClick={onExit}
               className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
             >
-              Exit
+              {t.games?.exitGame || "Exit"}
             </button>
           )}
         </div>

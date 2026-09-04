@@ -2,11 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { HelpCircle, CheckCircle2, RotateCcw, Lightbulb, ArrowRight, Volume2, Sparkles, AlertCircle } from 'lucide-react';
 import { soundManager } from '../../services/audioSynthesizer';
 import { VoiceButton } from '../VoiceButton';
+import { useLanguage } from '../../context/LanguageContext';
 
-/**
- * 100% Mathematically and Logically Valid Crossword Database.
- * Every intersection is strictly tested and verified to share the exact same character.
- */
 const VERIFIED_PUZZLES = {
   EASY: [
     {
@@ -89,15 +86,10 @@ const VERIFIED_PUZZLES = {
   ]
 };
 
-/**
- * Programmatic Validation Algorithm:
- * Strictly checks every word, coordinate, length, and intersection before rendering.
- * Throws an error or discards if any conflict is detected.
- */
 function validateCrosswordPuzzle(puzzle) {
   if (!puzzle || !puzzle.words || puzzle.words.length === 0) return false;
 
-  const letterGrid = {}; // key: "r,c" -> char
+  const letterGrid = {};
 
   for (const w of puzzle.words) {
     if (!w.word || w.word.length === 0) return false;
@@ -108,15 +100,12 @@ function validateCrosswordPuzzle(puzzle) {
       const c = w.dir === 'across' ? w.col + i : w.col;
       const char = w.word[i].toUpperCase();
 
-      // Check bounds
       if (r < 0 || r >= puzzle.gridSize || c < 0 || c >= puzzle.gridSize) {
-        console.error(`Crossword validation error: word ${w.word} out of bounds at (${r},${c})`);
         return false;
       }
 
       const key = `${r},${c}`;
       if (letterGrid[key] && letterGrid[key] !== char) {
-        console.error(`Crossword intersection conflict at (${r},${c}): expected '${letterGrid[key]}' but got '${char}' from '${w.word}'`);
         return false;
       }
 
@@ -128,9 +117,10 @@ function validateCrosswordPuzzle(puzzle) {
 }
 
 export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) => {
+  const { t } = useLanguage();
   const [puzzle, setPuzzle] = useState(null);
   const [userGrid, setUserGrid] = useState([]);
-  const [selectedCell, setSelectedCell] = useState(null); // { r, c }
+  const [selectedCell, setSelectedCell] = useState(null);
   const [selectedClue, setSelectedClue] = useState(null);
   const [completedWordIds, setCompletedWordIds] = useState([]);
   const [hintsUsed, setHintsUsed] = useState(0);
@@ -152,21 +142,17 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
     const puzzleList = VERIFIED_PUZZLES[difficulty] || VERIFIED_PUZZLES.EASY;
     const chosenPuzzle = puzzleList[Math.floor(Math.random() * puzzleList.length)];
 
-    // Run strict mathematical validation check
     const isValid = validateCrosswordPuzzle(chosenPuzzle);
     if (!isValid) {
-      console.error("Critical: Crossword puzzle failed validation!", chosenPuzzle);
       setValidationError(true);
       return;
     }
 
     setPuzzle(chosenPuzzle);
 
-    // Initialize user input grid
     const grid = Array(chosenPuzzle.gridSize).fill(null).map(() => Array(chosenPuzzle.gridSize).fill(''));
     setUserGrid(grid);
 
-    // Set first clue as default active
     if (chosenPuzzle.words && chosenPuzzle.words.length > 0) {
       const firstClue = chosenPuzzle.words[0];
       setSelectedClue(firstClue);
@@ -176,7 +162,6 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
     soundManager.playChime();
   };
 
-  // Check if a cell is part of any active word in the crossword
   const getCellMeta = (r, c) => {
     if (!puzzle?.words) return null;
     let number = null;
@@ -208,7 +193,6 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
     soundManager.playTap();
     setSelectedCell({ r, c });
 
-    // If cell belongs to multiple words (intersection), toggle between them
     if (meta.relatedWords.length > 0) {
       const currentId = selectedClue?.id;
       const nextWord = meta.relatedWords.find(w => w.id !== currentId) || meta.relatedWords[0];
@@ -231,7 +215,6 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
     setUserGrid(newGrid);
     soundManager.playTap();
 
-    // Advance to next cell along the active clue's direction
     if (selectedClue) {
       const isAcross = selectedClue.dir === 'across';
       const nextR = isAcross ? r : r + 1;
@@ -255,7 +238,6 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
     setUserGrid(newGrid);
     soundManager.playTap();
 
-    // Move backwards along active clue
     if (selectedClue) {
       const isAcross = selectedClue.dir === 'across';
       const prevR = isAcross ? r : r - 1;
@@ -274,7 +256,6 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
 
     const newGrid = userGrid.map(row => [...row]);
 
-    // Find first empty or incorrect cell in the currently selected word
     for (let i = 0; i < selectedClue.word.length; i++) {
       const r = selectedClue.dir === 'across' ? selectedClue.row : selectedClue.row + i;
       const c = selectedClue.dir === 'across' ? selectedClue.col + i : selectedClue.col;
@@ -315,12 +296,12 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
     }
     setCompletedWordIds(newlyCompleted);
 
-    // Full crossword puzzle completed!
     if (newlyCompleted.length === puzzle.words.length) {
       soundManager.playSuccess();
       const elapsed = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
       const penalty = hintsUsed * 5;
       const finalScore = Math.max(50, 100 - penalty);
+      const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
 
       setTimeout(() => {
         onCompleteRound({
@@ -328,13 +309,13 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
           totalQuestions: puzzle.words.length,
           timeTakenSeconds: elapsed,
           score: finalScore,
-          accuracy: 100
+          accuracy: 100,
+          nextDifficulty: nextLvl
         });
       }, 800);
     }
   };
 
-  // Physical keyboard listener
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Backspace') {
@@ -377,26 +358,25 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
       <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
-            📰 Crosswords • {difficulty} ({puzzle.title})
+            📰 {t.games?.crosswordsTitle || "Crosswords"} • {difficulty} ({puzzle.title})
           </span>
 
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-stone-600">
-              Words Solved: <strong className="text-emerald-800 text-sm">{completedWordIds.length} / {puzzle.words.length}</strong>
+              {t.games?.wordsSolved || "Words Solved"}: <strong className="text-emerald-800 text-sm">{completedWordIds.length} / {puzzle.words.length}</strong>
             </span>
-            <VoiceButton textToRead={`Crossword Puzzle. ${selectedClue ? selectedClue.clue : 'Select a clue to begin.'}`} />
+            <VoiceButton textToRead={`${t.games?.crosswordsTitle || 'Crosswords'}. ${selectedClue ? selectedClue.clue : 'Select a clue to begin.'}`} />
           </div>
         </div>
 
         <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#1B3B2B]">
-          Complete the Crossword Puzzle
+          {t.games?.crosswordsInstruction || "Complete the Crossword Puzzle"}
         </h3>
 
-        {/* Selected Clue Display Banner */}
         {selectedClue && (
           <div className="bg-amber-50 p-3 rounded-2xl border border-amber-300 text-sm font-semibold text-[#1B3B2B] flex items-center justify-center gap-2 flex-wrap">
             <span className="px-2.5 py-0.5 rounded-lg bg-[#1B3B2B] text-amber-200 text-xs font-bold">
-              {selectedClue.number} {selectedClue.dir.toUpperCase()}
+              {selectedClue.number} {selectedClue.dir === 'across' ? (t.games?.crosswordsAcross || 'ACROSS') : (t.games?.crosswordsDown || 'DOWN')}
             </span>
             <span className="text-stone-800 font-bold">"{selectedClue.clue}"</span>
             <span className="text-xs text-stone-500 font-semibold">({selectedClue.word.length} letters)</span>
@@ -428,7 +408,6 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
                   );
                 }
 
-                // Check if all words passing through this cell are fully solved
                 const isCellInSolvedWord = meta.relatedWords.every(w => completedWordIds.includes(w.id));
 
                 return (
@@ -463,7 +442,7 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
           {/* Across Clues */}
           <div className="bg-white border-2 border-stone-200 rounded-2xl p-4 shadow-sm space-y-2">
             <h4 className="font-serif font-bold text-xs uppercase tracking-wider text-amber-900 border-b pb-1 border-stone-100">
-              Across Clues
+              {t.games?.crosswordsAcross || "Across Clues"}
             </h4>
             <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
               {acrossClues.map(w => {
@@ -492,7 +471,7 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
           {/* Down Clues */}
           <div className="bg-white border-2 border-stone-200 rounded-2xl p-4 shadow-sm space-y-2">
             <h4 className="font-serif font-bold text-xs uppercase tracking-wider text-amber-900 border-b pb-1 border-stone-100">
-              Down Clues
+              {t.games?.crosswordsDown || "Down Clues"}
             </h4>
             <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
               {downClues.map(w => {
@@ -541,14 +520,14 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
         ))}
       </div>
 
-      {/* Controls: Hint, Restart & Exit */}
+      {/* Controls */}
       <div className="flex justify-between items-center bg-white border border-stone-200 rounded-2xl p-4">
         <button
           onClick={handleHint}
           className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold text-xs sm:text-sm border border-amber-300 shadow-xs active:scale-95 transition-all cursor-pointer"
         >
           <Lightbulb className="w-4 h-4 text-amber-700" />
-          <span>Need a Hint? ({hintsUsed} used)</span>
+          <span>{t.games?.needHint || "Need a Hint?"} ({hintsUsed} {t.games?.used || "used"})</span>
         </button>
 
         <div className="flex items-center gap-2">
@@ -574,7 +553,7 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
               className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              <span>Restart</span>
+              <span>{t.games?.restartGame || "Restart"}</span>
             </button>
           )}
 
@@ -583,7 +562,7 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
               onClick={onExit}
               className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
             >
-              Exit
+              {t.games?.exitGame || "Exit"}
             </button>
           )}
         </div>

@@ -2,14 +2,43 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Sparkles, CheckCircle2, RotateCcw, ArrowLeft, Volume2, HelpCircle, Eye } from 'lucide-react';
 import { soundManager } from '../../services/audioSynthesizer';
 import { VoiceButton } from '../VoiceButton';
+import { useLanguage } from '../../context/LanguageContext';
 
-const PUZZLE_WORDS_DATABASE = {
-  EASY: ['CARE', 'HOME', 'LOVE', 'WARM', 'CALM', 'HOPE', 'REST', 'PEACE', 'KIND', 'BIRD'],
-  MEDIUM: ['MEMORY', 'FAMILY', 'GARDEN', 'SMILE', 'FLOWER', 'SPRING', 'HEALTH', 'FRIEND', 'HAPPY', 'SUMMER'],
-  HARD: ['ALASKA', 'GLACIER', 'AURORA', 'NATURE', 'BLOSSOM', 'KINDNESS', 'HERITAGE', 'SUNSHINE', 'HARMONY', 'JOURNEY']
+const PUZZLE_WORDS_BY_LANG = {
+  en: {
+    EASY: ['CARE', 'HOME', 'LOVE', 'WARM', 'CALM', 'HOPE', 'REST', 'PEACE', 'KIND', 'BIRD'],
+    MEDIUM: ['MEMORY', 'FAMILY', 'GARDEN', 'SMILE', 'FLOWER', 'SPRING', 'HEALTH', 'FRIEND', 'HAPPY', 'SUMMER'],
+    HARD: ['ALASKA', 'GLACIER', 'AURORA', 'NATURE', 'BLOSSOM', 'KINDNESS', 'HERITAGE', 'SUNSHINE', 'HARMONY', 'JOURNEY']
+  },
+  as: {
+    EASY: ['মৰম', 'ঘৰ', 'শান্তি', 'হাঁহি', 'ফুল', 'চৰাই', 'নদী', 'গান', 'ৰং', 'দয়া'],
+    MEDIUM: ['পৰিয়াল', 'স্মৃতি', 'বতাহ', 'উৎসৱ', 'মমতা', 'সৌন্দৰ্য', 'আনন্দ', 'স্বাস্থ্য', 'প্ৰকৃতি', 'পাহাৰ'],
+    HARD: ['ঐতিহ্য', 'ব্ৰহ্মপুত্ৰ', 'কাজিৰঙা', 'কৃষ্টি', 'সংহতি', 'স্বাভাৱিক', 'স্মৰণীয়', 'আশীৰ্বাদ', 'পবিত্ৰ', 'শুভেচ্ছা']
+  },
+  bn: {
+    EASY: ['মমতা', 'ঘর', 'শান্তি', 'হাসি', 'ফুল', 'পাখি', 'নদী', 'গান', 'দয়া', 'প্রেম'],
+    MEDIUM: ['পরিবার', 'স্মৃতি', 'বাতাস', 'উৎসব', 'আনন্দ', 'স্বাস্থ্য', 'প্রকৃতি', 'পাহাড়', 'বসন্ত', 'বন্ধু'],
+    HARD: ['ঐতিহ্য', 'সৌহার্দ্য', 'সংস্কৃতি', 'স্মরণীয়', 'শুভকামনা', 'প্রভাত', 'সুস্থতা', 'ভালোবাসা', 'মঙ্গল', 'প্রশান্তি']
+  },
+  brx: {
+    EASY: ['CARE', 'HOME', 'LOVE', 'WARM', 'CALM', 'HOPE', 'REST', 'PEACE', 'KIND', 'BIRD'],
+    MEDIUM: ['MEMORY', 'FAMILY', 'GARDEN', 'SMILE', 'FLOWER', 'SPRING', 'HEALTH', 'FRIEND', 'HAPPY', 'SUMMER'],
+    HARD: ['ALASKA', 'GLACIER', 'AURORA', 'NATURE', 'BLOSSOM', 'KINDNESS', 'HERITAGE', 'SUNSHINE', 'HARMONY', 'JOURNEY']
+  },
+  mni: {
+    EASY: ['CARE', 'HOME', 'LOVE', 'WARM', 'CALM', 'HOPE', 'REST', 'PEACE', 'KIND', 'BIRD'],
+    MEDIUM: ['MEMORY', 'FAMILY', 'GARDEN', 'SMILE', 'FLOWER', 'SPRING', 'HEALTH', 'FRIEND', 'HAPPY', 'SUMMER'],
+    HARD: ['ALASKA', 'GLACIER', 'AURORA', 'NATURE', 'BLOSSOM', 'KINDNESS', 'HERITAGE', 'SUNSHINE', 'HARMONY', 'JOURNEY']
+  },
+  ne: {
+    EASY: ['माया', 'घर', 'शान्ति', 'मुस्कान', 'फूल', 'चरी', 'नदी', 'गीत', 'दया', 'खुसी'],
+    MEDIUM: ['परिवार', 'सम्झना', 'बगैंचा', 'स्वास्थ्य', 'प्रकृति', 'हिमाल', 'साथी', 'उमङ्ग', 'जीवन', 'आशा'],
+    HARD: ['संस्कृति', 'सद्भाव', 'प्रकृति', 'स्मरण', 'शुभकामना', 'मिठास', 'उत्साह', 'एकता', 'शान्त', 'यात्रा']
+  }
 };
 
 export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) => {
+  const { currentLang, t } = useLanguage();
   const [gridSize, setGridSize] = useState(5);
   const [grid, setGrid] = useState([]);
   const [targetWords, setTargetWords] = useState([]);
@@ -23,7 +52,7 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
 
   useEffect(() => {
     initPuzzle();
-  }, [difficulty]);
+  }, [difficulty, currentLang]);
 
   const initPuzzle = () => {
     startTimeRef.current = Date.now();
@@ -34,11 +63,12 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
     setShowRestartConfirm(false);
 
     const size = difficulty === 'HARD' ? 10 : difficulty === 'MEDIUM' ? 7 : 5;
-    const wordCount = difficulty === 'HARD' ? 8 : difficulty === 'MEDIUM' ? 5 : 3;
+    const wordCount = difficulty === 'HARD' ? 6 : difficulty === 'MEDIUM' ? 4 : 3;
     setGridSize(size);
 
-    // Pick random target words
-    const pool = [...PUZZLE_WORDS_DATABASE[difficulty]].sort(() => 0.5 - Math.random());
+    // Pick words for active language
+    const langDict = PUZZLE_WORDS_BY_LANG[currentLang] || PUZZLE_WORDS_BY_LANG.en;
+    const pool = [...(langDict[difficulty] || langDict.EASY)].sort(() => 0.5 - Math.random());
     const chosenWords = pool.slice(0, wordCount);
     setTargetWords(chosenWords);
 
@@ -48,17 +78,16 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
   };
 
   const generateValidGrid = (size, words) => {
-    // Empty grid with nulls
     const newGrid = Array(size).fill(null).map(() => Array(size).fill(''));
-    const placedPositions = [];
 
     // Direction vectors: [rowDir, colDir]
     const directions = difficulty === 'EASY'
-      ? [[0, 1], [1, 0]] // horizontal, vertical
+      ? [[0, 1], [1, 0]]
       : difficulty === 'MEDIUM'
-      ? [[0, 1], [1, 0], [1, 1], [0, -1]] // horizontal, vertical, diagonal
-      : [[0, 1], [1, 0], [1, 1], [-1, 1], [0, -1], [-1, 0], [1, -1], [-1, -1]]; // all 8 directions
+      ? [[0, 1], [1, 0], [1, 1]]
+      : [[0, 1], [1, 0], [1, 1], [-1, 1], [0, -1], [-1, 0]];
 
+    // Place each word into grid
     words.forEach(word => {
       let placed = false;
       let attempts = 0;
@@ -67,26 +96,24 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
         attempts++;
         const dir = directions[Math.floor(Math.random() * directions.length)];
         const [dr, dc] = dir;
+        const len = word.length;
 
-        const maxR = dr > 0 ? size - word.length : dr < 0 ? size - 1 : size - 1;
-        const minR = dr < 0 ? word.length - 1 : 0;
-        const maxC = dc > 0 ? size - word.length : dc < 0 ? size - 1 : size - 1;
-        const minC = dc < 0 ? word.length - 1 : 0;
+        // Calculate valid starting range
+        const maxR = dr === 1 ? size - len : dr === -1 ? size - 1 : size - 1;
+        const minR = dr === -1 ? len - 1 : 0;
+        const maxC = dc === 1 ? size - len : dc === -1 ? size - 1 : size - 1;
+        const minC = dc === -1 ? len - 1 : 0;
 
         if (maxR < minR || maxC < minC) continue;
 
         const startR = Math.floor(Math.random() * (maxR - minR + 1)) + minR;
         const startC = Math.floor(Math.random() * (maxC - minC + 1)) + minC;
 
-        // Check if word fits without conflicting with existing letters
+        // Check if word can fit
         let canPlace = true;
-        for (let i = 0; i < word.length; i++) {
-          const r = startR + i * dr;
-          const c = startC + i * dc;
-          if (r < 0 || r >= size || c < 0 || c >= size) {
-            canPlace = false;
-            break;
-          }
+        for (let i = 0; i < len; i++) {
+          const r = startR + dr * i;
+          const c = startC + dc * i;
           if (newGrid[r][c] !== '' && newGrid[r][c] !== word[i]) {
             canPlace = false;
             break;
@@ -94,9 +121,9 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
         }
 
         if (canPlace) {
-          for (let i = 0; i < word.length; i++) {
-            const r = startR + i * dr;
-            const c = startC + i * dc;
+          for (let i = 0; i < len; i++) {
+            const r = startR + dr * i;
+            const c = startC + dc * i;
             newGrid[r][c] = word[i];
           }
           placed = true;
@@ -105,10 +132,14 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
     });
 
     // Fill remaining empty cells with random letters
-    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const alphabet = currentLang === 'as' ? 'অআইঈউঊঋএঐওঔকখগঘঙচছজঝঞটঠডঢণতথদধনপফবভমযৰলৱশষসহ' :
+                     currentLang === 'bn' ? 'অআইঈউঊঋএঐওঔকখগঘঙচছজঝঞটঠডঢণতথদধনপফবভমযরলশষসহ' :
+                     currentLang === 'ne' ? 'अआइईउऊऋएऐओऔकखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह' :
+                     'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
     for (let r = 0; r < size; r++) {
       for (let c = 0; c < size; c++) {
-        if (!newGrid[r][c]) {
+        if (newGrid[r][c] === '') {
           newGrid[r][c] = alphabet[Math.floor(Math.random() * alphabet.length)];
         }
       }
@@ -117,7 +148,25 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
     setGrid(newGrid);
   };
 
-  // Cell Selection Handlers (Mouse & Touch & Click support)
+  const getLineCells = (r1, c1, r2, c2) => {
+    const dr = r2 - r1;
+    const dc = c2 - c1;
+    const stepR = dr === 0 ? 0 : dr > 0 ? 1 : -1;
+    const stepC = dc === 0 ? 0 : dc > 0 ? 1 : -1;
+
+    // Check if straight horizontal, vertical, or 45-deg diagonal
+    if (dr !== 0 && dc !== 0 && Math.abs(dr) !== Math.abs(dc)) {
+      return null;
+    }
+
+    const steps = Math.max(Math.abs(dr), Math.abs(dc));
+    const cells = [];
+    for (let i = 0; i <= steps; i++) {
+      cells.push({ r: r1 + stepR * i, c: c1 + stepC * i });
+    }
+    return cells;
+  };
+
   const handleCellMouseDown = (r, c) => {
     setIsSelecting(true);
     setSelectedCells([{ r, c }]);
@@ -128,7 +177,6 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
     if (!isSelecting || selectedCells.length === 0) return;
     const start = selectedCells[0];
 
-    // Compute line from start to current
     const line = getLineCells(start.r, start.c, r, c);
     if (line) {
       setSelectedCells(line);
@@ -136,7 +184,6 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
   };
 
   const handleCellClick = (r, c) => {
-    // Click-to-select mode for accessibility / tremors
     if (selectedCells.length === 0) {
       setSelectedCells([{ r, c }]);
       soundManager.playTap();
@@ -159,34 +206,21 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
     validateSelectedLine(selectedCells);
   };
 
-  // Touch handlers for mobile/tablet drag
   const handleTouchMove = (e) => {
     if (!isSelecting) return;
     const touch = e.touches[0];
-    const elem = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (elem && elem.dataset && elem.dataset.row !== undefined) {
-      const r = parseInt(elem.dataset.row, 10);
-      const c = parseInt(elem.dataset.col, 10);
-      handleCellMouseEnter(r, c);
+    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (element && element.dataset && element.dataset.row !== undefined) {
+      const r = parseInt(element.dataset.row, 10);
+      const c = parseInt(element.dataset.col, 10);
+      const start = selectedCells[0];
+      if (start) {
+        const line = getLineCells(start.r, start.c, r, c);
+        if (line) {
+          setSelectedCells(line);
+        }
+      }
     }
-  };
-
-  // Helper to get straight/diagonal line cells between start and end
-  const getLineCells = (r1, c1, r2, c2) => {
-    const dr = r2 - r1;
-    const dc = c2 - c1;
-    const stepR = dr === 0 ? 0 : dr / Math.abs(dr);
-    const stepC = dc === 0 ? 0 : dc / Math.abs(dc);
-
-    // Must be straight horizontal, vertical, or 45-deg diagonal
-    if (dr !== 0 && dc !== 0 && Math.abs(dr) !== Math.abs(dc)) return null;
-
-    const length = Math.max(Math.abs(dr), Math.abs(dc)) + 1;
-    const cells = [];
-    for (let i = 0; i < length; i++) {
-      cells.push({ r: r1 + i * stepR, c: c1 + i * stepC });
-    }
-    return cells;
   };
 
   const validateSelectedLine = (cells) => {
@@ -215,12 +249,15 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
       // Check game completion
       if (nextFound.length === targetWords.length) {
         const elapsedSeconds = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
+        const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
+
         setTimeout(() => {
           onCompleteRound({
             correctAnswers: targetWords.length,
             totalQuestions: targetWords.length,
             timeTakenSeconds: elapsedSeconds,
-            score: 100
+            score: 100,
+            nextDifficulty: nextLvl
           });
         }, 600);
       }
@@ -237,64 +274,64 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
 
   return (
     <div
-      className="space-y-6 text-center max-w-2xl mx-auto select-none"
+      ref={gridContainerRef}
       onMouseUp={handleSelectionEnd}
       onTouchEnd={handleSelectionEnd}
-      onTouchMove={handleTouchMove}
+      className="space-y-6 text-center max-w-3xl mx-auto select-none"
     >
-      {/* Game Header */}
-      <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-3">
+      {/* Header */}
+      <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-teal-800 bg-teal-50 px-3 py-1 rounded-full border border-teal-200">
-            🌲 Alaska Word Search • {difficulty}
+          <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
+            🌲 {t.games?.wordSearchTitle || "Word Search"} • {difficulty} ({gridSize}×{gridSize})
           </span>
 
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-stone-600">
-              Found: <strong className="text-[#1B3B2B] text-sm">{foundWords.length} / {targetWords.length}</strong>
+              {t.games?.wordSearchWordsFound || "Words Found"}: <strong className="text-emerald-800 text-sm">{foundWords.length} / {targetWords.length}</strong>
             </span>
-            <VoiceButton textToRead={`Alaska Word Search. Find ${targetWords.length} hidden words in the grid. Words can be horizontal, vertical or diagonal.`} />
+            <VoiceButton textToRead={`${t.games?.wordSearchTitle || 'Word Search'}. ${t.games?.wordSearchInstructions || 'Find the hidden words in the grid'}`} />
           </div>
         </div>
 
         <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#1B3B2B]">
-          Find the Hidden Words
+          {t.games?.wordSearchTitle || "Word Search"}
         </h3>
 
-        <p className="text-stone-600 text-sm">
-          Drag across letters with your mouse/touch, or tap the first and last letter of the word.
+        <p className="text-stone-600 text-xs sm:text-sm">
+          {t.games?.wordSearchInstructions || "Drag across letters with your mouse/touch, or tap the first and last letter of the word."}
         </p>
       </div>
 
-      {/* Target Words List */}
-      <div className="bg-amber-50/70 border-2 border-amber-200/80 rounded-2xl p-4 shadow-xs">
-        <div className="text-xs font-bold text-amber-900 uppercase tracking-wider mb-2">
-          Target Words to Find ({foundWords.length}/{targetWords.length}):
-        </div>
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          {targetWords.map((word) => {
+      {/* Target Words List Card */}
+      <div className="bg-amber-50/80 border-2 border-amber-300 rounded-3xl p-4 shadow-xs space-y-2">
+        <span className="text-xs font-bold uppercase tracking-wider text-amber-900 block">
+          {t.games?.wordSearchTarget || "Target Words to Find"} ({foundWords.length}/{targetWords.length}):
+        </span>
+
+        <div className="flex flex-wrap justify-center gap-2 pt-1">
+          {targetWords.map((word, idx) => {
             const isFound = foundWords.includes(word);
             return (
               <span
-                key={word}
-                className={`px-3 py-1.5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center gap-1.5 ${
+                key={idx}
+                className={`px-3.5 py-1.5 rounded-2xl font-bold text-xs sm:text-sm tracking-wider transition-all border ${
                   isFound
-                    ? 'bg-emerald-600 text-white line-through opacity-80 shadow-xs'
-                    : 'bg-white text-stone-800 border border-amber-300 shadow-sm'
+                    ? 'bg-emerald-100 text-emerald-900 border-emerald-300 line-through opacity-70'
+                    : 'bg-white text-stone-800 border-amber-200 shadow-xs'
                 }`}
               >
-                {isFound && <CheckCircle2 className="w-3.5 h-3.5 text-amber-200" />}
-                <span>{word}</span>
+                {word}
               </span>
             );
           })}
         </div>
       </div>
 
-      {/* Word Search Letter Grid */}
+      {/* Letter Grid */}
       <div
-        ref={gridContainerRef}
-        className="bg-white border-3 border-[#C99E32] rounded-3xl p-4 sm:p-6 shadow-md inline-block max-w-full overflow-hidden"
+        onTouchMove={handleTouchMove}
+        className="bg-white border-3 border-[#C99E32] rounded-3xl p-4 sm:p-6 shadow-md inline-block max-w-full overflow-x-auto"
       >
         <div
           className="grid gap-1 sm:gap-2 mx-auto justify-center"
@@ -303,64 +340,71 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
           {grid.map((row, r) =>
             row.map((letter, c) => {
               const selected = isCellSelected(r, c);
+
               return (
-                <div
+                <button
                   key={`${r}-${c}`}
                   data-row={r}
                   data-col={c}
                   onMouseDown={() => handleCellMouseDown(r, c)}
                   onMouseEnter={() => handleCellMouseEnter(r, c)}
                   onClick={() => handleCellClick(r, c)}
-                  className={`w-10 h-10 sm:w-12 sm:h-12 md:w-13 md:h-13 rounded-xl sm:rounded-2xl font-bold text-base sm:text-xl flex items-center justify-center cursor-pointer transition-all duration-150 border-2 ${
+                  className={`w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-2xl font-bold text-sm sm:text-lg flex items-center justify-center transition-all cursor-pointer border ${
                     selected
-                      ? 'bg-[#1B3B2B] text-amber-300 border-[#C99E32] scale-105 shadow-md ring-2 ring-amber-300'
-                      : 'bg-stone-50 hover:bg-amber-100/60 text-stone-900 border-stone-200'
+                      ? 'bg-amber-300 border-[#1B3B2B] text-[#1B3B2B] scale-105 shadow-md ring-2 ring-amber-400 font-black'
+                      : 'bg-stone-50 border-stone-200 text-stone-900 hover:bg-amber-100'
                   }`}
                 >
                   {letter}
-                </div>
+                </button>
               );
             })
           )}
         </div>
       </div>
 
-      {/* Action Controls: Restart & Exit */}
-      <div className="flex justify-center items-center gap-3 pt-2">
-        {showRestartConfirm ? (
-          <div className="bg-amber-100 p-3 rounded-2xl border border-amber-300 flex items-center gap-2 text-xs font-bold animate-fadeIn">
-            <span>Restart game?</span>
-            <button
-              onClick={initPuzzle}
-              className="px-3 py-1 rounded-xl bg-[#1B3B2B] text-white hover:bg-[#2C5E3B]"
-            >
-              Restart
-            </button>
-            <button
-              onClick={() => setShowRestartConfirm(false)}
-              className="px-3 py-1 rounded-xl bg-stone-200 text-stone-800 hover:bg-stone-300"
-            >
-              Cancel
-            </button>
-          </div>
-        ) : (
-          <button
-            onClick={() => setShowRestartConfirm(true)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-xs sm:text-sm border border-stone-300 transition-all"
-          >
-            <RotateCcw className="w-4 h-4" />
-            <span>Restart Game</span>
-          </button>
-        )}
+      {/* Score & Action Controls */}
+      <div className="flex justify-between items-center bg-white border border-stone-200 rounded-2xl p-4">
+        <div className="text-left text-xs text-stone-600 font-semibold">
+          {t.games?.score || "Score"}: <strong className="text-emerald-800 text-sm">{score}</strong> • {t.games?.wordSearchWordsFound || "Found"}: <strong className="text-stone-900 text-sm">{foundWords.length}/{targetWords.length}</strong>
+        </div>
 
-        {onExit && (
-          <button
-            onClick={onExit}
-            className="px-4 py-2 rounded-2xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-xs sm:text-sm border border-stone-300 transition-all"
-          >
-            Exit Game
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          {showRestartConfirm ? (
+            <div className="flex items-center gap-1.5 text-xs font-bold">
+              <span>Restart?</span>
+              <button
+                onClick={initPuzzle}
+                className="px-2.5 py-1 rounded-lg bg-[#1B3B2B] text-white cursor-pointer"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setShowRestartConfirm(false)}
+                className="px-2.5 py-1 rounded-lg bg-stone-200 text-stone-800 cursor-pointer"
+              >
+                No
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowRestartConfirm(true)}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>{t.games?.restartGame || "Restart"}</span>
+            </button>
+          )}
+
+          {onExit && (
+            <button
+              onClick={onExit}
+              className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
+            >
+              {t.games?.exitGame || "Exit"}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

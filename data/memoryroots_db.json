@@ -851,6 +851,45 @@
       "difficulty": 1,
       "itemsCount": 3,
       "completedAt": "2026-09-04T04:44:08.196Z"
+    },
+    {
+      "id": "gr_1788498471795",
+      "patientId": "patient_1788446388312",
+      "gameId": "jigsaw-puzzle",
+      "gameName": "Jigsaw Puzzle",
+      "category": "Cognitive",
+      "score": 100,
+      "accuracy": 100,
+      "responseTimeMs": 16000,
+      "difficulty": 1,
+      "itemsCount": 4,
+      "completedAt": "2026-09-04T05:07:51.795Z"
+    },
+    {
+      "id": "gr_1788498498104",
+      "patientId": "patient_1788446388312",
+      "gameId": "jigsaw-puzzle",
+      "gameName": "Jigsaw Puzzle",
+      "category": "Cognitive",
+      "score": 98,
+      "accuracy": 100,
+      "responseTimeMs": 16000,
+      "difficulty": 1,
+      "itemsCount": 4,
+      "completedAt": "2026-09-04T05:08:18.104Z"
+    },
+    {
+      "id": "gr_1788498560671",
+      "patientId": "patient_1788446388312",
+      "gameId": "odd-one-out",
+      "gameName": "गुबुनखौ नागिर (Odd One Out)",
+      "category": "Cognitive",
+      "score": 100,
+      "accuracy": 100,
+      "responseTimeMs": 20000,
+      "difficulty": 1,
+      "itemsCount": 5,
+      "completedAt": "2026-09-04T05:09:20.671Z"
     }
   ],
   "reminders": [
