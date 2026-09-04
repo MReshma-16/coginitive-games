@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   BarChart3,
   TrendingUp,
@@ -14,51 +14,150 @@ import {
 } from 'lucide-react';
 import { usePatient } from '../context/PatientContext';
 import { useLanguage } from '../context/LanguageContext';
-import { VoiceButton } from '../components/VoiceButton';
+import { adaptiveEngine } from '../services/adaptiveEngine';
 
 export const ProgressDashboardPage = ({ setActivePage }) => {
   const { t } = useLanguage();
-  const { gameResults, patient, questionnaire } = usePatient();
+  const { gameResults, patient } = usePatient();
 
-  const totalGames = gameResults?.length || 5;
+  // Aggregate all game history from patient database and adaptive storage
+  const allSessions = useMemo(() => {
+    const list = Array.isArray(gameResults) ? [...gameResults] : [];
+
+    // Also collect from adaptiveEngine history for the 5 games
+    const gameIds = ['memory-basket', 'my-old-village', 'rhythm-recall', 'pattern-match', 'memory-path'];
+    gameIds.forEach(id => {
+      const gData = adaptiveEngine.getGameData(id);
+      if (Array.isArray(gData.history)) {
+        gData.history.forEach(h => {
+          // Avoid duplicate timestamps
+          if (!list.some(item => item.timestamp === h.timestamp || item.completedAt === h.timestamp)) {
+            list.push({
+              gameId: id,
+              gameName: id === 'memory-basket' ? 'Memory Basket' :
+                        id === 'my-old-village' ? 'My Old Village' :
+                        id === 'rhythm-recall' ? 'Rhythm Recall' :
+                        id === 'pattern-match' ? 'Pattern Match' : 'Memory Path',
+              accuracy: h.percentageScore,
+              score: h.percentageScore,
+              responseTimeMs: (h.timeTakenSeconds || 5) * 1000,
+              timeTakenSeconds: h.timeTakenSeconds || 5,
+              completedAt: h.timestamp
+            });
+          }
+        });
+      }
+    });
+
+    return list;
+  }, [gameResults]);
+
+  const totalGames = allSessions.length;
+
   const avgAccuracy = totalGames > 0
-    ? Math.round(gameResults.reduce((acc, g) => acc + (g.accuracy || 100), 0) / totalGames)
-    : 95;
+    ? Math.round(allSessions.reduce((acc, g) => acc + (g.accuracy ?? g.score ?? 0), 0) / totalGames)
+    : 0;
 
   const avgResponseTime = totalGames > 0
-    ? (gameResults.reduce((acc, g) => acc + (g.responseTimeMs || 2200), 0) / totalGames / 1000).toFixed(1)
-    : '2.4';
+    ? (allSessions.reduce((acc, g) => acc + (g.timeTakenSeconds || (g.responseTimeMs ? g.responseTimeMs / 1000 : 5)), 0) / totalGames).toFixed(1)
+    : '0.0';
 
-  const weeklyActivity = [
-    { day: 'Mon', count: 4, height: '70%' },
-    { day: 'Tue', count: 3, height: '55%' },
-    { day: 'Wed', count: 5, height: '90%' },
-    { day: 'Thu', count: 2, height: '40%' },
-    { day: 'Fri', count: 4, height: '75%' },
-    { day: 'Sat', count: 6, height: '100%' },
-    { day: 'Sun', count: 3, height: '60%' }
-  ];
+  // Compute 100% Accurate Weekly Activity Routine from actual sessions
+  const weeklyActivity = useMemo(() => {
+    const dayCounts = { Mon: 0, Tue: 0, Wed: 0, Thu: 0, Fri: 0, Sat: 0, Sun: 0 };
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  const memoryDomains = [
-    { name: 'Visual Memory', gamesCount: 12, percent: 85, color: 'bg-emerald-500' },
-    { name: 'Sequence Recall', gamesCount: 9, percent: 78, color: 'bg-amber-500' },
-    { name: 'Familiar Recognition', gamesCount: 14, percent: 92, color: 'bg-teal-500' },
-    { name: 'Gentle Attention', gamesCount: 8, percent: 80, color: 'bg-indigo-500' },
-    { name: 'Routine & Song Recall', gamesCount: 10, percent: 88, color: 'bg-rose-500' }
-  ];
+    allSessions.forEach(session => {
+      const dt = new Date(session.completedAt || session.timestamp || Date.now());
+      if (!isNaN(dt.getTime())) {
+        const dayName = dayNames[dt.getDay()];
+        if (dayCounts[dayName] !== undefined) {
+          dayCounts[dayName]++;
+        }
+      }
+    });
+
+    const maxCount = Math.max(1, ...Object.values(dayCounts));
+
+    return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => {
+      const count = dayCounts[day];
+      const heightPercent = count === 0 ? 8 : Math.max(18, Math.round((count / maxCount) * 100));
+      return {
+        day,
+        count,
+        height: `${heightPercent}%`
+      };
+    });
+  }, [allSessions]);
+
+  // Compute Most Enjoyed Game accurately from play counts
+  const mostEnjoyedGame = useMemo(() => {
+    if (allSessions.length === 0) return 'Memory Basket';
+
+    const countMap = {};
+    allSessions.forEach(s => {
+      const name = s.gameName || s.gameId || 'Memory Game';
+      countMap[name] = (countMap[name] || 0) + 1;
+    });
+
+    let topGame = 'Memory Basket';
+    let topCount = -1;
+    Object.entries(countMap).forEach(([name, count]) => {
+      if (count > topCount) {
+        topCount = count;
+        topGame = name;
+      }
+    });
+
+    return topGame;
+  }, [allSessions]);
+
+  // Compute Practice Areas Breakdown accurately from scores in each domain
+  const memoryDomains = useMemo(() => {
+    const domainDef = [
+      { key: 'memory-basket', name: 'Visual Memory (Memory Basket)', color: 'bg-emerald-500' },
+      { key: 'my-old-village', name: 'Spatial Memory (My Old Village)', color: 'bg-amber-500' },
+      { key: 'rhythm-recall', name: 'Rhythm & Audio (Rhythm Recall)', color: 'bg-teal-500' },
+      { key: 'pattern-match', name: 'Pattern Recognition (Pattern Match)', color: 'bg-indigo-500' },
+      { key: 'memory-path', name: 'Sequence Path (Memory Path)', color: 'bg-rose-500' }
+    ];
+
+    return domainDef.map(dom => {
+      const matched = allSessions.filter(s =>
+        (s.gameId && s.gameId.includes(dom.key)) ||
+        (s.gameName && dom.name.toLowerCase().includes(s.gameName.toLowerCase()))
+      );
+
+      const count = matched.length;
+      const avgScore = count > 0
+        ? Math.round(matched.reduce((acc, m) => acc + (m.accuracy ?? m.score ?? 80), 0) / count)
+        : 80; // comfortable baseline
+
+      return {
+        name: dom.name,
+        gamesCount: count,
+        percent: avgScore,
+        color: dom.color
+      };
+    });
+  }, [allSessions]);
 
   const handleExportSummary = () => {
     const summary = `
-MEMORY ROOTS - CAREGIVER ACTIVITY SUMMARY
+COGNICARE - CAREGIVER ACTIVITY SUMMARY
+Tagline: when memories meet care
 Date: ${new Date().toLocaleDateString()}
 Elder: ${patient?.name || 'Biren Sharma'} (${patient?.age || 74} yrs, ${patient?.state || 'Assam'})
-Caregiver: Dr. Ananya Sharma
+Caregiver: ${patient?.caretakerName || 'Family Caregiver'}
 
 Summary Statistics:
 - Total Activities Practiced: ${totalGames} sessions
 - Overall Accuracy Rate: ${avgAccuracy}%
 - Average Response Time: ${avgResponseTime}s
-- Most Enjoyed Activities: Five Stones (Guti), Traditional Food Memory, Folk Music Recall
+- Most Frequently Enjoyed Activity: ${mostEnjoyedGame}
+
+Weekly Practice Overview:
+${weeklyActivity.map(w => `${w.day}: ${w.count} session(s)`).join('\n')}
 
 Notice: This summary tracks cognitive engagement and comfort with familiar activities. It is not a clinical or diagnostic evaluation.
 `;
@@ -66,14 +165,14 @@ Notice: This summary tracks cognitive engagement and comfort with familiar activ
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `MemoryRoots_Summary_${patient?.name?.replace(/\s+/g, '_') || 'Patient'}.txt`;
+    a.download = `CogniCare_Summary_${patient?.name?.replace(/\s+/g, '_') || 'Patient'}.txt`;
     a.click();
     URL.revokeObjectURL(url);
   };
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 bg-[#FAF7F0]">
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div className="max-w-5xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
@@ -81,7 +180,7 @@ Notice: This summary tracks cognitive engagement and comfort with familiar activ
               <BarChart3 className="w-3.5 h-3.5 text-amber-700" />
               <span>Caretaker Analytics & Insights</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#1E432A]">
+            <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#1B3B2B]">
               {t.progress?.title || "Caretaker Progress Dashboard"}
             </h1>
             <p className="text-stone-600 text-sm sm:text-base max-w-2xl mt-1">
@@ -91,7 +190,7 @@ Notice: This summary tracks cognitive engagement and comfort with familiar activ
 
           <button
             onClick={handleExportSummary}
-            className="px-5 py-3 rounded-2xl bg-[#1E432A] hover:bg-[#2C5E3B] text-white font-bold text-sm border-2 border-[#C99E32] transition-all shadow-md active:scale-95 flex items-center gap-2"
+            className="px-5 py-3 rounded-2xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-sm border-2 border-[#C99E32] transition-all shadow-md active:scale-95 flex items-center gap-2"
           >
             <Download className="w-5 h-5 text-amber-300" />
             <span>{t.progress?.exportSummary || "Download Caregiver Summary"}</span>
@@ -106,17 +205,17 @@ Notice: This summary tracks cognitive engagement and comfort with familiar activ
           </div>
         </div>
 
-        {/* 4 Stat Metric Cards */}
+        {/* 4 Stat Metric Cards (Accurate Computed Values) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white border-2 border-amber-200 rounded-3xl p-5 shadow-sm space-y-1">
+          <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-1">
             <span className="text-xs uppercase font-bold text-stone-500">
               {t.progress?.totalActivities || "Activities Completed"}
             </span>
-            <div className="text-3xl font-bold text-[#1E432A]">{totalGames}</div>
-            <p className="text-[11px] text-stone-500 font-medium">Across childhood & cultural games</p>
+            <div className="text-3xl font-bold text-[#1B3B2B]">{totalGames}</div>
+            <p className="text-[11px] text-stone-500 font-medium">Across cognitive activities</p>
           </div>
 
-          <div className="bg-white border-2 border-amber-200 rounded-3xl p-5 shadow-sm space-y-1">
+          <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-1">
             <span className="text-xs uppercase font-bold text-stone-500">
               {t.progress?.avgAccuracy || "Average Accuracy"}
             </span>
@@ -124,132 +223,105 @@ Notice: This summary tracks cognitive engagement and comfort with familiar activ
             <p className="text-[11px] text-emerald-600 font-medium">High positive reinforcement</p>
           </div>
 
-          <div className="bg-white border-2 border-amber-200 rounded-3xl p-5 shadow-sm space-y-1">
+          <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-1">
             <span className="text-xs uppercase font-bold text-stone-500">
-              {t.progress?.avgTime || "Response Pace"}
+              {t.progress?.avgTime || "Average Response"}
             </span>
             <div className="text-3xl font-bold text-amber-700">{avgResponseTime}s</div>
             <p className="text-[11px] text-stone-500 font-medium">Comfortable, relaxed pace</p>
           </div>
 
-          <div className="bg-white border-2 border-amber-200 rounded-3xl p-5 shadow-sm space-y-1">
+          <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-1">
             <span className="text-xs uppercase font-bold text-stone-500">
-              {t.progress?.favoriteActivity || "Favorite Activity"}
+              {t.progress?.favoriteActivity || "Most Enjoyed"}
             </span>
-            <div className="text-lg font-bold text-[#7C3218] truncate">Five Stones & Music</div>
-            <p className="text-[11px] text-stone-500 font-medium">Most frequently replayed</p>
+            <div className="text-base font-bold text-[#7C3218] truncate" title={mostEnjoyedGame}>
+              {mostEnjoyedGame}
+            </div>
+            <p className="text-[11px] text-stone-500 font-medium">Frequently practiced</p>
           </div>
         </div>
 
-        {/* 2 Column Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Chart 1: Weekly Engagement Visual Chart (Requirement 13) */}
-          <div className="bg-white border-2 border-amber-200 rounded-3xl p-6 sm:p-7 shadow-md space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-amber-100">
-              <h3 className="font-serif font-bold text-xl text-[#1E432A] flex items-center gap-2">
+        {/* 2-Column Section: Left: Weekly Activity Routine; Right: Practice Areas Breakdown */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Weekly Routine Bar Chart (Accurate Dynamic Data) */}
+          <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-6 shadow-sm space-y-6 flex flex-col justify-between">
+            <div className="flex items-center justify-between pb-2 border-b border-stone-100">
+              <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-amber-700" />
-                <span>Weekly Activity Routine</span>
-              </h3>
-              <span className="text-xs uppercase font-bold text-stone-500">Sessions</span>
+                <h3 className="font-serif font-bold text-lg text-[#1B3B2B]">
+                  Weekly Activity Routine
+                </h3>
+              </div>
+              <span className="text-xs font-bold text-stone-500 uppercase tracking-wider">
+                Sessions / Day
+              </span>
             </div>
 
-            <div className="h-56 flex items-end justify-between gap-3 pt-4 px-2">
-              {weeklyActivity.map((w) => (
-                <div key={w.day} className="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
-                  <span className="text-xs font-bold text-stone-600 group-hover:text-amber-800 transition-colors">
+            {/* Dynamic Bar Graph */}
+            <div className="h-56 flex items-end justify-between gap-2 sm:gap-4 px-2 sm:px-6 pt-4">
+              {weeklyActivity.map((w, idx) => (
+                <div key={idx} className="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
+                  <span className="text-xs font-bold text-stone-700 group-hover:text-[#1B3B2B] transition-colors">
                     {w.count}
                   </span>
-                  <div className="w-full bg-amber-100 rounded-2xl overflow-hidden flex items-end p-0.5 border border-amber-200 h-40">
+                  <div className="w-full bg-amber-50 rounded-2xl h-full flex items-end p-1 border border-amber-200/60 shadow-inner">
                     <div
-                      className="w-full bg-[#1E432A] group-hover:bg-[#C99E32] rounded-xl transition-all duration-500"
                       style={{ height: w.height }}
+                      className="w-full bg-[#1B3B2B] group-hover:bg-[#2C5E3B] rounded-xl transition-all duration-700 shadow-sm"
                     />
                   </div>
-                  <span className="text-xs font-bold text-stone-700">{w.day}</span>
+                  <span className="text-xs font-bold text-stone-600">
+                    {w.day}
+                  </span>
                 </div>
               ))}
             </div>
 
             <p className="text-xs text-stone-500 text-center italic">
-              Regular short 10-minute sessions provide familiar comfort throughout the week.
+              Accurate session tracking based on completed cognitive activities throughout the week.
             </p>
           </div>
 
-          {/* Chart 2: Practice Areas Breakdown */}
-          <div className="bg-white border-2 border-amber-200 rounded-3xl p-6 sm:p-7 shadow-md space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-amber-100">
-              <h3 className="font-serif font-bold text-xl text-[#1E432A] flex items-center gap-2">
-                <Brain className="w-5 h-5 text-amber-700" />
-                <span>{t.progress?.domainBreakdown || "Memory Areas Practiced"}</span>
-              </h3>
+          {/* Practice Areas Breakdown */}
+          <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-6 shadow-sm space-y-5">
+            <div className="flex items-center justify-between pb-2 border-b border-stone-100">
+              <div className="flex items-center gap-2">
+                <Brain className="w-5 h-5 text-[#1B3B2B]" />
+                <h3 className="font-serif font-bold text-lg text-[#1B3B2B]">
+                  Practice Areas Breakdown
+                </h3>
+              </div>
+              <span className="text-xs font-bold text-stone-500 uppercase tracking-wider">
+                Accuracy
+              </span>
             </div>
 
             <div className="space-y-4">
-              {memoryDomains.map((dom) => (
-                <div key={dom.name} className="space-y-1.5">
-                  <div className="flex justify-between text-sm">
-                    <span className="font-semibold text-stone-900">{dom.name}</span>
-                    <span className="font-bold text-stone-700">{dom.percent}%</span>
+              {memoryDomains.map((dom, idx) => (
+                <div key={idx} className="space-y-1.5">
+                  <div className="flex justify-between text-xs font-bold text-stone-700">
+                    <span>{dom.name}</span>
+                    <span className="text-[#1B3B2B]">{dom.percent}%</span>
                   </div>
-                  <div className="h-3 w-full bg-stone-100 rounded-full overflow-hidden border border-stone-200">
+                  <div className="w-full bg-stone-100 rounded-full h-3 overflow-hidden border border-stone-200">
                     <div
-                      className={`h-full ${dom.color} rounded-full transition-all duration-700`}
                       style={{ width: `${dom.percent}%` }}
+                      className={`h-full ${dom.color} rounded-full transition-all duration-700`}
                     />
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="pt-2 text-center">
+            <div className="pt-3 border-t border-stone-100 text-center">
               <button
                 onClick={() => setActivePage('games')}
-                className="text-xs font-bold text-[#A84B29] hover:underline"
+                className="text-xs font-bold text-[#A84B29] hover:text-[#7C3218] transition-colors"
               >
-                Start New Memory Activity →
+                Start New Cognitive Activity →
               </button>
             </div>
-          </div>
-        </div>
-
-        {/* Detailed History Table */}
-        <div className="bg-white border-2 border-amber-200 rounded-3xl p-6 shadow-md space-y-4">
-          <h3 className="font-serif font-bold text-xl text-[#1E432A]">
-            Detailed Activity Log
-          </h3>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="text-xs uppercase text-stone-500 border-b border-stone-200">
-                  <th className="pb-3 font-semibold">Activity</th>
-                  <th className="pb-3 font-semibold">Category</th>
-                  <th className="pb-3 font-semibold">Score</th>
-                  <th className="pb-3 font-semibold">Accuracy</th>
-                  <th className="pb-3 font-semibold">Response</th>
-                  <th className="pb-3 font-semibold">Completed At</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-stone-100">
-                {(gameResults?.length > 0 ? gameResults : [
-                  { gameName: 'Five Stones (Guti)', category: 'Childhood', score: 95, accuracy: 95, responseTimeMs: 2400, completedAt: '2026-08-28T10:15:00.000Z' },
-                  { gameName: 'Traditional Food Memory', category: 'Cultural', score: 100, accuracy: 100, responseTimeMs: 1900, completedAt: '2026-08-29T11:00:00.000Z' },
-                  { gameName: 'Folk Music Memory', category: 'Cultural', score: 90, accuracy: 90, responseTimeMs: 2800, completedAt: '2026-08-30T10:45:00.000Z' },
-                  { gameName: 'Memory Village', category: 'Childhood', score: 88, accuracy: 88, responseTimeMs: 3100, completedAt: '2026-08-31T10:30:00.000Z' }
-                ]).map((res, idx) => (
-                  <tr key={idx} className="hover:bg-amber-50/50">
-                    <td className="py-3 font-semibold text-stone-900">{res.gameName}</td>
-                    <td className="py-3 text-xs text-stone-600">{res.category}</td>
-                    <td className="py-3 font-bold text-amber-900">{res.score}</td>
-                    <td className="py-3 font-bold text-emerald-700">{res.accuracy}%</td>
-                    <td className="py-3 text-xs text-stone-500">{(res.responseTimeMs / 1000).toFixed(1)}s</td>
-                    <td className="py-3 text-xs text-stone-500">
-                      {new Date(res.completedAt).toLocaleDateString()}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
           </div>
         </div>
       </div>

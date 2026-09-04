@@ -14,6 +14,7 @@ import {
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { VoiceButton } from '../components/VoiceButton';
+import logoImg from '../assets/logo.png';
 
 export const LandingPage = ({ setActivePage, onOpenCulture }) => {
   const { currentLang, setLanguage, languages, t } = useLanguage();
@@ -116,7 +117,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
           {/* Logo Showcase */}
           <div className="flex justify-center mb-2">
             <img
-              src="/logo.png"
+              src={logoImg}
               alt="CogniCare Logo"
               className="h-20 sm:h-24 md:h-28 object-contain drop-shadow-sm hover:scale-102 transition-transform duration-300"
             />

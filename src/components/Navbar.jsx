@@ -2,44 +2,34 @@ import React, { useState } from 'react';
 import {
   Home,
   User,
-  Gamepad2,
-  Clock,
-  BarChart3,
   HeartHandshake,
+  BarChart3,
   Settings,
   HelpCircle,
   LogOut,
   LogIn,
   Globe,
-  Type,
-  SunMoon,
   Menu,
-  X,
-  Sparkles
+  X
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
-import { useAccessibility } from '../context/AccessibilityContext';
-import { usePatient } from '../context/PatientContext';
+import logoImg from '../assets/logo.png';
 
-export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
+export const Navbar = ({ activePage, setActivePage }) => {
   const { currentLang, setLanguage, languages, t, currentLangObj } = useLanguage();
   const { caretaker, isAuthenticated, logout } = useAuth();
-  const { fontSize, setFontSize, contrastMode, setContrastMode } = useAccessibility();
-  const { patient } = usePatient();
 
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Navigation Items: Home, Dashboard, Progress, Settings, Help & Support
   const navItems = [
     { id: 'home', label: t.nav?.home || 'Home', icon: Home },
     { id: 'dashboard', label: t.nav?.dashboard || 'Dashboard', icon: HeartHandshake, requireAuth: true },
-    { id: 'games', label: t.nav?.games || 'Games', icon: Gamepad2 },
-    { id: 'family', label: t.nav?.family || 'Memories', icon: Sparkles, requireAuth: true },
-    { id: 'reminders', label: t.nav?.reminders || 'Reminders', icon: Clock, requireAuth: true },
     { id: 'progress', label: t.nav?.progress || 'Progress', icon: BarChart3, requireAuth: true },
     { id: 'settings', label: t.nav?.settings || 'Settings', icon: Settings },
-    { id: 'help', label: t.nav?.help || 'Help', icon: HelpCircle }
+    { id: 'help', label: t.nav?.help || 'Help & Support', icon: HelpCircle }
   ];
 
   const handleNavClick = (pageId) => {
@@ -55,80 +45,41 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#FAF7F0] border-b border-[#E5DFD5] shadow-sm">
-      {/* Top Clean Utility Bar */}
-      <div className="w-full bg-[#1B3B2B] text-[#FAF7F0] px-3 sm:px-6 py-1 text-xs">
+      {/* Top Clean Minimalist Utility Bar */}
+      <div className="w-full bg-[#1B3B2B] text-[#FAF7F0] px-3 sm:px-6 py-1.5 text-xs">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
+          {/* Top Left: Clean soothing sparkle icon */}
           <div className="flex items-center gap-2 truncate">
-            <span className="text-amber-400">🌿</span>
+            <span className="text-amber-400 text-sm">✨</span>
             <span className="truncate font-serif italic text-amber-200">
               {t.tagline || "when memories meet care"}
             </span>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-            {onOpenCulture && (
-              <button
-                onClick={onOpenCulture}
-                className="hidden md:inline-flex items-center gap-1 text-amber-300 hover:text-amber-100 text-xs font-medium cursor-pointer"
-              >
-                <span>🏮 8 States Heritage</span>
-              </button>
-            )}
-
-            {/* Font Size Adjuster */}
-            <div className="flex items-center bg-black/20 rounded-lg px-1.5 py-0.5 border border-amber-400/30 gap-1 text-[11px]">
-              <button
-                onClick={() => setFontSize('normal')}
-                className={`px-1 rounded font-bold ${fontSize === 'normal' ? 'bg-amber-400 text-stone-900' : 'text-amber-100 hover:text-white'}`}
-                title="Standard Text"
-              >
-                A
-              </button>
-              <button
-                onClick={() => setFontSize('large')}
-                className={`px-1 rounded font-bold ${fontSize === 'large' ? 'bg-amber-400 text-stone-900' : 'text-amber-100 hover:text-white'}`}
-                title="Large Text (Recommended)"
-              >
-                A+
-              </button>
-              <button
-                onClick={() => setFontSize('xlarge')}
-                className={`px-1 rounded font-bold ${fontSize === 'xlarge' ? 'bg-amber-400 text-stone-900' : 'text-amber-100 hover:text-white'}`}
-                title="Extra Large Text"
-              >
-                A++
-              </button>
-            </div>
-
-            {/* High Contrast Toggle */}
-            <button
-              onClick={() => setContrastMode(contrastMode === 'high' ? 'warm' : 'high')}
-              className={`p-1 rounded-lg border text-[11px] ${contrastMode === 'high' ? 'bg-amber-400 text-black border-amber-300' : 'bg-transparent text-amber-200 border-amber-400/30'}`}
-              title="High Contrast Mode"
-            >
-              <SunMoon className="w-3 h-3" />
-            </button>
+          {/* Top Right: Clean brand mark */}
+          <div className="text-[11px] text-amber-200/80 font-medium">
+            CogniCare Platform
           </div>
         </div>
       </div>
 
-      {/* Main Bar */}
-      <div className="max-w-6xl mx-auto px-3 sm:px-6">
+      {/* Main Navbar */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
-          {/* Brand with CogniCare Logo Image */}
+          {/* Brand Logo */}
           <div
             onClick={() => setActivePage('home')}
-            className="flex items-center gap-2.5 cursor-pointer select-none"
+            className="flex items-center gap-2 cursor-pointer select-none"
           >
             <img
-              src="/logo.png"
+              src={logoImg}
               alt="CogniCare Logo"
               className="h-9 sm:h-10 object-contain drop-shadow-xs"
             />
           </div>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1.5">
             {navItems.map((item) => {
               if (item.requireAuth && !isAuthenticated) return null;
               const Icon = item.icon;
@@ -137,7 +88,7 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-semibold text-xs sm:text-sm transition-all ${
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
                     isActive
                       ? 'bg-[#1B3B2B] text-white shadow-sm'
                       : 'text-stone-700 hover:bg-amber-100/60 hover:text-[#1B3B2B]'
@@ -150,17 +101,18 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
             })}
           </nav>
 
-          {/* Right Action Bar */}
+          {/* Right Action Bar: Language Change, Username, Logout */}
           <div className="flex items-center gap-2">
-            {/* Language Selector Dropdown */}
+            {/* Language Change Option with Name */}
             <div className="relative">
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white border border-stone-300 text-[#1B3B2B] font-bold text-xs hover:border-[#C99E32] shadow-sm transition-all"
+                title="Change Language"
               >
                 <Globe className="w-3.5 h-3.5 text-amber-700" />
-                <span>{currentLangObj.flag}</span>
-                <span className="hidden sm:inline">{currentLangObj.native}</span>
+                <span className="text-sm">{currentLangObj.flag}</span>
+                <span className="font-serif hidden sm:inline">{currentLangObj.name}</span>
               </button>
 
               {langDropdownOpen && (
@@ -184,7 +136,7 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
                       >
                         <span className="flex items-center gap-2">
                           <span>{lang.flag}</span>
-                          <span>{lang.native}</span>
+                          <span className="font-serif">{lang.native}</span>
                         </span>
                         <span className={`text-[10px] ${currentLang === lang.code ? 'text-amber-300' : 'text-stone-400'}`}>
                           {lang.name}
@@ -196,18 +148,16 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
               )}
             </div>
 
-            {/* Auth Buttons */}
+            {/* Username & Logout */}
             {isAuthenticated ? (
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={() => setActivePage('dashboard')}
-                  className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-100 border border-amber-300 text-stone-800 text-xs font-semibold"
-                  title="Caretaker Dashboard"
-                >
+              <div className="flex items-center gap-2">
+                {/* Username */}
+                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-100/90 border border-amber-300 text-stone-800 text-xs font-bold shadow-xs">
                   <User className="w-3.5 h-3.5 text-[#1B3B2B]" />
-                  <span className="truncate max-w-[80px]">{caretaker.fullName?.split(' ')[0]}</span>
-                </button>
+                  <span className="truncate max-w-[80px] sm:max-w-[100px]">{caretaker.fullName || 'User'}</span>
+                </div>
 
+                {/* Logout Option */}
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#A84B29] hover:bg-[#7C3218] text-white font-bold text-xs shadow-sm transition-all"
@@ -222,15 +172,15 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
                 onClick={() => setActivePage('auth')}
                 className="flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-xs shadow-sm transition-all border border-[#C99E32]"
               >
-                <LogIn className="w-3.5 h-3.5 text-amber-300" />
+                <LogIn className="w-4 h-4 text-amber-300" />
                 <span>{t.nav?.login || "Login"}</span>
               </button>
             )}
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Toggle Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-1.5 rounded-xl bg-white border border-stone-300 text-stone-800 hover:bg-stone-100"
+              className="md:hidden p-1.5 rounded-xl bg-white border border-stone-300 text-stone-800 hover:bg-stone-100"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -241,7 +191,7 @@ export const Navbar = ({ activePage, setActivePage, onOpenCulture }) => {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#FAF7F0] border-t border-[#E5DFD5] px-4 pt-2 pb-4 space-y-1 animate-fadeIn">
+        <div className="md:hidden bg-[#FAF7F0] border-t border-[#E5DFD5] px-4 pt-2 pb-4 space-y-1 animate-fadeIn">
           {navItems.map((item) => {
             if (item.requireAuth && !isAuthenticated) return null;
             const Icon = item.icon;
