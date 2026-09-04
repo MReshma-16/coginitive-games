@@ -1,6 +1,7 @@
 import heroBg from './hero-bg.png';
 import sacredTemple from './sacred-temple.png';
 import mountainValley from './mountain-valley.png';
+import loktakLake from './loktak-lake.png';
 
 // High Quality, Fully Self-Contained Offline Puzzle Images for CogniCare
 // Guaranteed to render visibly in all network conditions, with custom upload support
@@ -241,6 +242,12 @@ const VILLAGE_COTTAGE_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.o
 </svg>`;
 
 export const DEFAULT_PUZZLE_IMAGES = [
+  {
+    id: 'loktak-lake-manipur',
+    title: 'Loktak Lake & Floating Phumdis, Manipur',
+    description: 'Breathtaking serene blue lake with iconic circular floating islands and lush green hills',
+    dataUrl: loktakLake
+  },
   {
     id: 'sun-temple-odisha',
     title: 'Grand Sun Temple Architecture',

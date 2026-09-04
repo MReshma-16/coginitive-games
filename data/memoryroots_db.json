@@ -890,6 +890,19 @@
       "difficulty": 1,
       "itemsCount": 5,
       "completedAt": "2026-09-04T05:09:20.671Z"
+    },
+    {
+      "id": "gr_1788524669390",
+      "patientId": "patient_demo_1",
+      "gameId": "jigsaw-puzzle",
+      "gameName": "Jigsaw Puzzle",
+      "category": "Cognitive",
+      "score": 100,
+      "accuracy": 100,
+      "responseTimeMs": 11000,
+      "difficulty": 1,
+      "itemsCount": 4,
+      "completedAt": "2026-09-04T12:24:29.390Z"
     }
   ],
   "reminders": [
