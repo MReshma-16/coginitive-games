@@ -786,6 +786,32 @@
       "difficulty": 1,
       "itemsCount": 4,
       "completedAt": "2026-09-04T04:25:04.204Z"
+    },
+    {
+      "id": "gr_1788496743518",
+      "patientId": "patient_1788446388312",
+      "gameId": "jigsaw-puzzle",
+      "gameName": "Jigsaw Puzzle",
+      "category": "Cognitive",
+      "score": 94,
+      "accuracy": 100,
+      "responseTimeMs": 24000,
+      "difficulty": 1,
+      "itemsCount": 4,
+      "completedAt": "2026-09-04T04:39:03.518Z"
+    },
+    {
+      "id": "gr_1788496836143",
+      "patientId": "patient_1788446388312",
+      "gameId": "jigsaw-puzzle",
+      "gameName": "Jigsaw Puzzle",
+      "category": "Cognitive",
+      "score": 72,
+      "accuracy": 100,
+      "responseTimeMs": 90000,
+      "difficulty": 2,
+      "itemsCount": 9,
+      "completedAt": "2026-09-04T04:40:36.143Z"
     }
   ],
   "reminders": [
