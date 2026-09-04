@@ -812,6 +812,45 @@
       "difficulty": 2,
       "itemsCount": 9,
       "completedAt": "2026-09-04T04:40:36.143Z"
+    },
+    {
+      "id": "gr_1788496944213",
+      "patientId": "patient_1788446388312",
+      "gameId": "alaska-word-search",
+      "gameName": "Alaska Word Search",
+      "category": "Cognitive",
+      "score": 100,
+      "accuracy": 100,
+      "responseTimeMs": 10000,
+      "difficulty": 1,
+      "itemsCount": 3,
+      "completedAt": "2026-09-04T04:42:24.213Z"
+    },
+    {
+      "id": "gr_1788497018696",
+      "patientId": "patient_1788446388312",
+      "gameId": "crosswords",
+      "gameName": "Crosswords",
+      "category": "Cognitive",
+      "score": 85,
+      "accuracy": 100,
+      "responseTimeMs": 63000,
+      "difficulty": 1,
+      "itemsCount": 4,
+      "completedAt": "2026-09-04T04:43:38.697Z"
+    },
+    {
+      "id": "gr_1788497048196",
+      "patientId": "patient_1788446388312",
+      "gameId": "alaska-word-search",
+      "gameName": "सोदोब नागिरनाय (Word Search)",
+      "category": "Cognitive",
+      "score": 100,
+      "accuracy": 100,
+      "responseTimeMs": 13000,
+      "difficulty": 1,
+      "itemsCount": 3,
+      "completedAt": "2026-09-04T04:44:08.196Z"
     }
   ],
   "reminders": [

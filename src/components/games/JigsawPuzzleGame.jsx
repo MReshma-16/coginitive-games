@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Eye, CheckCircle2, RotateCcw, Image as ImageIcon, Upload, ArrowRight, Sparkles } from 'lucide-react';
+import { Eye, CheckCircle2, RotateCcw, Upload, ArrowRight, Sparkles } from 'lucide-react';
 import { soundManager } from '../../services/audioSynthesizer';
 import { VoiceButton } from '../VoiceButton';
+import { useLanguage } from '../../context/LanguageContext';
 import { DEFAULT_PUZZLE_IMAGES, sliceImageToPieces } from '../../assets/puzzleImages';
 
 export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) => {
+  const { t } = useLanguage();
   const [selectedImage, setSelectedImage] = useState(DEFAULT_PUZZLE_IMAGES[0]);
   const [gridDim, setGridDim] = useState(2); // 2=Easy (2x2), 3=Med (3x3), 4=Hard (4x4)
-  const [boardSlots, setBoardSlots] = useState([]); // Array of piece indices currently in each board slot (or null if empty)
-  const [trayPieces, setTrayPieces] = useState([]); // Array of piece indices still in the tray
-  const [pieceSlices, setPieceSlices] = useState([]); // Array of data URLs (one for each sliced piece)
+  const [boardSlots, setBoardSlots] = useState([]); // Array of piece indices in each board slot (or null)
+  const [trayPieces, setTrayPieces] = useState([]); // Array of piece indices in tray
+  const [pieceSlices, setPieceSlices] = useState([]); // Array of data URLs
   const [selectedItem, setSelectedItem] = useState(null); // { source: 'tray'|'board', index: number, pieceIdx: number }
   const [moveCount, setMoveCount] = useState(0);
-  const [showReferenceModal, setShowReferenceModal] = useState(false);
   const [showRestartConfirm, setShowRestartConfirm] = useState(false);
   const [customImages, setCustomImages] = useState([]);
   const fileInputRef = useRef(null);
@@ -29,7 +30,6 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
     setMoveCount(0);
     setSelectedItem(null);
     setShowRestartConfirm(false);
-    setShowReferenceModal(false);
 
     const dim = difficulty === 'HARD' ? 4 : difficulty === 'MEDIUM' ? 3 : 2;
     setGridDim(dim);
@@ -45,18 +45,15 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
     let shuffled = [...pieces];
     shuffled.sort(() => 0.5 - Math.random());
 
-    // Initial state: board is empty, all pieces are in tray
     setBoardSlots(Array(count).fill(null));
     setTrayPieces(shuffled);
     soundManager.playChime();
   };
 
-  // Switch to another image
   const handleChangeImage = (img) => {
     setSelectedImage(img);
   };
 
-  // Upload custom user image
   const handleCustomImageUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -79,12 +76,11 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
     reader.readAsDataURL(file);
   };
 
-  // --- INTERACTION LOGIC (Click-to-place & Drag-and-drop) ---
-
+  // --- Interaction Handlers ---
   const handleTrayPieceClick = (pieceIdx, trayIndex) => {
     soundManager.playTap();
     if (selectedItem && selectedItem.source === 'tray' && selectedItem.index === trayIndex) {
-      setSelectedItem(null); // Deselect
+      setSelectedItem(null);
     } else {
       setSelectedItem({ source: 'tray', index: trayIndex, pieceIdx });
     }
@@ -162,7 +158,7 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
     }
   };
 
-  // --- DRAG AND DROP HANDLERS ---
+  // Drag & Drop
   const handleDragStart = (e, source, index, pieceIdx) => {
     e.dataTransfer.setData('application/json', JSON.stringify({ source, index, pieceIdx }));
   };
@@ -218,8 +214,6 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
       soundManager.playSuccess();
       const elapsed = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
       const score = Math.max(70, 100 - Math.max(0, moveCount - totalPieces) * 2);
-
-      // Automatic progression level mapping
       const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
 
       setTimeout(() => {
@@ -235,26 +229,28 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
     }
   };
 
-  // Render sliced puzzle piece
-  const renderImagePiece = (pieceIdx, isSelected = false, isSnapped = false) => {
+  // Render individual piece
+  const renderImagePiece = (pieceIdx, isSelected = false, isSnapped = false, isInTray = false) => {
     if (pieceIdx === null || pieceIdx === undefined) return null;
     const sliceSrc = pieceSlices[pieceIdx];
 
     return (
       <div
-        className={`w-full h-full relative rounded-2xl overflow-hidden transition-all duration-200 bg-amber-50 ${
+        className={`w-full h-full relative overflow-hidden transition-all duration-150 ${
+          isInTray ? 'rounded-xl border border-stone-300 shadow-xs hover:border-amber-400' : ''
+        } ${
           isSelected
-            ? 'ring-4 ring-amber-400 scale-105 shadow-2xl z-20 border-2 border-amber-500'
+            ? 'ring-4 ring-amber-400 scale-102 shadow-2xl z-20 border-2 border-amber-500'
             : isSnapped
-            ? 'border-2 border-emerald-400 shadow-md'
-            : 'border-2 border-stone-300 shadow-sm hover:border-amber-400'
+            ? 'border border-emerald-400/60'
+            : 'border border-stone-200/50'
         }`}
       >
         {sliceSrc ? (
           <img
             src={sliceSrc}
             alt={`Piece ${pieceIdx + 1}`}
-            className="w-full h-full object-cover rounded-xl select-none pointer-events-none"
+            className="w-full h-full object-cover select-none pointer-events-none block"
           />
         ) : (
           <div className="w-full h-full bg-amber-100 flex items-center justify-center font-bold text-amber-900">
@@ -262,10 +258,9 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
           </div>
         )}
 
-        {/* Snapped Checkmark Badge */}
         {isSnapped && (
-          <div className="absolute top-1 right-1 w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-md animate-fadeIn">
-            <CheckCircle2 className="w-3.5 h-3.5" />
+          <div className="absolute top-1 right-1 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-md animate-fadeIn z-10">
+            <CheckCircle2 className="w-3 h-3" />
           </div>
         )}
       </div>
@@ -276,7 +271,7 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
   const allImages = [...customImages, ...DEFAULT_PUZZLE_IMAGES];
 
   return (
-    <div className="space-y-6 text-center max-w-3xl mx-auto select-none">
+    <div className="space-y-6 text-center max-w-5xl mx-auto select-none">
       {/* Hidden File Input for Custom User Images */}
       <input
         type="file"
@@ -290,14 +285,14 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
       <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold uppercase tracking-wider text-purple-800 bg-purple-100 px-3 py-1 rounded-full border border-purple-300">
-            🧩 Real Jigsaw Puzzle • {difficulty} ({gridDim}×{gridDim} = {totalPieces} pieces)
+            🧩 {t.games?.jigsawTitle || "Jigsaw Puzzle"} • {difficulty} ({gridDim}×{gridDim} = {totalPieces} {t.games?.jigsawPlaced?.toLowerCase() || "pieces"})
           </span>
 
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-stone-600">
-              Pieces Placed: <strong className="text-emerald-800 text-sm">{correctlyPlacedCount} / {totalPieces}</strong>
+              {t.games?.jigsawPlaced || "Pieces Placed"}: <strong className="text-emerald-800 text-sm">{correctlyPlacedCount} / {totalPieces}</strong>
             </span>
-            <VoiceButton textToRead={`Jigsaw Puzzle. Reconstruct the picture of ${selectedImage.title}. Drag pieces from the tray or tap to place them onto the board.`} />
+            <VoiceButton textToRead={`${t.games?.jigsawTitle || 'Jigsaw Puzzle'}. ${selectedImage.title}. ${t.games?.jigsawTapInstruction || 'Drag pieces from the tray or tap to place them onto the board.'}`} />
           </div>
         </div>
 
@@ -306,65 +301,85 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
         </h3>
 
         <p className="text-stone-600 text-xs sm:text-sm">
-          {selectedImage.description}. Drag pieces into board slots, or tap a piece and then tap a slot to place it.
+          {t.games?.jigsawTapInstruction || "Drag pieces from the tray or tap a piece and then tap a board slot to place it."}
         </p>
-
-        {/* Action Bar: Reference Image + Image Selector + Upload Button */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
-          <button
-            onClick={() => setShowReferenceModal(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold text-xs border border-amber-300 shadow-xs cursor-pointer transition-all active:scale-95"
-          >
-            <Eye className="w-4 h-4 text-amber-700" />
-            <span>Show Reference Picture 🖼️</span>
-          </button>
-
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-emerald-100 hover:bg-emerald-200 text-emerald-950 font-bold text-xs border border-emerald-300 shadow-xs cursor-pointer transition-all active:scale-95"
-          >
-            <Upload className="w-4 h-4 text-emerald-700" />
-            <span>Upload Your Own Picture 📁</span>
-          </button>
-
-          <div className="flex items-center gap-1 bg-stone-50 p-1 rounded-2xl border border-stone-200 max-w-full overflow-x-auto">
-            <span className="text-[11px] font-bold text-stone-500 px-1.5">Picture:</span>
-            {allImages.map((img) => (
-              <button
-                key={img.id}
-                onClick={() => handleChangeImage(img)}
-                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer truncate max-w-[100px] ${
-                  selectedImage.id === img.id
-                    ? 'bg-[#1B3B2B] text-white shadow-xs'
-                    : 'text-stone-600 hover:bg-stone-200'
-                }`}
-              >
-                {img.title.split(' ')[0]}
-              </button>
-            ))}
-          </div>
-        </div>
       </div>
 
-      {/* Main Play Area: Puzzle Board + Pieces Tray */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left: Puzzle Board */}
-        <div className="lg:col-span-7 flex flex-col items-center">
-          <div className="w-full bg-white border-3 border-[#C99E32] rounded-3xl p-4 sm:p-6 shadow-md">
-            <div className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-3 flex items-center justify-between">
-              <span>🖼️ Puzzle Board</span>
+      {/* 3-Column Main Game Layout: Side Reference Panel + Flush Puzzle Board (No Gap) + Pieces Tray */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        {/* LEFT COLUMN: Reference Picture at the side (Permanently Visible) */}
+        <div className="lg:col-span-4 bg-white border-2 border-amber-300/80 rounded-3xl p-4 shadow-sm space-y-3.5 text-left">
+          <div className="flex items-center justify-between border-b pb-2 border-stone-100">
+            <h4 className="font-serif font-bold text-sm text-[#1B3B2B] flex items-center gap-1.5">
+              <span>🖼️</span>
+              <span>{t.games?.jigsawReference || "Reference Picture"}</span>
+            </h4>
+            <span className="text-[10px] font-bold text-amber-900 bg-amber-100 px-2 py-0.5 rounded-md">
+              Full View
+            </span>
+          </div>
+
+          {/* Clean full reference image */}
+          <div className="w-full aspect-square rounded-2xl overflow-hidden border-2 border-stone-200 shadow-inner bg-stone-50 flex items-center justify-center">
+            <img
+              src={selectedImage.dataUrl}
+              alt={selectedImage.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          <div className="bg-amber-50/70 p-2.5 rounded-xl border border-amber-200/80 space-y-0.5">
+            <h5 className="font-bold text-xs text-[#1B3B2B]">{selectedImage.title}</h5>
+            <p className="text-stone-600 text-[11px] leading-tight">{selectedImage.description}</p>
+          </div>
+
+          {/* Quick picture switcher & manual upload */}
+          <div className="space-y-2 pt-1 border-t border-stone-100">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold text-stone-500">Choose Picture:</span>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-950 font-bold text-[11px] border border-emerald-300 cursor-pointer transition-all active:scale-95"
+              >
+                <Upload className="w-3 h-3 text-emerald-700" />
+                <span>Upload 📁</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-1.5">
+              {allImages.map((img) => (
+                <button
+                  key={img.id}
+                  onClick={() => handleChangeImage(img)}
+                  className={`p-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer truncate text-left border ${
+                    selectedImage.id === img.id
+                      ? 'bg-[#1B3B2B] text-white border-[#C99E32] shadow-xs'
+                      : 'bg-stone-50 text-stone-700 border-stone-200 hover:bg-amber-50'
+                  }`}
+                >
+                  {img.title.split(' ')[0]}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* MIDDLE COLUMN: Seamless Puzzle Board (gap-0, continuous flush picture) */}
+        <div className="lg:col-span-4 flex flex-col items-center">
+          <div className="w-full bg-white border-3 border-[#C99E32] rounded-3xl p-4 shadow-md space-y-3">
+            <div className="text-xs font-bold uppercase tracking-wider text-stone-500 flex items-center justify-between">
+              <span>{t.games?.jigsawBoard || "Puzzle Board"}</span>
               <span className="text-[11px] text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200">
-                {correctlyPlacedCount === totalPieces ? '🎉 Complete!' : `${correctlyPlacedCount} of ${totalPieces} correct`}
+                {correctlyPlacedCount === totalPieces ? '🎉 Complete!' : `${correctlyPlacedCount}/${totalPieces}`}
               </span>
             </div>
 
-            {/* Grid Board */}
+            {/* Seamless Board Container (Zero Gap Between Slices!) */}
             <div
-              className="grid gap-2 sm:gap-3 mx-auto justify-center bg-stone-100/80 p-3 sm:p-4 rounded-2xl border-2 border-dashed border-stone-300"
+              className="w-full aspect-square mx-auto rounded-2xl overflow-hidden border-2 border-stone-400 bg-stone-100 shadow-inner grid gap-0"
               style={{
                 gridTemplateColumns: `repeat(${gridDim}, minmax(0, 1fr))`,
-                maxWidth: gridDim === 2 ? '280px' : gridDim === 3 ? '340px' : '380px',
-                aspectRatio: '1 / 1'
+                maxWidth: '320px'
               }}
             >
               {boardSlots.map((pieceIdx, slotIdx) => {
@@ -377,10 +392,8 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDropOnSlot(e, slotIdx)}
                     onClick={() => handleBoardSlotClick(slotIdx)}
-                    className={`relative w-full aspect-square rounded-2xl flex items-center justify-center cursor-pointer transition-all ${
-                      pieceIdx === null
-                        ? 'bg-stone-200/50 hover:bg-amber-50 border-2 border-dashed border-stone-300 hover:border-amber-400'
-                        : 'p-0.5'
+                    className={`relative w-full h-full border border-stone-300/60 flex items-center justify-center cursor-pointer transition-all ${
+                      pieceIdx === null ? 'bg-stone-200/40 hover:bg-amber-100/50' : 'bg-white'
                     }`}
                   >
                     {pieceIdx !== null ? (
@@ -389,20 +402,19 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
                         onDragStart={(e) => handleDragStart(e, 'board', slotIdx, pieceIdx)}
                         className="w-full h-full relative"
                       >
-                        {renderImagePiece(pieceIdx, isSelected, isCorrect)}
+                        {renderImagePiece(pieceIdx, isSelected, isCorrect, false)}
 
-                        {/* Return to tray button */}
                         <button
                           onClick={(e) => handleReturnToTray(slotIdx, e)}
                           title="Return to tray"
-                          className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-stone-800/80 text-white text-[10px] font-bold flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 cursor-pointer"
+                          className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-stone-900/80 text-white text-[9px] font-bold flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-20 cursor-pointer"
                         >
                           ✕
                         </button>
                       </div>
                     ) : (
-                      <span className="text-stone-400 font-bold text-xs pointer-events-none">
-                        Slot {slotIdx + 1}
+                      <span className="text-stone-400 font-bold text-[11px] pointer-events-none select-none">
+                        {slotIdx + 1}
                       </span>
                     )}
                   </div>
@@ -412,19 +424,23 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
           </div>
         </div>
 
-        {/* Right: Pieces Tray */}
-        <div className="lg:col-span-5 bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-3">
+        {/* RIGHT COLUMN: Pieces Tray */}
+        <div className="lg:col-span-4 bg-white border-2 border-[#E5DFD5] rounded-3xl p-4 shadow-sm space-y-3 text-left">
           <div className="flex items-center justify-between border-b pb-2 border-stone-100">
-            <h4 className="font-serif font-bold text-sm text-[#1B3B2B]">
-              🧩 Pieces Tray ({trayPieces.length} left)
+            <h4 className="font-serif font-bold text-sm text-[#1B3B2B] flex items-center gap-1.5">
+              <span>🧩</span>
+              <span>{t.games?.jigsawTray || "Pieces Tray"} ({trayPieces.length} {t.games?.jigsawRemaining || "left"})</span>
             </h4>
-            <span className="text-[11px] text-stone-500 font-medium">
-              Tap or drag to board
-            </span>
+            <span className="text-[10px] text-stone-500 font-medium">Tap / Drag</span>
           </div>
 
           {trayPieces.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-72 overflow-y-auto p-1">
+            <div
+              className="grid gap-2 max-h-80 overflow-y-auto p-1"
+              style={{
+                gridTemplateColumns: `repeat(${gridDim <= 3 ? 2 : 3}, minmax(0, 1fr))`
+              }}
+            >
               {trayPieces.map((pieceIdx, trayIdx) => {
                 const isSelected = selectedItem?.source === 'tray' && selectedItem?.index === trayIdx;
 
@@ -434,72 +450,33 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
                     draggable
                     onDragStart={(e) => handleDragStart(e, 'tray', trayIdx, pieceIdx)}
                     onClick={() => handleTrayPieceClick(pieceIdx, trayIdx)}
-                    className="w-full aspect-square cursor-pointer transition-transform hover:scale-102 active:scale-95"
+                    className="w-full aspect-square cursor-pointer transition-transform hover:scale-105 active:scale-95"
                   >
-                    {renderImagePiece(pieceIdx, isSelected, false)}
+                    {renderImagePiece(pieceIdx, isSelected, false, true)}
                   </div>
                 );
               })}
             </div>
           ) : (
-            <div className="py-10 text-center space-y-2">
-              <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto text-xl">
+            <div className="py-12 text-center space-y-2">
+              <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto text-lg">
                 ✨
               </div>
               <p className="text-xs font-bold text-emerald-800">
-                All pieces are on the board!
+                {t.games?.jigsawAllOnBoard || "All pieces are on the board!"}
               </p>
               <p className="text-[11px] text-stone-500">
-                Arrange them in the right order to complete the picture.
+                {t.games?.jigsawArrange || "Arrange them in the right order to complete the picture."}
               </p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Reference Picture Modal */}
-      {showReferenceModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fadeIn">
-          <div className="bg-white border-3 border-amber-300 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4 text-center">
-            <div className="flex items-center justify-between border-b pb-2 border-stone-100">
-              <h4 className="font-serif font-bold text-lg text-[#1B3B2B]">
-                🖼️ Full Reference Picture
-              </h4>
-              <button
-                onClick={() => setShowReferenceModal(false)}
-                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-sm flex items-center justify-center cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="w-full aspect-square rounded-2xl overflow-hidden shadow-inner border-2 border-stone-200 bg-stone-50 flex items-center justify-center">
-              <img
-                src={selectedImage.dataUrl}
-                alt={selectedImage.title}
-                className="w-full h-full object-contain"
-              />
-            </div>
-
-            <div className="text-left bg-amber-50 p-3 rounded-2xl border border-amber-200">
-              <h5 className="font-bold text-sm text-[#1B3B2B]">{selectedImage.title}</h5>
-              <p className="text-stone-600 text-xs mt-0.5">{selectedImage.description}</p>
-            </div>
-
-            <button
-              onClick={() => setShowReferenceModal(false)}
-              className="w-full py-3 rounded-2xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-sm border-2 border-[#C99E32] shadow-sm cursor-pointer"
-            >
-              Continue Puzzle
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Bottom Bar: Moves, Restart & Exit */}
       <div className="flex justify-between items-center bg-white border border-stone-200 rounded-2xl p-4">
         <div className="text-left text-xs text-stone-600 font-semibold">
-          Moves: <strong className="text-stone-900 text-sm">{moveCount}</strong> • Placed Correctly: <strong className="text-emerald-800 text-sm">{correctlyPlacedCount} / {totalPieces}</strong>
+          {t.games?.jigsawMoves || "Moves"}: <strong className="text-stone-900 text-sm">{moveCount}</strong> • {t.games?.jigsawPlaced || "Placed"}: <strong className="text-emerald-800 text-sm">{correctlyPlacedCount} / {totalPieces}</strong>
         </div>
 
         <div className="flex items-center gap-2">
@@ -525,7 +502,7 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
               className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              <span>Restart</span>
+              <span>{t.games?.restartGame || "Restart"}</span>
             </button>
           )}
 
@@ -534,7 +511,7 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
               onClick={onExit}
               className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
             >
-              Exit
+              {t.games?.exitGame || "Exit"}
             </button>
           )}
         </div>
