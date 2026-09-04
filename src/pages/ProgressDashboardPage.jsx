@@ -324,6 +324,98 @@ Notice: This summary tracks cognitive engagement and comfort with familiar activ
             </div>
           </div>
         </div>
+
+        {/* Recent Completed Activity History Table (Matching Image 2) */}
+        <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-6 shadow-sm space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+            <div className="flex items-center gap-2">
+              <Clock className="w-5 h-5 text-amber-700" />
+              <h3 className="font-serif font-bold text-lg text-[#1B3B2B]">
+                Recent Completed Activity History
+              </h3>
+            </div>
+            <span className="text-xs text-stone-500 font-medium">
+              Showing {Math.min(10, allSessions.length)} recent sessions
+            </span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr className="border-b border-stone-200 text-stone-500 font-bold uppercase tracking-wider text-[11px]">
+                  <th className="py-3 px-3">Game & Area</th>
+                  <th className="py-3 px-3">Date & Time</th>
+                  <th className="py-3 px-3 text-center">Difficulty / Level</th>
+                  <th className="py-3 px-3 text-center">Score</th>
+                  <th className="py-3 px-3 text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-stone-100">
+                {allSessions.slice(0, 10).map((session, idx) => {
+                  const gameIcons = {
+                    'alaska-word-search': '🌲',
+                    'odd-one-out': '🔍',
+                    'letter-c-word': '🔤',
+                    'crosswords': '📰',
+                    'jigsaw-puzzle': '🧩'
+                  };
+                  const icon = gameIcons[session.gameId] || '🌿';
+                  const scoreVal = session.score ?? session.accuracy ?? 100;
+                  const isCompleted = scoreVal >= 60;
+                  const dateStr = session.completedAt || session.timestamp
+                    ? new Date(session.completedAt || session.timestamp).toLocaleString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                      })
+                    : 'Today, 11:30 am';
+
+                  return (
+                    <tr key={idx} className="hover:bg-amber-50/50 transition-colors">
+                      <td className="py-3.5 px-3 font-medium text-stone-900 flex items-center gap-2">
+                        <span className="text-base p-1 rounded-lg bg-stone-100">{icon}</span>
+                        <div>
+                          <div className="font-bold text-[#1B3B2B]">{session.gameName || 'Cognitive Activity'}</div>
+                          <div className="text-[10px] text-stone-400">{session.category || 'Cognitive Exercise'}</div>
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-3 text-stone-600 font-medium">
+                        {dateStr}
+                      </td>
+                      <td className="py-3.5 px-3 text-center">
+                        <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[11px] font-bold ${
+                          session.difficulty === 'HARD' ? 'bg-rose-100 text-rose-800' :
+                          session.difficulty === 'MEDIUM' ? 'bg-amber-100 text-amber-800' :
+                          'bg-emerald-100 text-emerald-800'
+                        }`}>
+                          {session.difficulty || 'EASY'} • Lvl {session.level || 1}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-3 text-center font-bold text-stone-900">
+                        {scoreVal}%
+                      </td>
+                      <td className="py-3.5 px-3 text-center">
+                        {isCompleted ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 font-bold text-[11px]">
+                            <CheckCircle2 className="w-3 h-3" />
+                            <span>Completed</span>
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-300 font-bold text-[11px]">
+                            <span>Practiced</span>
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );

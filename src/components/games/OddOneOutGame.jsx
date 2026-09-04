@@ -6,35 +6,31 @@ import { useLanguage } from '../../context/LanguageContext';
 
 const ODD_ONE_OUT_SETS = {
   EASY: [
-    { common: '🍎', odd: '🍊', name: 'Fruits' },
-    { common: '🟢', odd: '⭐', name: 'Shapes' },
-    { common: '🐱', odd: '🐶', name: 'Animals' },
-    { common: '🌸', odd: '🌻', name: 'Flowers' },
-    { common: '🚗', odd: '🚲', name: 'Vehicles' },
-    { common: '☕', odd: '🍵', name: 'Beverages' }
+    { level: 1, common: '🍎', odd: '🍊', name: 'Fruits (Level 1)' },
+    { level: 2, common: '🟢', odd: '⭐', name: 'Shapes (Level 2)' },
+    { level: 3, common: '🐱', odd: '🐶', name: 'Animals (Level 3)' },
+    { level: 4, common: '🌸', odd: '🌻', name: 'Flowers (Level 4)' },
+    { level: 5, common: '☕', odd: '🍵', name: 'Beverages (Level 5)' }
   ],
   MEDIUM: [
-    { common: '🌿', odd: '🍀', name: 'Foliage' },
-    { common: '😊', odd: '😉', name: 'Faces' },
-    { common: '🏠', odd: '🏡', name: 'Houses' },
-    { common: '🦋', odd: '🐝', name: 'Insects' },
-    { common: '🧵', odd: '🧶', name: 'Crafts' },
-    { common: '🔔', odd: '🥁', name: 'Instruments' }
+    { level: 1, common: '🌿', odd: '🍀', name: 'Foliage (Level 1)' },
+    { level: 2, common: '😊', odd: '😉', name: 'Faces (Level 2)' },
+    { level: 3, common: '🏠', odd: '🏡', name: 'Houses (Level 3)' },
+    { level: 4, common: '🦋', odd: '🐝', name: 'Insects (Level 4)' },
+    { level: 5, common: '🧵', odd: '🧶', name: 'Crafts (Level 5)' }
   ],
   HARD: [
-    { common: '🕒', odd: '🕞', name: 'Clocks' },
-    { common: '🔺', odd: '🔻', name: 'Triangles' },
-    { common: '🔶', odd: '🔷', name: 'Gems' },
-    { common: '🌕', odd: '🌖', name: 'Moons' },
-    { common: '⛵', odd: '🚤', name: 'Boats' },
-    { common: '🪴', odd: '🌵', name: 'Plants' }
+    { level: 1, common: '🕒', odd: '🕞', name: 'Clocks (Level 1)' },
+    { level: 2, common: '🔺', odd: '🔻', name: 'Triangles (Level 2)' },
+    { level: 3, common: '🔶', odd: '🔷', name: 'Gems (Level 3)' },
+    { level: 4, common: '🌕', odd: '🌖', name: 'Moons (Level 4)' },
+    { level: 5, common: '⛵', odd: '🚤', name: 'Boats (Level 5)' }
   ]
 };
 
 export const OddOneOutGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) => {
   const { t } = useLanguage();
-  const [currentRound, setCurrentRound] = useState(0);
-  const [totalRounds] = useState(5);
+  const [currentLevel, setCurrentLevel] = useState(1);
   const [items, setItems] = useState([]);
   const [oddIndex, setOddIndex] = useState(-1);
   const [feedback, setFeedback] = useState(null); // { isCorrect, message }
@@ -44,26 +40,24 @@ export const OddOneOutGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) 
   const [showRestartConfirm, setShowRestartConfirm] = useState(false);
   const startTimeRef = useRef(Date.now());
 
-  const itemCount = difficulty === 'HARD' ? 20 : difficulty === 'MEDIUM' ? 12 : 6;
+  const itemCount = difficulty === 'HARD' ? 12 : difficulty === 'MEDIUM' ? 8 : 4;
 
   useEffect(() => {
-    initGame();
-  }, [difficulty]);
+    initGame(currentLevel);
+  }, [difficulty, currentLevel]);
 
-  const initGame = () => {
+  const initGame = (lvl = currentLevel) => {
     startTimeRef.current = Date.now();
-    setCurrentRound(0);
-    setCorrectCount(0);
     setScore(0);
     setFeedback(null);
     setIsLocked(false);
     setShowRestartConfirm(false);
-    generateRound(0);
+    generateLevel(lvl);
   };
 
-  const generateRound = (roundIndex) => {
+  const generateLevel = (lvl) => {
     const setPool = ODD_ONE_OUT_SETS[difficulty] || ODD_ONE_OUT_SETS.EASY;
-    const roundConfig = setPool[roundIndex % setPool.length];
+    const roundConfig = setPool.find(s => s.level === lvl) || setPool[0];
 
     // Pick random index for the odd item
     const targetOddIdx = Math.floor(Math.random() * itemCount);
@@ -81,7 +75,7 @@ export const OddOneOutGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) 
 
   const handleItemClick = (index) => {
     if (isLocked) return;
-    setIsLocked(true); // Single click lock
+    setIsLocked(true);
 
     const clickedItem = items[index];
     const isCorrect = clickedItem.isOdd;
@@ -95,52 +89,71 @@ export const OddOneOutGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) 
       newScore += 20;
       setCorrectCount(newCorrect);
       setScore(newScore);
-      setFeedback({ isCorrect: true, message: t.games?.wonderful || "Wonderful observation! 🌟" });
+      setFeedback({ isCorrect: true, message: `Wonderful observation! Level ${currentLevel} Complete! 🌟` });
     } else {
       soundManager.playTap();
       setFeedback({ isCorrect: false, message: t.games?.lovelyEffort || "Good try! Look closely. 🌿" });
     }
 
     setTimeout(() => {
-      const nextRound = currentRound + 1;
-      if (nextRound < totalRounds) {
-        setCurrentRound(nextRound);
+      if (currentLevel < 5) {
+        setCurrentLevel(prev => prev + 1);
         setFeedback(null);
         setIsLocked(false);
-        generateRound(nextRound);
       } else {
         const elapsed = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
-        const finalAccuracy = Math.round((newCorrect / totalRounds) * 100);
         const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
 
         onCompleteRound({
-          correctAnswers: newCorrect,
-          totalQuestions: totalRounds,
+          correctAnswers: 5,
+          totalQuestions: 5,
           timeTakenSeconds: elapsed,
-          score: newScore,
-          accuracy: finalAccuracy,
+          score: 100,
+          accuracy: 100,
+          level: 5,
           nextDifficulty: nextLvl
         });
       }
     }, 1100);
   };
 
-  const gridCols = difficulty === 'HARD' ? 'grid-cols-4 sm:grid-cols-5' : difficulty === 'MEDIUM' ? 'grid-cols-3 sm:grid-cols-4' : 'grid-cols-3';
+  const gridCols = difficulty === 'HARD' ? 'grid-cols-4' : difficulty === 'MEDIUM' ? 'grid-cols-4' : 'grid-cols-2 sm:grid-cols-4';
 
   return (
     <div className="space-y-6 text-center max-w-2xl mx-auto select-none">
-      {/* Header */}
-      <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-2">
-        <div className="flex items-center justify-between">
+      {/* Header with Level Selector */}
+      <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
             🔍 {t.games?.oddOneOutTitle || "Find Odd One Out"} • {difficulty}
           </span>
 
+          {/* Level 1-5 Pills */}
+          <div className="flex items-center gap-1.5">
+            {[1, 2, 3, 4, 5].map(lvl => (
+              <button
+                key={lvl}
+                onClick={() => {
+                  setCurrentLevel(lvl);
+                  setFeedback(null);
+                  setIsLocked(false);
+                }}
+                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all ${
+                  currentLevel === lvl
+                    ? 'bg-[#1B3B2B] text-amber-200 shadow-sm border border-amber-300'
+                    : 'bg-stone-100 text-stone-600 hover:bg-amber-100'
+                }`}
+              >
+                Lvl {lvl}
+              </button>
+            ))}
+          </div>
+
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-stone-600">
-              {t.games?.round || "Round"}: <strong className="text-[#1B3B2B] text-sm">{currentRound + 1} {t.games?.of || "of"} {totalRounds}</strong>
+              Level: <strong className="text-[#1B3B2B] text-sm">{currentLevel} / 5</strong>
             </span>
-            <VoiceButton textToRead={`${t.games?.oddOneOutTitle || 'Find Odd One Out'}. ${t.games?.oddOneOutInstruction || 'Look closely at the items and tap the one item that is different.'}`} />
+            <VoiceButton textToRead={`${t.games?.oddOneOutTitle || 'Find Odd One Out'}. Level ${currentLevel}. ${t.games?.oddOneOutInstruction || 'Look closely at the items and tap the one item that is different.'}`} />
           </div>
         </div>
 

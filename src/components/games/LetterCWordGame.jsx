@@ -159,11 +159,14 @@ function generateLetterRounds(letter, t) {
   const r4Correct = targetWords[4] || targetWords[1] || targetWords[0];
   const r4Options = shuffle([r4Correct, distractors[5] || distractors[0], distractors[6] || distractors[1], distractors[7] || distractors[2]]);
 
+  const r5Correct = targetWords[5] || targetWords[2] || targetWords[0];
+  const r5Options = shuffle([r5Correct, distractors[0], distractors[3], distractors[4]]);
+
   return [
     {
       roundNum: 1,
       type: 'single',
-      prompt: `${t.games?.whichWordBegins || "Which word begins with"} ${letter}?`,
+      prompt: `Level 1 • ${t.games?.whichWordBegins || "Which word begins with"} ${letter}?`,
       options: r1Options,
       correct: r1Correct,
       explanation: `"${r1Correct}" (${letter})`
@@ -171,7 +174,7 @@ function generateLetterRounds(letter, t) {
     {
       roundNum: 2,
       type: 'multi',
-      prompt: `${t.games?.selectAllWordsBegins || "Select all words that begin with"} ${letter}:`,
+      prompt: `Level 2 • ${t.games?.selectAllWordsBegins || "Select all words that begin with"} ${letter}:`,
       options: r2Options,
       correct: r2Correct,
       explanation: `${r2Correct.join(', ')}`
@@ -179,7 +182,7 @@ function generateLetterRounds(letter, t) {
     {
       roundNum: 3,
       type: 'complete',
-      prompt: `${t.games?.completeTheWord || "Complete the word"}: ${r3Data.incomplete}`,
+      prompt: `Level 3 • ${t.games?.completeTheWord || "Complete the word"}: ${r3Data.incomplete}`,
       subPrompt: r3Data.hint ? `(${r3Data.hint})` : '',
       incomplete: r3Data.incomplete,
       options: r3Data.options,
@@ -190,10 +193,18 @@ function generateLetterRounds(letter, t) {
     {
       roundNum: 4,
       type: 'single',
-      prompt: `${t.games?.whichWordBelongs || "Which word belongs to the letter"} ${letter}?`,
+      prompt: `Level 4 • ${t.games?.whichWordBelongs || "Which word belongs to the letter"} ${letter}?`,
       options: r4Options,
       correct: r4Correct,
       explanation: `"${r4Correct}" (${letter})`
+    },
+    {
+      roundNum: 5,
+      type: 'single',
+      prompt: `Level 5 • Master Challenge: Pick the ${letter} word!`,
+      options: r5Options,
+      correct: r5Correct,
+      explanation: `"${r5Correct}" (${letter})`
     }
   ];
 }

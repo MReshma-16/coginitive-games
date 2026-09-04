@@ -4,41 +4,33 @@ import { soundManager } from '../../services/audioSynthesizer';
 import { VoiceButton } from '../VoiceButton';
 import { useLanguage } from '../../context/LanguageContext';
 
-const PUZZLE_WORDS_BY_LANG = {
-  en: {
-    EASY: ['CARE', 'HOME', 'LOVE', 'WARM', 'CALM', 'HOPE', 'REST', 'PEACE', 'KIND', 'BIRD'],
-    MEDIUM: ['MEMORY', 'FAMILY', 'GARDEN', 'SMILE', 'FLOWER', 'SPRING', 'HEALTH', 'FRIEND', 'HAPPY', 'SUMMER'],
-    HARD: ['ALASKA', 'GLACIER', 'AURORA', 'NATURE', 'BLOSSOM', 'KINDNESS', 'HERITAGE', 'SUNSHINE', 'HARMONY', 'JOURNEY']
-  },
-  as: {
-    EASY: ['মৰম', 'ঘৰ', 'শান্তি', 'হাঁহি', 'ফুল', 'চৰাই', 'নদী', 'গান', 'ৰং', 'দয়া'],
-    MEDIUM: ['পৰিয়াল', 'স্মৃতি', 'বতাহ', 'উৎসৱ', 'মমতা', 'সৌন্দৰ্য', 'আনন্দ', 'স্বাস্থ্য', 'প্ৰকৃতি', 'পাহাৰ'],
-    HARD: ['ঐতিহ্য', 'ব্ৰহ্মপুত্ৰ', 'কাজিৰঙা', 'কৃষ্টি', 'সংহতি', 'স্বাভাৱিক', 'স্মৰণীয়', 'আশীৰ্বাদ', 'পবিত্ৰ', 'শুভেচ্ছা']
-  },
-  bn: {
-    EASY: ['মমতা', 'ঘর', 'শান্তি', 'হাসি', 'ফুল', 'পাখি', 'নদী', 'গান', 'দয়া', 'প্রেম'],
-    MEDIUM: ['পরিবার', 'স্মৃতি', 'বাতাস', 'উৎসব', 'আনন্দ', 'স্বাস্থ্য', 'প্রকৃতি', 'পাহাড়', 'বসন্ত', 'বন্ধু'],
-    HARD: ['ঐতিহ্য', 'সৌহার্দ্য', 'সংস্কৃতি', 'স্মরণীয়', 'শুভকামনা', 'প্রভাত', 'সুস্থতা', 'ভালোবাসা', 'মঙ্গল', 'প্রশান্তি']
-  },
-  brx: {
-    EASY: ['CARE', 'HOME', 'LOVE', 'WARM', 'CALM', 'HOPE', 'REST', 'PEACE', 'KIND', 'BIRD'],
-    MEDIUM: ['MEMORY', 'FAMILY', 'GARDEN', 'SMILE', 'FLOWER', 'SPRING', 'HEALTH', 'FRIEND', 'HAPPY', 'SUMMER'],
-    HARD: ['ALASKA', 'GLACIER', 'AURORA', 'NATURE', 'BLOSSOM', 'KINDNESS', 'HERITAGE', 'SUNSHINE', 'HARMONY', 'JOURNEY']
-  },
-  mni: {
-    EASY: ['CARE', 'HOME', 'LOVE', 'WARM', 'CALM', 'HOPE', 'REST', 'PEACE', 'KIND', 'BIRD'],
-    MEDIUM: ['MEMORY', 'FAMILY', 'GARDEN', 'SMILE', 'FLOWER', 'SPRING', 'HEALTH', 'FRIEND', 'HAPPY', 'SUMMER'],
-    HARD: ['ALASKA', 'GLACIER', 'AURORA', 'NATURE', 'BLOSSOM', 'KINDNESS', 'HERITAGE', 'SUNSHINE', 'HARMONY', 'JOURNEY']
-  },
-  ne: {
-    EASY: ['माया', 'घर', 'शान्ति', 'मुस्कान', 'फूल', 'चरी', 'नदी', 'गीत', 'दया', 'खुसी'],
-    MEDIUM: ['परिवार', 'सम्झना', 'बगैंचा', 'स्वास्थ्य', 'प्रकृति', 'हिमाल', 'साथी', 'उमङ्ग', 'जीवन', 'आशा'],
-    HARD: ['संस्कृति', 'सद्भाव', 'प्रकृति', 'स्मरण', 'शुभकामना', 'मिठास', 'उत्साह', 'एकता', 'शान्त', 'यात्रा']
-  }
+const LEVEL_WORDS = {
+  EASY: [
+    { level: 1, words: ['CARE', 'LOVE', 'HOME'] },
+    { level: 2, words: ['WARM', 'CALM', 'HOPE'] },
+    { level: 3, words: ['REST', 'PEACE', 'KIND'] },
+    { level: 4, words: ['BIRD', 'TREE', 'SUN'] },
+    { level: 5, words: ['MOON', 'LAKE', 'LEAF'] }
+  ],
+  MEDIUM: [
+    { level: 1, words: ['MEMORY', 'FAMILY', 'GARDEN', 'SMILE'] },
+    { level: 2, words: ['FLOWER', 'SPRING', 'HEALTH', 'FRIEND'] },
+    { level: 3, words: ['SUMMER', 'MEADOW', 'VALLEY', 'CANOE'] },
+    { level: 4, words: ['RIVER', 'AURORA', 'TUNDRA', 'TIMBER'] },
+    { level: 5, words: ['FOREST', 'STREAM', 'SUNSET', 'BREEZE'] }
+  ],
+  HARD: [
+    { level: 1, words: ['ALASKA', 'GLACIER', 'AURORA', 'NATURE', 'BLOSSOM'] },
+    { level: 2, words: ['KINDNESS', 'HERITAGE', 'SUNSHINE', 'HARMONY', 'JOURNEY'] },
+    { level: 3, words: ['DENALI', 'SALMON', 'KLONDIKE', 'WILDERNESS', 'SEATTLE'] },
+    { level: 4, words: ['JUNEAU', 'FAIRBANKS', 'ANCHORAGE', 'PACIFIC', 'ICEBERG'] },
+    { level: 5, words: ['EVERGREEN', 'HARBOR', 'ADVENTURE', 'EXPEDITION', 'MOUNTAIN'] }
+  ]
 };
 
 export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) => {
   const { currentLang, t } = useLanguage();
+  const [currentLevel, setCurrentLevel] = useState(1);
   const [gridSize, setGridSize] = useState(5);
   const [grid, setGrid] = useState([]);
   const [targetWords, setTargetWords] = useState([]);
@@ -51,10 +43,10 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
   const gridContainerRef = useRef(null);
 
   useEffect(() => {
-    initPuzzle();
-  }, [difficulty, currentLang]);
+    initPuzzle(currentLevel);
+  }, [difficulty, currentLang, currentLevel]);
 
-  const initPuzzle = () => {
+  const initPuzzle = (lvl = currentLevel) => {
     startTimeRef.current = Date.now();
     setScore(0);
     setFoundWords([]);
@@ -63,16 +55,13 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
     setShowRestartConfirm(false);
 
     const size = difficulty === 'HARD' ? 10 : difficulty === 'MEDIUM' ? 7 : 5;
-    const wordCount = difficulty === 'HARD' ? 6 : difficulty === 'MEDIUM' ? 4 : 3;
     setGridSize(size);
 
-    // Pick words for active language
-    const langDict = PUZZLE_WORDS_BY_LANG[currentLang] || PUZZLE_WORDS_BY_LANG.en;
-    const pool = [...(langDict[difficulty] || langDict.EASY)].sort(() => 0.5 - Math.random());
-    const chosenWords = pool.slice(0, wordCount);
+    const levelsPool = LEVEL_WORDS[difficulty] || LEVEL_WORDS.EASY;
+    const levelData = levelsPool.find(l => l.level === lvl) || levelsPool[0];
+    const chosenWords = levelData.words;
     setTargetWords(chosenWords);
 
-    // Generate valid grid with guaranteed placement
     generateValidGrid(size, chosenWords);
     soundManager.playChime();
   };
@@ -248,18 +237,26 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
 
       // Check game completion
       if (nextFound.length === targetWords.length) {
+        soundManager.playSuccess();
         const elapsedSeconds = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
-        const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
-
-        setTimeout(() => {
-          onCompleteRound({
-            correctAnswers: targetWords.length,
-            totalQuestions: targetWords.length,
-            timeTakenSeconds: elapsedSeconds,
-            score: 100,
-            nextDifficulty: nextLvl
-          });
-        }, 600);
+        
+        if (currentLevel < 5) {
+          setTimeout(() => {
+            setCurrentLevel(prev => prev + 1);
+          }, 800);
+        } else {
+          const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
+          setTimeout(() => {
+            onCompleteRound({
+              correctAnswers: targetWords.length,
+              totalQuestions: targetWords.length,
+              timeTakenSeconds: elapsedSeconds,
+              score: 100,
+              level: currentLevel,
+              nextDifficulty: nextLvl
+            });
+          }, 800);
+        }
       }
     } else {
       soundManager.playTap();
@@ -279,18 +276,35 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
       onTouchEnd={handleSelectionEnd}
       className="space-y-6 text-center max-w-3xl mx-auto select-none"
     >
-      {/* Header */}
-      <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-2">
-        <div className="flex items-center justify-between">
+      {/* Header with 5 Level Selector */}
+      <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
-            🌲 {t.games?.wordSearchTitle || "Word Search"} • {difficulty} ({gridSize}×{gridSize})
+            🌲 {t.games?.wordSearchTitle || "Word Search"} • {difficulty}
           </span>
+
+          {/* Level 1-5 Pills */}
+          <div className="flex items-center gap-1.5">
+            {[1, 2, 3, 4, 5].map(lvl => (
+              <button
+                key={lvl}
+                onClick={() => setCurrentLevel(lvl)}
+                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all ${
+                  currentLevel === lvl
+                    ? 'bg-[#1B3B2B] text-amber-200 shadow-sm border border-amber-300'
+                    : 'bg-stone-100 text-stone-600 hover:bg-amber-100'
+                }`}
+              >
+                Lvl {lvl}
+              </button>
+            ))}
+          </div>
 
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-stone-600">
-              {t.games?.wordSearchWordsFound || "Words Found"}: <strong className="text-emerald-800 text-sm">{foundWords.length} / {targetWords.length}</strong>
+              {t.games?.wordSearchWordsFound || "Words"}: <strong className="text-emerald-800 text-sm">{foundWords.length} / {targetWords.length}</strong>
             </span>
-            <VoiceButton textToRead={`${t.games?.wordSearchTitle || 'Word Search'}. ${t.games?.wordSearchInstructions || 'Find the hidden words in the grid'}`} />
+            <VoiceButton textToRead={`${t.games?.wordSearchTitle || 'Word Search'}. Level ${currentLevel}. Find the hidden words in the grid`} />
           </div>
         </div>
 

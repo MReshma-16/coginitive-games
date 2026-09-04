@@ -71,13 +71,11 @@ export const Navbar = ({ activePage, setActivePage }) => {
             onClick={() => setActivePage('home')}
             className="flex items-center gap-2 cursor-pointer select-none group py-1"
           >
-            <div className="bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-2xl border border-amber-300/80 shadow-sm group-hover:shadow-md group-hover:border-amber-400 group-hover:scale-102 transition-all duration-300 flex items-center">
-              <img
-                src={logoImg}
-                alt="CogniCare Logo"
-                className="h-8 sm:h-9 md:h-10 object-contain drop-shadow-xs"
-              />
-            </div>
+            <img
+              src={logoImg}
+              alt="CogniCare Logo"
+              className="h-10 sm:h-11 object-contain hover:scale-102 transition-transform duration-200"
+            />
           </div>
 
           {/* Desktop Navigation Links */}

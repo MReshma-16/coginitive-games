@@ -15,6 +15,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { VoiceButton } from '../components/VoiceButton';
 import logoImg from '../assets/logo.png';
+import heroLake from '../assets/hero-lake.jpg';
 import heroBg from '../assets/hero-bg.png';
 import sacredTemple from '../assets/sacred-temple.png';
 import mountainValley from '../assets/mountain-valley.png';
@@ -115,56 +116,57 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
 
   return (
     <div className="bg-[#FAF7F0] min-h-screen">
-      {/* Majestic Full-Background Hero with Loktak Lake Manipur */}
+      {/* Scenic Sunrise Lake & Park Bench Hero (Matching Image 1) */}
       <section
-        className="relative pt-14 pb-18 md:pt-20 md:pb-24 bg-cover bg-center border-b-4 border-[#C99E32] overflow-hidden"
-        style={{ backgroundImage: `url(${loktakLake})`, backgroundPosition: 'center 35%' }}
+        className="relative pt-12 pb-16 md:pt-16 md:pb-20 bg-cover bg-center border-b border-[#E5DFD5] overflow-hidden"
+        style={{ backgroundImage: `url(${heroLake})`, backgroundPosition: 'center 45%' }}
       >
-        {/* Rich Atmospheric Oceanic Gradient Overlay for Crystal-Clear Text & Serene Ambience */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#051C26]/88 via-[#092B38]/65 to-[#FAF7F0]" />
-        
-        {/* Subtle Warm Radial Glow Accent */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(201,158,50,0.2)_0,transparent_65%)] pointer-events-none" />
+        {/* Soft atmospheric gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-[#FAF7F0]/90" />
 
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          {/* Beautiful & Elegant Logo Presentation */}
-          <div className="flex flex-col items-center justify-center">
-            <div className="bg-white/92 backdrop-blur-md px-7 py-3.5 sm:px-9 sm:py-4 rounded-3xl border border-white/80 shadow-[0_8px_32px_rgba(0,0,0,0.35)] ring-1 ring-amber-400/40 hover:scale-102 transition-all duration-300 flex items-center justify-center">
-              <img
-                src={logoImg}
-                alt="CogniCare Logo"
-                className="h-16 sm:h-20 md:h-24 object-contain"
-              />
-            </div>
-            <div className="mt-3.5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#051C26]/80 backdrop-blur-md border border-amber-300/60 text-amber-200 text-xs sm:text-sm font-serif font-semibold tracking-wide shadow-md">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5">
+          {/* CogniCare Logo (Clean, Transparent, Seamless) */}
+          <div className="flex justify-center mb-1">
+            <img
+              src={logoImg}
+              alt="CogniCare Logo"
+              className="h-20 sm:h-24 md:h-28 object-contain hover:scale-102 transition-transform duration-300 drop-shadow-sm"
+            />
+          </div>
+
+          {/* Tagline Badge */}
+          <div className="flex justify-center">
+            <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-[#1B3B2B] text-amber-200 text-xs sm:text-sm font-serif font-semibold tracking-wide shadow-md">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span className="italic">when memories meet care</span>
+              <span>when memories meet care</span>
             </div>
           </div>
 
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-amber-50 leading-tight tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+          {/* Main Title */}
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#1B3B2B] leading-tight tracking-tight">
             {t.hero?.title || "when memories meet care"}
           </h1>
 
-          <p className="text-base sm:text-lg text-cyan-50/95 max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
-            {t.hero?.desc || "A warm, peaceful, culturally rooted space designed for our beloved elders in North-Eastern India to revisit traditional games, familiar village life, and cherished moments with gentle adaptive memory activities."}
+          {/* Description */}
+          <p className="text-base sm:text-lg text-stone-800 max-w-2xl mx-auto leading-relaxed font-medium">
+            {t.hero?.desc || "A warm, peaceful, culturally rooted space designed for our beloved elders to revisit joyful memories, exercise visual attention, and stimulate word recall with gentle cognitive games."}
           </p>
 
-          {/* Voice Prompt */}
-          <div className="flex justify-center pt-1">
-            <div className="bg-[#051C26]/85 backdrop-blur-md p-1 rounded-2xl border border-amber-300/50 shadow-md">
+          {/* Listen to Introduction Button */}
+          <div className="flex justify-center pt-2">
+            <div className="bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white px-2 py-1 rounded-full shadow-md transition-all">
               <VoiceButton
-                textToRead="Welcome to CogniCare, when memories meet care. A peaceful cognitive support and reminiscence platform for our beloved elders in North-Eastern India."
+                textToRead="Welcome to CogniCare, when memories meet care. A peaceful cognitive support and reminiscence platform for our beloved elders."
                 label="Listen to Introduction"
               />
             </div>
           </div>
 
-          {/* Clean Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-3">
             <button
               onClick={() => setActivePage('games')}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-[#1B3B2B] hover:bg-[#275338] text-white font-bold text-base border-2 border-[#C99E32] shadow-xl hover:shadow-2xl transition-all active:scale-98 group"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-base border-2 border-[#C99E32] shadow-md hover:shadow-lg transition-all active:scale-98 group"
             >
               <Gamepad2 className="w-5 h-5 text-amber-300 group-hover:scale-110 transition-transform" />
               <span>Explore Cognitive Games</span>
@@ -174,7 +176,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
             {isAuthenticated ? (
               <button
                 onClick={() => setActivePage('dashboard')}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-amber-100/95 hover:bg-amber-200 text-stone-900 font-bold text-base border-2 border-amber-300 shadow-xl transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold text-base border-2 border-amber-300 shadow-md transition-all"
               >
                 <Heart className="w-5 h-5 text-amber-700" />
                 <span>{t.hero?.caretakerPortal || "Caretaker Dashboard"}</span>
@@ -182,7 +184,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
             ) : (
               <button
                 onClick={handleDemoStart}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-white/95 hover:bg-amber-50 text-stone-900 font-bold text-base border-2 border-stone-300 shadow-xl transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-white hover:bg-amber-50 text-stone-900 font-bold text-base border-2 border-stone-300 shadow-md transition-all"
               >
                 <Sparkles className="w-4 h-4 text-amber-600" />
                 <span>{t.hero?.tryDemo || "1-Click Demo Caregiver"}</span>

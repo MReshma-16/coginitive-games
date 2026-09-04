@@ -7,6 +7,7 @@ import { DEFAULT_PUZZLE_IMAGES, sliceImageToPieces } from '../../assets/puzzleIm
 
 export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) => {
   const { t } = useLanguage();
+  const [currentLevel, setCurrentLevel] = useState(1); // 1 to 5
   const [selectedImage, setSelectedImage] = useState(DEFAULT_PUZZLE_IMAGES[0]);
   const [gridDim, setGridDim] = useState(2); // 2=Easy (2x2), 3=Med (3x3), 4=Hard (4x4)
   const [boardSlots, setBoardSlots] = useState([]); // Array of piece indices in each board slot (or null)
@@ -20,6 +21,12 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
   const startTimeRef = useRef(Date.now());
 
   const totalPieces = gridDim * gridDim;
+
+  // Sync selected image with current level if within range
+  useEffect(() => {
+    const imgIndex = (currentLevel - 1) % DEFAULT_PUZZLE_IMAGES.length;
+    setSelectedImage(DEFAULT_PUZZLE_IMAGES[imgIndex]);
+  }, [currentLevel]);
 
   useEffect(() => {
     initPuzzle();
@@ -214,18 +221,24 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
       soundManager.playSuccess();
       const elapsed = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
       const score = Math.max(70, 100 - Math.max(0, moveCount - totalPieces) * 2);
-      const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
 
-      setTimeout(() => {
-        onCompleteRound({
-          correctAnswers: totalPieces,
-          totalQuestions: totalPieces,
-          timeTakenSeconds: elapsed,
-          score,
-          accuracy: 100,
-          nextDifficulty: nextLvl
-        });
-      }, 700);
+      if (currentLevel < 5) {
+        setTimeout(() => {
+          setCurrentLevel(prev => prev + 1);
+        }, 1000);
+      } else {
+        const nextLvl = difficulty === 'EASY' ? 'MEDIUM' : difficulty === 'MEDIUM' ? 'HARD' : 'EASY';
+        setTimeout(() => {
+          onCompleteRound({
+            correctAnswers: totalPieces * 5,
+            totalQuestions: totalPieces * 5,
+            timeTakenSeconds: elapsed,
+            score,
+            accuracy: 100,
+            nextDifficulty: nextLvl
+          });
+        }, 1000);
+      }
     }
   };
 
@@ -282,18 +295,41 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
       />
 
       {/* Header Info */}
-      <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-2">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-purple-800 bg-purple-100 px-3 py-1 rounded-full border border-purple-300">
-            🧩 {t.games?.jigsawTitle || "Jigsaw Puzzle"} • {difficulty} ({gridDim}×{gridDim} = {totalPieces} {t.games?.jigsawPlaced?.toLowerCase() || "pieces"})
-          </span>
+      <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-5 shadow-sm space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-purple-800 bg-purple-100 px-3 py-1 rounded-full border border-purple-300">
+              🧩 {t.games?.jigsawTitle || "Jigsaw Puzzle"} • {difficulty} ({gridDim}×{gridDim} = {totalPieces} {t.games?.jigsawPlaced?.toLowerCase() || "pieces"})
+            </span>
+            <span className="text-xs font-bold bg-[#1B3B2B] text-white px-2.5 py-1 rounded-full">
+              Level {currentLevel} of 5
+            </span>
+          </div>
 
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-stone-600">
               {t.games?.jigsawPlaced || "Pieces Placed"}: <strong className="text-emerald-800 text-sm">{correctlyPlacedCount} / {totalPieces}</strong>
             </span>
-            <VoiceButton textToRead={`${t.games?.jigsawTitle || 'Jigsaw Puzzle'}. ${selectedImage.title}. ${t.games?.jigsawTapInstruction || 'Drag pieces from the tray or tap to place them onto the board.'}`} />
+            <VoiceButton textToRead={`${t.games?.jigsawTitle || 'Jigsaw Puzzle'}. Level ${currentLevel}. ${selectedImage.title}. ${t.games?.jigsawTapInstruction || 'Drag pieces from the tray or tap to place them onto the board.'}`} />
           </div>
+        </div>
+
+        {/* Level 1-5 selector pills */}
+        <div className="flex items-center justify-center gap-1.5 pt-1 border-t border-stone-100">
+          <span className="text-xs font-bold text-stone-500 mr-1">Level:</span>
+          {[1, 2, 3, 4, 5].map((lvl) => (
+            <button
+              key={lvl}
+              onClick={() => setCurrentLevel(lvl)}
+              className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                currentLevel === lvl
+                  ? 'bg-[#1B3B2B] text-white shadow-xs scale-105'
+                  : 'bg-stone-100 hover:bg-stone-200 text-stone-700'
+              }`}
+            >
+              Lvl {lvl}
+            </button>
+          ))}
         </div>
 
         <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#1B3B2B]">

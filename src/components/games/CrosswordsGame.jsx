@@ -8,7 +8,7 @@ const VERIFIED_PUZZLES = {
   EASY: [
     {
       id: 'easy-1',
-      title: 'Peace & Nature',
+      title: 'Level 1 • Peace & Nature',
       gridSize: 6,
       words: [
         { id: '1A', word: 'CARE', clue: 'Loving attention and warm kindness', dir: 'across', row: 1, col: 1, number: 1 },
@@ -19,7 +19,7 @@ const VERIFIED_PUZZLES = {
     },
     {
       id: 'easy-2',
-      title: 'Family & Home',
+      title: 'Level 2 • Family & Home',
       gridSize: 6,
       words: [
         { id: '1A', word: 'HOME', clue: 'A cozy place where family lives and rests', dir: 'across', row: 1, col: 1, number: 1 },
@@ -27,12 +27,45 @@ const VERIFIED_PUZZLES = {
         { id: '2D', word: 'MEND', clue: 'To repair or make whole with care', dir: 'down', row: 1, col: 3, number: 2 },
         { id: '3A', word: 'ENDS', clue: 'Reaches a peaceful finish or close', dir: 'across', row: 4, col: 1, number: 3 }
       ]
+    },
+    {
+      id: 'easy-3',
+      title: 'Level 3 • Forest Birds & Roses',
+      gridSize: 6,
+      words: [
+        { id: '1A', word: 'BIRD', clue: 'A feathered singing creature of the trees', dir: 'across', row: 1, col: 1, number: 1 },
+        { id: '1D', word: 'BEAR', clue: 'Strong gentle woodland animal', dir: 'down', row: 1, col: 1, number: 1 },
+        { id: '2D', word: 'ROSE', clue: 'Fragrant sweet flower in the garden', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3A', word: 'REST', clue: 'To relax quietly and restore strength', dir: 'across', row: 4, col: 1, number: 3 }
+      ]
+    },
+    {
+      id: 'easy-4',
+      title: 'Level 4 • Serene Lake & Green Leaves',
+      gridSize: 6,
+      words: [
+        { id: '1A', word: 'LAKE', clue: 'Calm shimmering body of fresh water', dir: 'across', row: 1, col: 1, number: 1 },
+        { id: '1D', word: 'LEAF', clue: 'Green foliage growing on tea trees', dir: 'down', row: 1, col: 1, number: 1 },
+        { id: '2D', word: 'KIND', clue: 'Gentle, warm-hearted and considerate', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3A', word: 'FIND', clue: 'To discover something joyful and pleasant', dir: 'across', row: 4, col: 1, number: 3 }
+      ]
+    },
+    {
+      id: 'easy-5',
+      title: 'Level 5 • Warm Breeze & Dear Friends',
+      gridSize: 6,
+      words: [
+        { id: '1A', word: 'WARM', clue: 'Comforting mild heat like morning tea', dir: 'across', row: 1, col: 1, number: 1 },
+        { id: '1D', word: 'WIND', clue: 'Gentle moving breeze across the hills', dir: 'down', row: 1, col: 1, number: 1 },
+        { id: '2D', word: 'ROAD', clue: 'A pathway leading to village home', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3A', word: 'DEAR', clue: 'Precious and beloved to our hearts', dir: 'across', row: 4, col: 1, number: 3 }
+      ]
     }
   ],
   MEDIUM: [
     {
       id: 'med-1',
-      title: 'Living Earth & Garden',
+      title: 'Level 1 • Living Earth & Garden',
       gridSize: 7,
       words: [
         { id: '1A', word: 'PLATE', clue: 'A clean dish we serve our meal on', dir: 'across', row: 1, col: 1, number: 1 },
@@ -45,7 +78,7 @@ const VERIFIED_PUZZLES = {
     },
     {
       id: 'med-2',
-      title: 'Morning Sunshine',
+      title: 'Level 2 • Morning Sunshine',
       gridSize: 7,
       words: [
         { id: '1A', word: 'SWEET', clue: 'Pleasant sugary taste like honey or ripe fruit', dir: 'across', row: 1, col: 1, number: 1 },
@@ -55,12 +88,49 @@ const VERIFIED_PUZZLES = {
         { id: '4A', word: 'INNER', clue: 'Located inside or deep within the heart', dir: 'across', row: 3, col: 1, number: 4 },
         { id: '5A', word: 'EYES', clue: 'Organs of sight that allow us to see beauty', dir: 'across', row: 5, col: 1, number: 5 }
       ]
+    },
+    {
+      id: 'med-3',
+      title: 'Level 3 • Tea Gardens & Harvest',
+      gridSize: 7,
+      words: [
+        { id: '1A', word: 'GREEN', clue: 'Fresh vibrant color of tea leaves', dir: 'across', row: 1, col: 1, number: 1 },
+        { id: '1D', word: 'GRASS', clue: 'Soft green lawn under foot', dir: 'down', row: 1, col: 1, number: 1 },
+        { id: '2D', word: 'EARTH', clue: 'Rich soil nurturing our garden', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3D', word: 'NIGHT', clue: 'Time when stars sparkle in the sky', dir: 'down', row: 1, col: 5, number: 3 },
+        { id: '4A', word: 'AURA', clue: 'Gentle glowing radiance of peace', dir: 'across', row: 3, col: 1, number: 4 },
+        { id: '5A', word: 'SEAT', clue: 'A comfortable chair to rest upon', dir: 'across', row: 5, col: 1, number: 5 }
+      ]
+    },
+    {
+      id: 'med-4',
+      title: 'Level 4 • River Streams & Valleys',
+      gridSize: 7,
+      words: [
+        { id: '1A', word: 'RIVER', clue: 'Flowing body of fresh mountain water', dir: 'across', row: 1, col: 1, number: 1 },
+        { id: '1D', word: 'ROSES', clue: 'Fragrant blooming garden flowers', dir: 'down', row: 1, col: 1, number: 1 },
+        { id: '2D', word: 'VALE', clue: 'Peaceful green valley between hills', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3D', word: 'RAIN', clue: 'Cool showers nourishing plants', dir: 'down', row: 1, col: 5, number: 3 },
+        { id: '4A', word: 'SEAL', clue: 'To close securely with care', dir: 'across', row: 3, col: 1, number: 4 }
+      ]
+    },
+    {
+      id: 'med-5',
+      title: 'Level 5 • Folk Melodies & Memories',
+      gridSize: 7,
+      words: [
+        { id: '1A', word: 'MUSIC', clue: 'Harmonious sounds played on instruments', dir: 'across', row: 1, col: 1, number: 1 },
+        { id: '1D', word: 'MANGO', clue: 'Sweet golden tropical summer fruit', dir: 'down', row: 1, col: 1, number: 1 },
+        { id: '2D', word: 'SONG', clue: 'Melodic tune sung with heartfelt joy', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3D', word: 'CARE', clue: 'Devotion and kind attention to loved ones', dir: 'down', row: 1, col: 5, number: 3 },
+        { id: '4A', word: 'NEAR', clue: 'Close by in distance or memory', dir: 'across', row: 3, col: 1, number: 4 }
+      ]
     }
   ],
   HARD: [
     {
       id: 'hard-1',
-      title: 'Wisdom & Golden Harmony',
+      title: 'Level 1 • Wisdom & Golden Harmony',
       gridSize: 8,
       words: [
         { id: '1A', word: 'SPRING', clue: 'Season of blossoming flowers and fresh renewal', dir: 'across', row: 1, col: 1, number: 1 },
@@ -73,7 +143,7 @@ const VERIFIED_PUZZLES = {
     },
     {
       id: 'hard-2',
-      title: 'Heritage & Sunlight',
+      title: 'Level 2 • Heritage & Sunlight',
       gridSize: 8,
       words: [
         { id: '1A', word: 'FLOWER', clue: 'A fragrant blossom blooming in the garden', dir: 'across', row: 1, col: 1, number: 1 },
@@ -81,6 +151,42 @@ const VERIFIED_PUZZLES = {
         { id: '2D', word: 'WATER', clue: 'Clear life-giving liquid we drink every day', dir: 'down', row: 1, col: 4, number: 2 },
         { id: '3A', word: 'MEET', clue: 'To come together with friends and loved ones', dir: 'across', row: 3, col: 1, number: 3 },
         { id: '4A', word: 'YEAR', clue: 'A period of twelve months and four seasons', dir: 'across', row: 6, col: 1, number: 4 }
+      ]
+    },
+    {
+      id: 'hard-3',
+      title: 'Level 3 • Ancient Temples & Valleys',
+      gridSize: 8,
+      words: [
+        { id: '1A', word: 'NATURE', clue: 'The physical world including plants and animals', dir: 'across', row: 1, col: 1, number: 1 },
+        { id: '1D', word: 'NOBLE', clue: 'Having fine personal qualities or high dignity', dir: 'down', row: 1, col: 1, number: 1 },
+        { id: '2D', word: 'TREES', clue: 'Tall green pine and bamboo groves', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3D', word: 'REST', clue: 'Tranquil peaceful repose after daily activities', dir: 'down', row: 1, col: 5, number: 3 },
+        { id: '4A', word: 'BEAT', clue: 'Rhythm of folk drums during festival dance', dir: 'across', row: 3, col: 1, number: 4 }
+      ]
+    },
+    {
+      id: 'hard-4',
+      title: 'Level 4 • Sacred Mountains & Rivers',
+      gridSize: 8,
+      words: [
+        { id: '1A', word: 'SILVER', clue: 'Shiny white precious metal like moonlight', dir: 'across', row: 1, col: 1, number: 1 },
+        { id: '1D', word: 'SERENE', clue: 'Peaceful, untroubled and tranquil state', dir: 'down', row: 1, col: 1, number: 1 },
+        { id: '2D', word: 'LIGHT', clue: 'Bright illumination from the golden sun', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3D', word: 'EARTH', clue: 'The fertile soil of North-Eastern hills', dir: 'down', row: 1, col: 5, number: 3 },
+        { id: '4A', word: 'RING', clue: 'Circular ornament or phumdi on Loktak Lake', dir: 'across', row: 3, col: 1, number: 4 }
+      ]
+    },
+    {
+      id: 'hard-5',
+      title: 'Level 5 • Grand Celebration & Memory',
+      gridSize: 8,
+      words: [
+        { id: '1A', word: 'GOLDEN', clue: 'Shining yellow color of Muga silk and morning sun', dir: 'across', row: 1, col: 1, number: 1 },
+        { id: '1D', word: 'GARDEN', clue: 'Planted area with blooming flowers and orchids', dir: 'down', row: 1, col: 1, number: 1 },
+        { id: '2D', word: 'LAKE', clue: 'Vast peaceful water body like Loktak Lake', dir: 'down', row: 1, col: 3, number: 2 },
+        { id: '3D', word: 'DEAR', clue: 'Beloved family member held close in heart', dir: 'down', row: 1, col: 4, number: 3 },
+        { id: '4A', word: 'RAIN', clue: 'Gentle raindrops falling over the tea hills', dir: 'across', row: 3, col: 1, number: 4 }
       ]
     }
   ]
