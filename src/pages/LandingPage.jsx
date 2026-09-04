@@ -18,6 +18,7 @@ import logoImg from '../assets/logo.png';
 import heroBg from '../assets/hero-bg.png';
 import sacredTemple from '../assets/sacred-temple.png';
 import mountainValley from '../assets/mountain-valley.png';
+import loktakLake from '../assets/loktak-lake.png';
 
 export const LandingPage = ({ setActivePage, onOpenCulture }) => {
   const { currentLang, setLanguage, languages, t } = useLanguage();
@@ -114,44 +115,44 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
 
   return (
     <div className="bg-[#FAF7F0] min-h-screen">
-      {/* Majestic Full-Background Hero with CogniCare Branding */}
+      {/* Majestic Full-Background Hero with Loktak Lake Manipur */}
       <section
-        className="relative pt-12 pb-16 md:pt-16 md:pb-20 bg-cover bg-center border-b-4 border-[#C99E32] overflow-hidden"
-        style={{ backgroundImage: `url(${heroBg})` }}
+        className="relative pt-14 pb-18 md:pt-20 md:pb-24 bg-cover bg-center border-b-4 border-[#C99E32] overflow-hidden"
+        style={{ backgroundImage: `url(${loktakLake})`, backgroundPosition: 'center 35%' }}
       >
-        {/* Rich Atmospheric Gradient Overlay for Crystal-Clear Text & Deep Ambience */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B1E15]/92 via-[#143224]/85 to-[#FAF7F0]/95" />
+        {/* Rich Atmospheric Oceanic Gradient Overlay for Crystal-Clear Text & Serene Ambience */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#051C26]/88 via-[#092B38]/65 to-[#FAF7F0]" />
         
         {/* Subtle Warm Radial Glow Accent */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(201,158,50,0.15)_0,transparent_70%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(201,158,50,0.2)_0,transparent_65%)] pointer-events-none" />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           {/* Beautiful & Elegant Logo Presentation */}
           <div className="flex flex-col items-center justify-center">
-            <div className="bg-white/95 backdrop-blur-md px-6 py-4 sm:px-8 sm:py-5 rounded-3xl border-2 border-amber-300 shadow-2xl ring-4 ring-amber-400/25 hover:scale-103 transition-all duration-300 flex items-center justify-center">
+            <div className="bg-white/92 backdrop-blur-md px-7 py-3.5 sm:px-9 sm:py-4 rounded-3xl border border-white/80 shadow-[0_8px_32px_rgba(0,0,0,0.35)] ring-1 ring-amber-400/40 hover:scale-102 transition-all duration-300 flex items-center justify-center">
               <img
                 src={logoImg}
                 alt="CogniCare Logo"
-                className="h-20 sm:h-24 md:h-28 object-contain drop-shadow-sm"
+                className="h-16 sm:h-20 md:h-24 object-contain"
               />
             </div>
-            <div className="mt-3.5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/25 border border-amber-300/60 backdrop-blur-sm text-amber-200 text-xs sm:text-sm font-serif font-semibold tracking-wide shadow-sm">
-              <Sparkles className="w-4 h-4 text-amber-300" />
+            <div className="mt-3.5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#051C26]/80 backdrop-blur-md border border-amber-300/60 text-amber-200 text-xs sm:text-sm font-serif font-semibold tracking-wide shadow-md">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
               <span className="italic">when memories meet care</span>
             </div>
           </div>
 
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-amber-100 leading-tight tracking-tight drop-shadow-md">
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-amber-50 leading-tight tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
             {t.hero?.title || "when memories meet care"}
           </h1>
 
-          <p className="text-base sm:text-lg text-emerald-100/90 max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-sm">
+          <p className="text-base sm:text-lg text-cyan-50/95 max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
             {t.hero?.desc || "A warm, peaceful, culturally rooted space designed for our beloved elders in North-Eastern India to revisit traditional games, familiar village life, and cherished moments with gentle adaptive memory activities."}
           </p>
 
           {/* Voice Prompt */}
           <div className="flex justify-center pt-1">
-            <div className="bg-[#1B3B2B]/90 backdrop-blur-sm p-1 rounded-2xl border border-amber-300/50 shadow-md">
+            <div className="bg-[#051C26]/85 backdrop-blur-md p-1 rounded-2xl border border-amber-300/50 shadow-md">
               <VoiceButton
                 textToRead="Welcome to CogniCare, when memories meet care. A peaceful cognitive support and reminiscence platform for our beloved elders in North-Eastern India."
                 label="Listen to Introduction"
@@ -240,15 +241,49 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
               Cherished Heritage Sights & Mountain Landscapes
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 max-w-2xl mx-auto">
-              Real high-definition photographs celebrating sacred architecture and serene pine valleys — playable directly in the Jigsaw Puzzle.
+              Real high-definition photographs celebrating sacred architecture, serene lakes, and pine valleys — playable directly in the Jigsaw Puzzle.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Card 1: Ancient Sun Temple */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Card 1: Loktak Lake Manipur */}
             <div className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
               <div>
-                <div className="relative h-48 sm:h-52 overflow-hidden">
+                <div className="relative h-44 overflow-hidden">
+                  <img
+                    src={loktakLake}
+                    alt="Loktak Lake & Floating Phumdis"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 left-3 bg-[#051C26]/90 backdrop-blur-xs text-amber-200 text-[11px] px-3 py-1 rounded-full font-bold border border-amber-300/40">
+                    🌊 Loktak Lake
+                  </div>
+                </div>
+                <div className="p-4 space-y-1.5">
+                  <h3 className="font-serif font-bold text-base text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
+                    Loktak Lake, Manipur
+                  </h3>
+                  <p className="text-xs text-stone-600 leading-relaxed line-clamp-3">
+                    Iconic circular floating islands (phumdis) on crystal blue waters surrounded by gentle rolling green hills.
+                  </p>
+                </div>
+              </div>
+              <div className="p-4 pt-0">
+                <button
+                  onClick={() => setActivePage('games')}
+                  className="w-full py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <Gamepad2 className="w-3.5 h-3.5 text-amber-700" />
+                  <span>Play as Puzzle</span>
+                  <ArrowRight className="w-3 h-3 text-amber-700" />
+                </button>
+              </div>
+            </div>
+
+            {/* Card 2: Ancient Sun Temple */}
+            <div className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
+              <div>
+                <div className="relative h-44 overflow-hidden">
                   <img
                     src={heroBg}
                     alt="Ancient Sun Temple Architecture"
@@ -258,31 +293,31 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
                     🏛️ Sacred Heritage
                   </div>
                 </div>
-                <div className="p-5 space-y-2">
-                  <h3 className="font-serif font-bold text-lg text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
-                    Grand Sun Temple Architecture
+                <div className="p-4 space-y-1.5">
+                  <h3 className="font-serif font-bold text-base text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
+                    Grand Sun Temple
                   </h3>
-                  <p className="text-xs text-stone-600 leading-relaxed">
+                  <p className="text-xs text-stone-600 leading-relaxed line-clamp-3">
                     Carved ancient chariot wheels and majestic stone architecture inspiring cultural pride and peaceful reminiscence.
                   </p>
                 </div>
               </div>
-              <div className="p-5 pt-0">
+              <div className="p-4 pt-0">
                 <button
                   onClick={() => setActivePage('games')}
-                  className="w-full py-2.5 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
+                  className="w-full py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
                 >
-                  <Gamepad2 className="w-4 h-4 text-amber-700" />
-                  <span>Play as Jigsaw Puzzle</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-amber-700" />
+                  <Gamepad2 className="w-3.5 h-3.5 text-amber-700" />
+                  <span>Play as Puzzle</span>
+                  <ArrowRight className="w-3 h-3 text-amber-700" />
                 </button>
               </div>
             </div>
 
-            {/* Card 2: Sacred Twilight Temple */}
+            {/* Card 3: Sacred Twilight Temple */}
             <div className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
               <div>
-                <div className="relative h-48 sm:h-52 overflow-hidden">
+                <div className="relative h-44 overflow-hidden">
                   <img
                     src={sacredTemple}
                     alt="Sacred Twilight Stone Temple"
@@ -292,31 +327,31 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
                     🛕 Twilight Sanctum
                   </div>
                 </div>
-                <div className="p-5 space-y-2">
-                  <h3 className="font-serif font-bold text-lg text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
-                    Sacred Twilight Stone Temple
+                <div className="p-4 space-y-1.5">
+                  <h3 className="font-serif font-bold text-base text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
+                    Sacred Red Temple
                   </h3>
-                  <p className="text-xs text-stone-600 leading-relaxed">
+                  <p className="text-xs text-stone-600 leading-relaxed line-clamp-3">
                     Atmospheric sacred red stone temple glowing gently under the twilight evening sky, bringing soothing nostalgia.
                   </p>
                 </div>
               </div>
-              <div className="p-5 pt-0">
+              <div className="p-4 pt-0">
                 <button
                   onClick={() => setActivePage('games')}
-                  className="w-full py-2.5 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
+                  className="w-full py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
                 >
-                  <Gamepad2 className="w-4 h-4 text-amber-700" />
-                  <span>Play as Jigsaw Puzzle</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-amber-700" />
+                  <Gamepad2 className="w-3.5 h-3.5 text-amber-700" />
+                  <span>Play as Puzzle</span>
+                  <ArrowRight className="w-3 h-3 text-amber-700" />
                 </button>
               </div>
             </div>
 
-            {/* Card 3: Mountain Valley & Pine Hills */}
+            {/* Card 4: Mountain Valley & Pine Hills */}
             <div className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
               <div>
-                <div className="relative h-48 sm:h-52 overflow-hidden">
+                <div className="relative h-44 overflow-hidden">
                   <img
                     src={mountainValley}
                     alt="Himalayan Valley & Pine Hills"
@@ -326,23 +361,23 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
                     🌲 Misty Valleys
                   </div>
                 </div>
-                <div className="p-5 space-y-2">
-                  <h3 className="font-serif font-bold text-lg text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
-                    Himalayan Valley & Pine Hills
+                <div className="p-4 space-y-1.5">
+                  <h3 className="font-serif font-bold text-base text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
+                    Himalayan Pine Valley
                   </h3>
-                  <p className="text-xs text-stone-600 leading-relaxed">
+                  <p className="text-xs text-stone-600 leading-relaxed line-clamp-3">
                     Rolling emerald mountain ridges, misty pine canopies, and serene hill settlement bathed in pure morning light.
                   </p>
                 </div>
               </div>
-              <div className="p-5 pt-0">
+              <div className="p-4 pt-0">
                 <button
                   onClick={() => setActivePage('games')}
-                  className="w-full py-2.5 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
+                  className="w-full py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
                 >
-                  <Gamepad2 className="w-4 h-4 text-amber-700" />
-                  <span>Play as Jigsaw Puzzle</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-amber-700" />
+                  <Gamepad2 className="w-3.5 h-3.5 text-amber-700" />
+                  <span>Play as Puzzle</span>
+                  <ArrowRight className="w-3 h-3 text-amber-700" />
                 </button>
               </div>
             </div>
