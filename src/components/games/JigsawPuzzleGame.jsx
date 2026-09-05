@@ -253,10 +253,10 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
           isInTray ? 'rounded-xl border border-stone-300 shadow-xs hover:border-amber-400' : ''
         } ${
           isSelected
-            ? 'ring-4 ring-amber-400 scale-102 shadow-2xl z-20 border-2 border-amber-500'
+            ? 'ring-4 ring-amber-500 scale-105 shadow-2xl z-20 border-2 border-amber-500 rounded-xl'
             : isSnapped
-            ? 'border border-emerald-400/60'
-            : 'border border-stone-200/50'
+            ? 'border-2 border-emerald-500/70'
+            : ''
         }`}
       >
         {sliceSrc ? (
@@ -410,16 +410,18 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
               </span>
             </div>
 
-            {/* Seamless Board Container (Zero Gap Between Slices!) */}
+            {/* Seamless Board Container (Equal Even Square Slots, Zero Warping!) */}
             <div
               className="w-full aspect-square mx-auto rounded-2xl overflow-hidden border-2 border-stone-400 bg-stone-100 shadow-inner grid gap-0"
               style={{
                 gridTemplateColumns: `repeat(${gridDim}, minmax(0, 1fr))`,
-                maxWidth: '320px'
+                gridTemplateRows: `repeat(${gridDim}, minmax(0, 1fr))`,
+                maxWidth: gridDim >= 4 ? '380px' : '340px'
               }}
             >
               {boardSlots.map((pieceIdx, slotIdx) => {
                 const isSelected = selectedItem?.source === 'board' && selectedItem?.index === slotIdx;
+                const isTargetForSelected = selectedItem !== null && pieceIdx === null;
                 const isCorrect = pieceIdx !== null && pieceIdx === slotIdx;
 
                 return (
@@ -428,8 +430,12 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDropOnSlot(e, slotIdx)}
                     onClick={() => handleBoardSlotClick(slotIdx)}
-                    className={`relative w-full h-full border border-stone-300/60 flex items-center justify-center cursor-pointer transition-all ${
-                      pieceIdx === null ? 'bg-stone-200/40 hover:bg-amber-100/50' : 'bg-white'
+                    className={`relative w-full h-full aspect-square border border-stone-300/70 flex items-center justify-center cursor-pointer transition-all overflow-hidden ${
+                      pieceIdx === null
+                        ? isTargetForSelected
+                          ? 'bg-amber-100/90 ring-2 ring-amber-500 ring-inset animate-pulse'
+                          : 'bg-stone-200/40 hover:bg-amber-100/60'
+                        : 'bg-white'
                     }`}
                   >
                     {pieceIdx !== null ? (
@@ -443,13 +449,15 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
                         <button
                           onClick={(e) => handleReturnToTray(slotIdx, e)}
                           title="Return to tray"
-                          className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-stone-900/80 text-white text-[9px] font-bold flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-20 cursor-pointer"
+                          className="absolute top-1 right-1 w-5 h-5 rounded-full bg-stone-900/80 hover:bg-rose-700 text-white text-[10px] font-bold flex items-center justify-center transition-all z-20 cursor-pointer shadow-sm active:scale-90"
                         >
                           ✕
                         </button>
                       </div>
                     ) : (
-                      <span className="text-stone-400 font-bold text-[11px] pointer-events-none select-none">
+                      <span className={`font-bold select-none pointer-events-none ${
+                        gridDim >= 4 ? 'text-xs' : 'text-sm'
+                      } ${isTargetForSelected ? 'text-amber-900 font-extrabold' : 'text-stone-400'}`}>
                         {slotIdx + 1}
                       </span>
                     )}

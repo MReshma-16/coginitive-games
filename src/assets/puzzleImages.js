@@ -294,7 +294,9 @@ export const DEFAULT_PUZZLE_IMAGES = [
 
 /**
  * Canvas Piece Slicing Utility:
- * Takes an image data URL and divides it into exact canvas image chunks (1 for each grid slot).
+ * Normalizes any image (portrait, landscape, or square) onto a standardized high-resolution
+ * square canvas (600x600) via smart center-crop, then slices it into exact, uniform square pieces.
+ * This guarantees 100% even alignment of all puzzle board slots and pieces.
  * Returns array of base64 PNG data URLs.
  */
 export function sliceImageToPieces(imgSrc, gridDim) {
@@ -303,39 +305,56 @@ export function sliceImageToPieces(imgSrc, gridDim) {
     img.crossOrigin = 'anonymous';
 
     img.onload = () => {
-      const count = gridDim * gridDim;
-      const pieceW = Math.floor(img.width / gridDim);
-      const pieceH = Math.floor(img.height / gridDim);
+      // 1. Standardize image to a high-resolution 600x600 square canvas via center-crop
+      const SQUARE_SIZE = 600;
+      const squareCanvas = document.createElement('canvas');
+      squareCanvas.width = SQUARE_SIZE;
+      squareCanvas.height = SQUARE_SIZE;
+      const sCtx = squareCanvas.getContext('2d');
+
+      const minDim = Math.min(img.width, img.height);
+      const sx = Math.floor((img.width - minDim) / 2);
+      const sy = Math.floor((img.height - minDim) / 2);
+
+      // Draw center-cropped square
+      sCtx.drawImage(
+        img,
+        sx, sy, minDim, minDim,
+        0, 0, SQUARE_SIZE, SQUARE_SIZE
+      );
+
+      // 2. Divide square canvas into exact equal square pieces
+      const pieceSize = Math.floor(SQUARE_SIZE / gridDim);
       const pieceUrls = [];
 
       for (let r = 0; r < gridDim; r++) {
         for (let c = 0; c < gridDim; c++) {
           const canvas = document.createElement('canvas');
-          canvas.width = pieceW;
-          canvas.height = pieceH;
+          canvas.width = pieceSize;
+          canvas.height = pieceSize;
           const ctx = canvas.getContext('2d');
 
           // Draw the exact slice onto canvas
           ctx.drawImage(
-            img,
-            c * pieceW,
-            r * pieceH,
-            pieceW,
-            pieceH,
+            squareCanvas,
+            c * pieceSize,
+            r * pieceSize,
+            pieceSize,
+            pieceSize,
             0,
             0,
-            pieceW,
-            pieceH
+            pieceSize,
+            pieceSize
           );
 
-          // Add a subtle border and piece bevel to give authentic jigsaw feel
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-          ctx.lineWidth = 4;
-          ctx.strokeRect(2, 2, pieceW - 4, pieceH - 4);
+          // Subtle authentic jigsaw border & bevel
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(1.5, 1.5, pieceSize - 3, pieceSize - 3);
 
-          ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
-          ctx.lineWidth = 2;
-          ctx.strokeRect(1, 1, pieceW - 2, pieceH - 2);
+          ctx.strokeStyle = 'rgba(0, 0, 0, 0.15)';
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(1, 1, pieceSize - 2, pieceSize - 2);
 
           pieceUrls.push(canvas.toDataURL('image/png'));
         }
