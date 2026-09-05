@@ -1,82 +1,165 @@
-🌿 CogniCare – When Memories Meet Care
+# 🌿 CogniCare – When Memories Meet Care
 
-CogniCare is an AI-based cognitive gaming and memory support platform for elderly people. It provides simple games, cultural activities, and caregiver support in a friendly and easy-to-use website.
+> **An AI-powered cognitive gaming and memory support platform designed to promote cognitive engagement, meaningful reminiscence, and caregiver support for elderly users.**
 
-✨ Features
-🎮 Cognitive Games – Memory, attention, vocabulary, reasoning, and puzzle games.
-👵 Elderly Profile – Store basic information about the elderly user.
-👩‍⚕️ Caregiver Dashboard – Caregivers can view game activity and progress.
-📊 Progress Tracking – View games played, completed games, scores, and activity history.
-🌿 North-East Heritage – Explore the culture, traditions, food, music, and places of the 8 North-Eastern states.
-🌐 Multiple Languages – Supports regional languages and English.
-💚 Reminiscence Tips – Helpful suggestions for caregivers to interact with elderly users.
-🆘 Help & Support – Provides caregiver guidance and important support information.
-📱 Simple UI – Clean, peaceful, and elderly-friendly design.
-🎮 Games
+---
 
-The platform currently includes:
+## 📌 About the Project
 
-🌲 Alaska Word Search
-🔍 Find Odd One Out
-🔤 Letter Word Game
-📰 Crosswords
-🧩 Jigsaw Puzzle
+**CogniCare** is an AI-based cognitive gaming and memory support platform developed to provide elderly users with simple, engaging, and culturally familiar activities.
 
-Each game has:
+The platform combines **cognitive games, progress tracking, caregiver support, multilingual interaction, and North-Eastern Indian cultural heritage** to create a peaceful and elderly-friendly digital experience.
 
-🟢 Easy
-🟡 Medium
-🔴 Hard
-🌏 North-East Heritage
+CogniCare focuses on activities that encourage **memory, attention, vocabulary, reasoning, observation, and problem-solving**, while allowing caregivers to monitor participation and activity progress.
 
-CogniCare highlights the culture of:
+> 💚 **"When memories meet care."**
 
-Assam
-Arunachal Pradesh
-Manipur
-Meghalaya
-Mizoram
-Nagaland
-Tripura
-Sikkim
-🛠️ Technologies
-HTML
-CSS
-JavaScript
-Node.js
-Database
-AI Integration
-🚀 How to Run
+---
 
-Clone the project:
+## ✨ Key Features
 
-git clone https://github.com/MReshma-16/coginitive-games.git
+### 🎮 Cognitive Games
+Interactive games designed to encourage different cognitive skills:
 
-Go to the project folder:
+- 🧠 Memory
+- 👀 Attention
+- 🔤 Vocabulary
+- 🔎 Reasoning
+- 🧩 Problem Solving
+- 🎯 Observation
 
-cd coginitive-games
+### 👵 Elderly Profile
+- Store basic information about the elderly user.
+- Maintain an individual activity profile.
+- Provide a personalized experience.
 
-Install dependencies:
+### 👩‍⚕️ Caregiver Dashboard
+Caregivers can:
 
-npm install
+- View elderly user information.
+- Monitor game participation.
+- Track completed activities.
+- Review scores and activity history.
 
-Start the project:
+### 📊 Progress Tracking
+Provides an overview of:
 
-npm start
+- Games played
+- Games completed
+- Scores
+- Activity history
+- Cognitive activity engagement
 
-Open:
+### 🌿 North-East Heritage
+CogniCare introduces elderly users to the rich cultural heritage of the **8 North-Eastern states of India**, including:
 
-http://localhost:5000
-🎯 Project Goal
+- Assam
+- Arunachal Pradesh
+- Manipur
+- Meghalaya
+- Mizoram
+- Nagaland
+- Tripura
+- Sikkim
 
-The main goal of CogniCare is to provide elderly users with simple cognitive activities and culturally familiar experiences, while helping caregivers understand their engagement and progress.
+The heritage section can include cultural information related to **traditional practices, food, music, places, festivals, and local traditions**.
 
-“When memories meet care.”
+### 🌐 Multilingual Support
+The platform is designed to support **regional languages along with English**, helping elderly users interact with the platform in a more familiar language.
 
-⚠️ Disclaimer
+### 💚 Reminiscence Support
+Provides caregivers with simple suggestions and activities that can help encourage conversations and meaningful interactions with elderly users.
 
-CogniCare is a cognitive-support and reminiscence platform, not a medical diagnosis or treatment tool. Users should consult qualified healthcare professionals for medical concerns.
+### 🆘 Help & Support
+Includes:
 
-❤️ Made For
+- Caregiver guidance
+- Reminiscence tips
+- Platform support information
+- Important safety and medical disclaimer
 
-Elderly People • Caregivers • Cognitive Wellness • Cultural Reminiscence
+### 📱 Elderly-Friendly UI
+The interface is designed with:
+
+- Simple navigation
+- Clear buttons
+- Readable text
+- Peaceful visual design
+- Easy-to-understand interactions
+- Elderly-friendly layouts
+
+---
+
+# 🎮 Cognitive Games
+
+CogniCare currently includes the following games:
+
+| Game | Primary Skill |
+|------|---------------|
+| 🌲 **Alaska Word Search** | Vocabulary & Attention |
+| 🔍 **Find Odd One Out** | Observation & Reasoning |
+| 🔤 **Letter Word Game** | Vocabulary & Word Recognition |
+| 📰 **Crosswords** | Vocabulary & Memory |
+| 🧩 **Jigsaw Puzzle** | Problem Solving & Visual Reasoning |
+
+Each game provides different difficulty levels:
+
+- 🟢 **Easy**
+- 🟡 **Medium**
+- 🔴 **Hard**
+
+This allows users to participate in activities according to their current ability and gradually engage with more challenging activities.
+
+---
+
+# 🌏 North-East Heritage
+
+CogniCare celebrates the cultural diversity of North-Eastern India by providing a dedicated heritage section covering:
+
+### 🇮🇳 The Eight North-Eastern States
+
+1. Assam
+2. Arunachal Pradesh
+3. Manipur
+4. Meghalaya
+5. Mizoram
+6. Nagaland
+7. Tripura
+8. Sikkim
+
+The section aims to provide culturally familiar content and promote **reminiscence, cultural awareness, and meaningful engagement**.
+
+---
+
+# 🛠️ Technologies Used
+
+The project is built using:
+
+- **HTML5** – Website structure
+- **CSS3** – Styling and responsive design
+- **JavaScript** – Interactive functionality
+- **Node.js** – Backend/server-side functionality
+- **Database** – User and activity data management
+- **AI Integration** – Intelligent and personalized platform features
+
+---
+
+# 📂 Project Structure
+
+A typical project structure is:
+
+```text
+CogniCare/
+│
+├── public/
+│   ├── images/
+│   ├── css/
+│   └── js/
+│
+├── views/
+│
+├── server.js
+├── package.json
+├── package-lock.json
+├── README.md
+└── .gitignore
