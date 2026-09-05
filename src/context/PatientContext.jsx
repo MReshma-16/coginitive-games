@@ -19,7 +19,12 @@ export const PatientProvider = ({ children }) => {
     } else {
       setPatient(null);
       setQuestionnaire(null);
-      setGameResults([]);
+      try {
+        const guestResults = JSON.parse(localStorage.getItem('cognicare_all_sessions') || localStorage.getItem('cognicare_game_results_patient_guest') || '[]');
+        setGameResults(guestResults);
+      } catch (e) {
+        setGameResults([]);
+      }
       setReminders([]);
       setFamilyMemories([]);
     }
@@ -34,7 +39,7 @@ export const PatientProvider = ({ children }) => {
         const pData = await pRes.json();
         setPatient(pData);
 
-        // 2. Fetch questionnaire
+        // 2. Fetch questionnaire and history
         if (pData?.id) {
           const [qRes, gRes, rRes, mRes] = await Promise.all([
             fetch(`/api/questionnaire/${pData.id}`),
@@ -44,7 +49,21 @@ export const PatientProvider = ({ children }) => {
           ]);
 
           if (qRes.ok) setQuestionnaire(await qRes.json());
-          if (gRes.ok) setGameResults(await gRes.json());
+          if (gRes.ok) {
+            const serverResults = await gRes.json();
+            const localKey = `cognicare_game_results_${pData.id}`;
+            let merged = Array.isArray(serverResults) ? [...serverResults] : [];
+            try {
+              const localCached = JSON.parse(localStorage.getItem(localKey) || '[]');
+              localCached.forEach(lc => {
+                if (!merged.some(m => m.id === lc.id || m.completedAt === lc.completedAt)) {
+                  merged.unshift(lc);
+                }
+              });
+              localStorage.setItem(localKey, JSON.stringify(merged));
+            } catch (e) {}
+            setGameResults(merged);
+          }
           if (rRes.ok) setReminders(await rRes.json());
           if (mRes.ok) setFamilyMemories(await mRes.json());
         }
@@ -54,7 +73,12 @@ export const PatientProvider = ({ children }) => {
       // Local fallback
       const cachedPatient = localStorage.getItem(`memoryroots_patient_${caretakerId}`);
       if (cachedPatient) {
-        setPatient(JSON.parse(cachedPatient));
+        const parsed = JSON.parse(cachedPatient);
+        setPatient(parsed);
+        const cachedResults = localStorage.getItem(`cognicare_game_results_${parsed?.id}`) || localStorage.getItem('cognicare_all_sessions');
+        if (cachedResults) {
+          setGameResults(JSON.parse(cachedResults));
+        }
       }
     } finally {
       setLoading(false);
@@ -141,14 +165,35 @@ export const PatientProvider = ({ children }) => {
   };
 
   const recordGameResult = async (resultData) => {
-    if (!patient?.id) return;
+    const pId = patient?.id || (caretaker?.id ? `patient_${caretaker.id}` : 'patient_guest');
 
     const fullResult = {
-      patientId: patient.id,
+      id: 'gr_' + Date.now(),
+      patientId: pId,
       ...resultData,
       completedAt: new Date().toISOString()
     };
 
+    // 1. Immediately persist to localStorage for instant recovery and offline reliability
+    try {
+      const existingKey = `cognicare_game_results_${pId}`;
+      const cached = JSON.parse(localStorage.getItem(existingKey) || '[]');
+      const updated = [fullResult, ...cached.filter(item => item.id !== fullResult.id)];
+      localStorage.setItem(existingKey, JSON.stringify(updated));
+
+      // Also append to global session registry
+      const allKey = 'cognicare_all_sessions';
+      const allCached = JSON.parse(localStorage.getItem(allKey) || '[]');
+      const allUpdated = [fullResult, ...allCached.filter(item => item.id !== fullResult.id)];
+      localStorage.setItem(allKey, JSON.stringify(allUpdated));
+    } catch (e) {
+      console.warn('LocalStorage save error:', e);
+    }
+
+    // 2. Update React State
+    setGameResults(prev => [fullResult, ...prev]);
+
+    // 3. Sync with backend API
     try {
       const res = await fetch('/api/games/result', {
         method: 'POST',
@@ -157,19 +202,13 @@ export const PatientProvider = ({ children }) => {
       });
       if (res.ok) {
         const data = await res.json();
-        setGameResults(prev => [data.result, ...prev]);
         return data.result;
       }
     } catch (err) {
-      console.warn('Recording result locally:', err);
+      console.warn('Recording result locally (backend offline):', err);
     }
 
-    const localResult = {
-      id: 'gr_' + Date.now(),
-      ...fullResult
-    };
-    setGameResults(prev => [localResult, ...prev]);
-    return localResult;
+    return fullResult;
   };
 
   const addReminder = async (reminderData) => {

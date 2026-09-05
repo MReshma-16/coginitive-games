@@ -291,9 +291,9 @@ export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
 
                       <button
                         onClick={() => handleStartGame(g.id, 'EASY')}
-                        className="btn-primary w-full py-3.5 px-4 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 shadow-sm"
+                        className="btn-primary btn-ring-pulse w-full py-3.5 px-4 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 shadow-md group"
                       >
-                        <Play className="w-4 h-4 text-amber-300 icon-slide-right" />
+                        <Play className="w-4 h-4 text-amber-300 icon-slide-right shrink-0" />
                         <span>{t.games?.playNow || "Play Now"}</span>
                       </button>
                     </div>

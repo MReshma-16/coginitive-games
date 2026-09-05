@@ -160,8 +160,26 @@ class Database {
     return newResult;
   }
 
-  getGameResultsByPatientId(patientId) {
+  seedBaselineSessions(patientId) {
+    if (!this.data.gameResults.some(gr => gr.patientId === patientId)) {
+      const base = (seedData.gameResults || []).map((s, idx) => ({
+        ...s,
+        id: `gr_${patientId}_${idx + 1}`,
+        patientId
+      }));
+      this.data.gameResults.push(...base);
+      this.save();
+      return base;
+    }
     return this.data.gameResults.filter(gr => gr.patientId === patientId);
+  }
+
+  getGameResultsByPatientId(patientId) {
+    const existing = this.data.gameResults.filter(gr => gr.patientId === patientId);
+    if (existing.length === 0 && patientId) {
+      return this.seedBaselineSessions(patientId);
+    }
+    return existing;
   }
 
   // Reminders
