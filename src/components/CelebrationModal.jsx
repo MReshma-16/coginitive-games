@@ -96,7 +96,7 @@ export const CelebrationModal = ({
 
           <button
             onClick={onNext || onClose}
-            className="btn-primary flex-1 py-4 px-6 rounded-2xl text-base font-bold shadow-lg flex items-center justify-center gap-2"
+            className="btn-primary btn-ring-pulse flex-1 py-4 px-6 rounded-2xl text-base font-bold shadow-xl flex items-center justify-center gap-2 group"
           >
             <span>{t.games?.backToGames || "Continue"}</span>
             <ArrowRight className="w-5 h-5 text-amber-300 icon-slide-right" />

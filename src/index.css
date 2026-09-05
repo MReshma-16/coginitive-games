@@ -158,12 +158,12 @@ button {
 
   /* 7. INTERACTIVE PILL (Difficulty, Language, Tabs) */
   .btn-pill {
-    @apply inline-flex items-center justify-center font-bold rounded-full transition-all duration-250 ease-out cursor-pointer hover:scale-105 active:scale-95 select-none focus-visible:ring-2 focus-visible:ring-[#C99E32];
+    @apply inline-flex items-center justify-center font-bold rounded-full transition-all duration-200 ease-out cursor-pointer hover:scale-105 active:scale-95 select-none focus-visible:ring-2 focus-visible:ring-[#C99E32];
   }
 
   /* 8. TACTILE ICON BUTTON */
   .btn-icon {
-    @apply inline-flex items-center justify-center transition-all duration-250 ease-out cursor-pointer hover:scale-110 active:scale-90 select-none;
+    @apply inline-flex items-center justify-center transition-all duration-200 ease-out cursor-pointer hover:scale-110 active:scale-90 select-none;
   }
 
   /* 9. HERO VOICE SPEECH BUTTON (Glowing Pulsing Pill) */

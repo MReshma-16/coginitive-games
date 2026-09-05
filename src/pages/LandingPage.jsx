@@ -136,7 +136,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
             className="w-full h-auto block select-none"
           />
 
-          {/* Interactive Voice Button Overlay aligned precisely with button region to eliminate duplicate graphic */}
+          {/* Interactive Voice Button Hotspot - Invisible interactive hotspot directly over the graphic to eliminate any double layer, matching reference image 2 exactly */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute left-1/2 top-[84.4%] -translate-x-1/2 -translate-y-1/2 pointer-events-auto">
               <button
@@ -152,11 +152,9 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
                   }
                 }}
                 title={t.hero?.listenIntro || "Listen to Introduction"}
-                className="btn-voice btn-ring-pulse px-6 py-2.5 sm:px-7 sm:py-2.5 min-w-[215px] sm:min-w-[250px] shadow-2xl z-10"
-              >
-                <Volume2 className="w-4 h-4 text-amber-300 icon-pulse-wave shrink-0" />
-                <span className="font-bold tracking-wide">{t.hero?.listenIntro || "Listen to Introduction"}</span>
-              </button>
+                aria-label={t.hero?.listenIntro || "Listen to Introduction"}
+                className="w-[185px] h-[38px] sm:w-[210px] sm:h-[42px] rounded-full cursor-pointer bg-transparent hover:bg-amber-400/15 active:bg-amber-500/25 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+              />
             </div>
           </div>
 
