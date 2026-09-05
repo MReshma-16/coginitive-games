@@ -71,10 +71,29 @@ button {
 
 @keyframes btn-pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(201, 158, 50, 0.45), 0 4px 14px rgba(27, 59, 43, 0.2);
+    box-shadow: 0 0 0 0 rgba(201, 158, 50, 0.5), 0 4px 14px rgba(27, 59, 43, 0.25);
   }
   50% {
-    box-shadow: 0 0 0 8px rgba(201, 158, 50, 0), 0 6px 20px rgba(27, 59, 43, 0.35);
+    box-shadow: 0 0 0 8px rgba(201, 158, 50, 0), 0 6px 22px rgba(201, 158, 50, 0.35);
+  }
+}
+
+/* Expanding Circular Ring / Ripple Wave for Key Call-to-Actions */
+@keyframes ring-pulse-expand {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.85;
+    box-shadow: 0 0 0 0 rgba(201, 158, 50, 0.7);
+  }
+  70% {
+    transform: scale(1.06);
+    opacity: 0.15;
+    box-shadow: 0 0 0 12px rgba(201, 158, 50, 0);
+  }
+  100% {
+    transform: scale(1.08);
+    opacity: 0;
+    box-shadow: 0 0 0 16px rgba(201, 158, 50, 0);
   }
 }
 
@@ -90,12 +109,12 @@ button {
 @layer components {
   /* Core Base Button */
   .btn-base {
-    @apply relative inline-flex items-center justify-center font-bold tracking-wide transition-all duration-200 ease-out select-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none active:scale-[0.97] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[#C99E32] focus-visible:ring-offset-2 overflow-hidden;
+    @apply relative inline-flex items-center justify-center font-bold tracking-wide transition-all duration-300 ease-out select-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none active:scale-[0.96] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[#C99E32] focus-visible:ring-offset-2 overflow-hidden;
   }
 
-  /* 1. PRIMARY CTA (Forest Green + Gold Border + Subtle Shimmer + Depth Lift) */
+  /* 1. PRIMARY CTA (Forest Green + Gold Border + Shimmer + Hover Glow & Lift) */
   .btn-primary {
-    @apply relative inline-flex items-center justify-center font-bold text-white bg-gradient-to-r from-[#1B3B2B] via-[#244E38] to-[#132E20] border-2 border-[#C99E32] shadow-md hover:shadow-xl hover:shadow-[#1B3B2B]/25 hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0 active:scale-[0.97] transition-all duration-200 ease-out cursor-pointer overflow-hidden select-none;
+    @apply relative inline-flex items-center justify-center font-bold text-white bg-gradient-to-r from-[#1B3B2B] via-[#244E38] to-[#132E20] border-2 border-[#C99E32] shadow-md hover:shadow-xl hover:shadow-[#1B3B2B]/35 hover:border-amber-300 hover:scale-[1.04] hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0 active:scale-[0.96] transition-all duration-300 ease-out cursor-pointer overflow-hidden select-none;
   }
   .btn-primary::after {
     content: '';
@@ -104,53 +123,68 @@ button {
     left: 0;
     width: 40%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
     transform: translateX(-150%) skewX(-20deg);
     pointer-events: none;
   }
   .btn-primary:hover::after {
-    animation: btn-shimmer 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: btn-shimmer 0.85s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* 2. SECONDARY / CAREGIVER (Warm Cream & Silk + Amber Border) */
   .btn-secondary {
-    @apply relative inline-flex items-center justify-center font-bold text-[#451A03] bg-gradient-to-r from-amber-50 to-amber-100/90 border-2 border-amber-300 hover:border-[#C99E32] hover:bg-amber-100 shadow-sm hover:shadow-md hover:shadow-amber-800/10 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] transition-all duration-200 ease-out cursor-pointer select-none;
+    @apply relative inline-flex items-center justify-center font-bold text-[#451A03] bg-gradient-to-r from-amber-50 via-amber-100 to-amber-50 border-2 border-amber-300 hover:border-[#C99E32] hover:bg-amber-100/90 shadow-sm hover:shadow-lg hover:shadow-amber-800/15 hover:scale-[1.03] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.96] transition-all duration-300 ease-out cursor-pointer select-none;
   }
 
   /* 3. ACCENT GOLDEN SILK (Muga Silk + Dark Forest Text) */
   .btn-gold {
-    @apply relative inline-flex items-center justify-center font-bold text-[#1B3B2B] bg-gradient-to-r from-[#E6C687] via-[#DFB96C] to-[#C99E32] border-2 border-[#8C6D3B] shadow-sm hover:shadow-lg hover:shadow-amber-600/20 hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0 active:scale-[0.97] transition-all duration-200 ease-out cursor-pointer select-none;
+    @apply relative inline-flex items-center justify-center font-bold text-[#1B3B2B] bg-gradient-to-r from-[#E6C687] via-[#DFB96C] to-[#C99E32] border-2 border-[#8C6D3B] shadow-sm hover:shadow-xl hover:shadow-amber-600/25 hover:border-amber-400 hover:scale-[1.04] hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0 active:scale-[0.96] transition-all duration-300 ease-out cursor-pointer select-none;
   }
 
   /* 4. EMERALD / WELLNESS (Lush Green + Positive Feedback) */
   .btn-emerald {
-    @apply relative inline-flex items-center justify-center font-bold text-white bg-gradient-to-r from-[#047857] via-[#059669] to-[#065F46] border-2 border-emerald-300/60 shadow-sm hover:shadow-lg hover:shadow-emerald-900/20 hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0 active:scale-[0.97] transition-all duration-200 ease-out cursor-pointer select-none;
+    @apply relative inline-flex items-center justify-center font-bold text-white bg-gradient-to-r from-[#047857] via-[#059669] to-[#065F46] border-2 border-emerald-300/70 shadow-sm hover:shadow-xl hover:shadow-emerald-900/30 hover:border-emerald-200 hover:scale-[1.04] hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0 active:scale-[0.96] transition-all duration-300 ease-out cursor-pointer select-none;
   }
 
   /* 5. DESTRUCTIVE / LOGOUT (Crimson) */
   .btn-danger {
-    @apply relative inline-flex items-center justify-center font-bold text-white bg-gradient-to-r from-[#991B1B] to-[#7F1D1D] border-2 border-rose-400/50 shadow-sm hover:shadow-md hover:shadow-rose-950/20 hover:-translate-y-0.5 hover:bg-[#881337] active:translate-y-0 active:scale-[0.97] transition-all duration-200 ease-out cursor-pointer select-none;
+    @apply relative inline-flex items-center justify-center font-bold text-white bg-gradient-to-r from-[#991B1B] to-[#7F1D1D] border-2 border-rose-400/50 shadow-sm hover:shadow-md hover:shadow-rose-950/20 hover:scale-[1.03] hover:-translate-y-0.5 hover:bg-[#881337] active:translate-y-0 active:scale-[0.96] transition-all duration-300 ease-out cursor-pointer select-none;
   }
 
   /* 6. GHOST / SOFT OUTLINE */
   .btn-ghost {
-    @apply relative inline-flex items-center justify-center font-bold text-stone-700 bg-white/90 hover:bg-amber-50/80 border-2 border-stone-200 hover:border-amber-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] transition-all duration-200 ease-out cursor-pointer select-none;
+    @apply relative inline-flex items-center justify-center font-bold text-stone-700 bg-white/95 hover:bg-amber-50/90 border-2 border-stone-200 hover:border-amber-400 shadow-sm hover:shadow-md hover:scale-[1.03] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.96] transition-all duration-300 ease-out cursor-pointer select-none;
   }
 
   /* 7. INTERACTIVE PILL (Difficulty, Language, Tabs) */
   .btn-pill {
-    @apply inline-flex items-center justify-center font-bold rounded-full transition-all duration-200 ease-out cursor-pointer hover:scale-105 active:scale-95 select-none focus-visible:ring-2 focus-visible:ring-[#C99E32];
+    @apply inline-flex items-center justify-center font-bold rounded-full transition-all duration-250 ease-out cursor-pointer hover:scale-105 active:scale-95 select-none focus-visible:ring-2 focus-visible:ring-[#C99E32];
   }
 
   /* 8. TACTILE ICON BUTTON */
   .btn-icon {
-    @apply inline-flex items-center justify-center transition-all duration-200 ease-out cursor-pointer hover:scale-110 active:scale-90 select-none;
+    @apply inline-flex items-center justify-center transition-all duration-250 ease-out cursor-pointer hover:scale-110 active:scale-90 select-none;
   }
 
   /* 9. HERO VOICE SPEECH BUTTON (Glowing Pulsing Pill) */
   .btn-voice {
-    @apply relative inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#1B3B2B] hover:bg-[#132E20] text-white font-bold text-xs sm:text-sm shadow-lg border-2 border-[#C99E32] transition-all duration-200 ease-out cursor-pointer hover:scale-105 active:scale-95 select-none overflow-hidden;
+    @apply relative inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#1B3B2B] hover:bg-[#132E20] text-white font-bold text-xs sm:text-sm shadow-xl border-2 border-[#C99E32] hover:border-amber-300 transition-all duration-300 ease-out cursor-pointer hover:scale-[1.04] active:scale-[0.96] select-none overflow-hidden;
     animation: btn-pulse-glow 3s infinite ease-in-out;
+  }
+
+  /* 10. ATTENTION-GRABBING EXPANDING RING PULSE */
+  .btn-ring-pulse {
+    position: relative;
+  }
+  .btn-ring-pulse::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    border: 2px solid rgba(201, 158, 50, 0.75);
+    animation: ring-pulse-expand 2.8s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: none;
+    z-index: 0;
   }
 }
 

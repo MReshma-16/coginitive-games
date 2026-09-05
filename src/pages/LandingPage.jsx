@@ -136,26 +136,28 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
             className="w-full h-auto block select-none"
           />
 
-          {/* Interactive Voice Button Overlay aligned with 'Listen to Introduction' in image */}
-          <div className="absolute inset-0 flex flex-col items-center justify-end pb-[5.5%] sm:pb-[6%] md:pb-[6.5%]">
-            <button
-              onClick={() => {
-                if ('speechSynthesis' in window) {
-                  const speechText = t.hero?.spokenIntro || t.hero?.desc || "Welcome to CogniCare, when memories meet care. A warm, peaceful, culturally rooted space designed for our beloved elders to revisit joyful memories, exercise visual attention, and stimulate word recall with gentle cognitive games.";
-                  window.speechSynthesis.cancel();
-                  const utterance = new SpeechSynthesisUtterance(speechText);
-                  utterance.rate = 0.9;
-                  const langMap = { as: 'as-IN', bn: 'bn-IN', brx: 'hi-IN', mni: 'mni-IN', ne: 'ne-NP', en: 'en-US' };
-                  if (langMap[currentLang]) utterance.lang = langMap[currentLang];
-                  window.speechSynthesis.speak(utterance);
-                }
-              }}
-              title={t.hero?.listenIntro || "Listen to Introduction"}
-              className="btn-voice px-6 py-2.5 sm:px-8 sm:py-3 shadow-xl"
-            >
-              <Volume2 className="w-4 h-4 text-amber-300 icon-pulse-wave" />
-              <span>{t.hero?.listenIntro || "Listen to Introduction"}</span>
-            </button>
+          {/* Interactive Voice Button Overlay aligned precisely with button region to eliminate duplicate graphic */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute left-1/2 top-[84.4%] -translate-x-1/2 -translate-y-1/2 pointer-events-auto">
+              <button
+                onClick={() => {
+                  if ('speechSynthesis' in window) {
+                    const speechText = t.hero?.spokenIntro || t.hero?.desc || "Welcome to CogniCare, when memories meet care. A warm, peaceful, culturally rooted space designed for our beloved elders to revisit joyful memories, exercise visual attention, and stimulate word recall with gentle cognitive games.";
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(speechText);
+                    utterance.rate = 0.9;
+                    const langMap = { as: 'as-IN', bn: 'bn-IN', brx: 'hi-IN', mni: 'mni-IN', ne: 'ne-NP', en: 'en-US' };
+                    if (langMap[currentLang]) utterance.lang = langMap[currentLang];
+                    window.speechSynthesis.speak(utterance);
+                  }
+                }}
+                title={t.hero?.listenIntro || "Listen to Introduction"}
+                className="btn-voice btn-ring-pulse px-6 py-2.5 sm:px-7 sm:py-2.5 min-w-[215px] sm:min-w-[250px] shadow-2xl z-10"
+              >
+                <Volume2 className="w-4 h-4 text-amber-300 icon-pulse-wave shrink-0" />
+                <span className="font-bold tracking-wide">{t.hero?.listenIntro || "Listen to Introduction"}</span>
+              </button>
+            </div>
           </div>
 
             {/* Dynamic Localized Hero Overlay for non-English languages */}
@@ -202,7 +204,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => setActivePage('games')}
-              className="btn-primary px-7 py-3.5 rounded-2xl text-sm font-bold inline-flex items-center gap-2.5"
+              className="btn-primary btn-ring-pulse px-7 py-3.5 rounded-2xl text-sm font-bold inline-flex items-center gap-2.5"
             >
               <Gamepad2 className="w-4 h-4 text-amber-300" />
               <span>{t.hero?.exploreGames || "Explore 5 Cognitive Games"}</span>
