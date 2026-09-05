@@ -32,15 +32,85 @@ export const translations = {
       welcome: "Welcome"
     },
     hero: {
+      tagline: "when memories meet care",
       title: "when memories meet care",
       desc: "A warm, peaceful, culturally rooted space designed for our beloved elders to revisit joyful memories, exercise visual attention, and stimulate word recall with gentle cognitive games.",
+      listenIntro: "Listen to Introduction",
+      spokenIntro: "Welcome to CogniCare, when memories meet care. A warm, peaceful, culturally rooted space designed for our beloved elders to revisit joyful memories, exercise visual attention, and stimulate word recall with gentle cognitive games.",
       getStarted: "Begin Gentle Journey",
       caretakerPortal: "Caretaker Dashboard",
-      tryDemo: "1-Click Demo Caregiver",
+      exploreGames: "Explore 5 Cognitive Games",
+      caretakerDashboard: "Caretaker Dashboard",
+      progressDashboard: "View Progress Dashboard",
+      demoCaregiver: "1-Click Demo Caregiver",
       chooseLanguage: "Choose Your Language",
+      chooseLanguageSub: "Instant translation applies to all pages, games, reminders, and audio",
       exploreHeritage: "Explore North-East Heritage",
-      exploreHeritageSubtitle: "Honoring the 8 states of North-Eastern India with authentic culture, textiles, and traditions.",
-      nonMedicalNotice: "🌿 A peaceful reminiscence and cognitive support platform, not a medical diagnostic tool."
+      exploreHeritageSubtitle: "Honoring the 8 states of North-Eastern India with authentic culture, textiles, landscapes, and childhood traditions.",
+      activitiesTitle: "5 Tailored Cognitive Activities",
+      activitiesSub: "Featuring 🟢 Easy, 🟡 Medium, and 🔴 Hard tiers with immediate score-based adaptive difficulty.",
+      nonMedicalNotice: "🌿 A peaceful reminiscence and cognitive support platform, not a medical diagnostic tool.",
+      heritageBadge: "North-Eastern Region Heritage"
+    },
+    gallery: {
+      badge: "Authentic Cultural Photography",
+      title: "Cherished Heritage Sights & Mountain Landscapes",
+      subtitle: "Real high-definition photographs celebrating sacred architecture, serene lakes, and pine valleys — playable directly in the Jigsaw Puzzle.",
+      playPuzzle: "Play as Puzzle",
+      loktakTitle: "Loktak Lake, Manipur",
+      loktakDesc: "Iconic circular floating islands (phumdis) on crystal blue waters surrounded by gentle rolling green hills.",
+      loktakBadge: "🌊 Loktak Lake",
+      sunTempleTitle: "Grand Sun Temple",
+      sunTempleDesc: "Carved ancient chariot wheels and majestic stone architecture inspiring cultural pride and peaceful reminiscence.",
+      sunTempleBadge: "🏛️ Sacred Heritage",
+      redTempleTitle: "Sacred Red Temple",
+      redTempleDesc: "Atmospheric sacred red stone temple glowing gently under the twilight evening sky, bringing soothing nostalgia.",
+      redTempleBadge: "🛕 Twilight Sanctum",
+      valleyTitle: "Himalayan Pine Valley",
+      valleyDesc: "Rolling emerald mountain ridges, misty pine canopies, and serene hill settlement bathed in pure morning light.",
+      valleyBadge: "🌲 Misty Valleys"
+    },
+    states: {
+      assam: {
+        name: "Assam",
+        theme: "Golden Muga Silk & Bihu Melodies",
+        desc: "Home to the mighty Brahmaputra river, lush tea plantations, and joyful Bihu folk harvest celebrations."
+      },
+      arunachal: {
+        name: "Arunachal Pradesh",
+        theme: "Land of the Dawn-Lit Mountains",
+        desc: "Pristine snow peaks, ancient Tawang monastery, and exquisite traditional tribal cane and bamboo handicrafts."
+      },
+      manipur: {
+        name: "Manipur",
+        theme: "The Jewel of Serene Lakes & Dance",
+        desc: "Famous for the floating phumdis of Loktak Lake, classical Raas Leela dance, and sacred Pena folk string music."
+      },
+      meghalaya: {
+        name: "Meghalaya",
+        theme: "The Abode of Clouds & Living Bridges",
+        desc: "Misty pine hills, indigenous living root bridges, cascading waterfalls, and melodic Khasi Duitara folk tunes."
+      },
+      mizoram: {
+        name: "Mizoram",
+        theme: "Rolling Hills & Bamboo Rhythm",
+        desc: "Land of gentle rolling hills, vibrant Cheraw bamboo dance, and colorful handwoven traditional Puan textiles."
+      },
+      nagaland: {
+        name: "Nagaland",
+        theme: "Heritage of Festivals & Artistry",
+        desc: "Celebrated for the grand Hornbill festival, rich warrior shawl motifs, ancient village traditions, and hill songs."
+      },
+      tripura: {
+        name: "Tripura",
+        theme: "Royal Palaces & Ancient Carvings",
+        desc: "Water palace of Neermahal, ancient rock carvings of Unakoti, and vibrant handloom Rignai weaving traditions."
+      },
+      sikkim: {
+        name: "Sikkim",
+        theme: "Sacred Peaks & Peaceful Monasteries",
+        desc: "Guarded by the majestic Mount Kanchenjunga, serene prayer flags, organic alpine valleys, and sacred heritage."
+      }
     },
     dashboard: {
       welcome: "Welcome back",
@@ -217,15 +287,85 @@ export const translations = {
       welcome: "স্বাগতম"
     },
     hero: {
-      title: "when memories meet care",
-      desc: "আমাৰ শ্ৰদ্ধেয় বয়োজ্যেষ্ঠসকলৰ বাবে শব্দ বিচাৰ, মনোযোগ আৰু স্মৃতি শক্তি অনুশীলনৰ বাবে এক শান্ত আৰু মনোৰম পৰিৱেশ।",
+      tagline: "যেতিয়া স্মৃতিয়ে যত্নক লগ পায়",
+      title: "যেতিয়া স্মৃতিয়ে যত্নক লগ পায়",
+      desc: "আমাৰ মৰমৰ বয়োজ্যেষ্ঠসকলৰ বাবে অতীতৰ সুখৰ স্মৃতি ৰোমন্থন কৰিবলৈ, দৃষ্টি মনোযোগ বৃদ্ধি কৰিবলৈ আৰু সহজ বৌদ্ধিক খেলৰ জৰিয়তে শব্দ মনত পেলোৱাৰ বাবে এক শান্ত আৰু আপোন পৰিৱেশ।",
+      listenIntro: "পৰিচয় শুনক",
+      spokenIntro: "কগনিকেয়াৰলৈ স্বাগতম, যেতিয়া স্মৃতিয়ে যত্নক লগ পায়। আমাৰ মৰমৰ বয়োজ্যেষ্ঠসকলৰ বাবে অতীতৰ সুখৰ স্মৃতি ৰোমন্থন আৰু বৌদ্ধিক খেলৰ এক শান্তিময় পৰিৱেশ।",
       getStarted: "যাত্ৰা আৰম্ভ কৰক",
       caretakerPortal: "যত্নকৰ্তাৰ ডেশ্ববৰ্ড",
-      tryDemo: "১-ক্লিক ডেমো চাওক",
+      exploreGames: "৫ টা বৌদ্ধিক খেল খেলক",
+      caretakerDashboard: "তত্ত্বাৱধায়ক ডেচবৰ্ড",
+      progressDashboard: "প্ৰগতিৰ বিৱৰণ চাওক",
+      demoCaregiver: "১-ক্লিক ডেমো চাওক",
       chooseLanguage: "আপোনাৰ ভাষা বাছক",
+      chooseLanguageSub: "সকলো পৃষ্ঠা, খেল, সোঁৱৰণী আৰু অডিঅ'ত তৎক্ষণাৎ অনুবাদ প্ৰযোজ্য হয়",
       exploreHeritage: "উত্তৰ-পূবৰ ৮ খন ৰাজ্যৰ ঐতিহ্য",
       exploreHeritageSubtitle: "অসম, অৰুণাচল, মণিপুৰ, মেঘালয়, মিজোৰাম, নাগালেণ্ড, ত্ৰিপুৰা আৰু ছিকিমৰ গৌৰৱময় সংস্কৃতি।",
-      nonMedicalNotice: "🌿 এইটো এটা স্মৃতি আৰু মনোযোগ অনুশীলনৰ মঞ্চ, কোনো চিকিৎসা নিদান নহয়।"
+      activitiesTitle: "৫ টা বিশেষভাৱে নিৰ্মিত বৌদ্ধিক খেল",
+      activitiesSub: "🟢 সহজ, 🟡 মজলীয়া, আৰু 🔴 কঠিন স্তৰৰ সৈতে তাৎক্ষণিক নম্বৰ ভিত্তিক অভিযোজ্য খেল।",
+      nonMedicalNotice: "🌿 এইটো এটা স্মৃতি আৰু মনোযোগ অনুশীলনৰ মঞ্চ, কোনো চিকিৎসা নিদান নহয়।",
+      heritageBadge: "উত্তৰ-পূব অঞ্চলৰ ঐতিহ্য"
+    },
+    gallery: {
+      badge: "প্ৰকৃত সাংস্কৃতিক আলোকচিত্ৰ",
+      title: "প্ৰাণৰ ঐতিহ্য আৰু পৰ্বতীয়া প্ৰাকৃতিক দৃশ্য",
+      subtitle: "পৱিত্ৰ স্থাপত্য, শান্ত হ্ৰদ আৰু দেৱদাৰু উপত্যকাৰ প্ৰকৃত আলোকচিত্ৰ — পোনপটীয়াকৈ জিগছ' পাজলত খেলিব পাৰি।",
+      playPuzzle: "পাজল হিচাপে খেলক",
+      loktakTitle: "লোকটাক হ্ৰদ, মণিপুৰ",
+      loktakDesc: "কোমল সেউজীয়া পাহাৰেৰে আবৃত স্ফটিকৰ দৰে নীলা পানীত বৃত্তাকাৰ ওপঙি থকা ফুmdi দ্বীপ।",
+      loktakBadge: "🌊 লোকটাক হ্ৰদ",
+      sunTempleTitle: "ঐতিহাসিক সূৰ্য মন্দিৰ",
+      sunTempleDesc: "সাংস্কৃতিক গৌৰৱ আৰু শান্ত স্মৃতি কঢ়িয়াই অনা খোদিত প্ৰাচীন ৰথৰ চকা আৰু বিশাল শিলৰ স্থাপত্য।",
+      sunTempleBadge: "🏛️ পৱিত্ৰ ঐতিহ্য",
+      redTempleTitle: "পৱিত্ৰ ৰঙা মন্দিৰ",
+      redTempleDesc: "গধূলিৰ আকাশৰ তলত মৃদুভাৱে জিলিকি থকা পৱিত্ৰ ৰঙা শিলৰ মন্দিৰ, যিয়ে মনলৈ প্ৰশান্তি আনে।",
+      redTempleBadge: "🛕 সন্ধ্যাৰ শান্তিময় মন্দিৰ",
+      valleyTitle: "হিমালয়ৰ পাইন উপত্যকা",
+      valleyDesc: "ৰাতিপুৱাৰ কোমল পোহৰত নিমজ্জিত সেউজীয়া পৰ্বতৰ শৃংগ, কুঁৱলীৰে আচ্ছন্ন পাইন অৰণ্য আৰু শান্ত পাহাৰীয়া গাঁও।",
+      valleyBadge: "🌲 কুঁৱলী আচ্ছন্ন উপত্যকা"
+    },
+    states: {
+      assam: {
+        name: "অসম",
+        theme: "সোণালী মুগা ৰেচম আৰু বিহুৰ সুৰ",
+        desc: "মহাবাহু ব্ৰহ্মপুত্ৰ, সেউজ চাহ বাগিচা আৰু উলহ-মালহৰ বিহু কৃষি উৎসৱৰ অনুপম ভূমি।"
+      },
+      arunachal: {
+        name: "অৰুণাচল প্ৰদেশ",
+        theme: "উদীয়মান সূৰ্যৰ পৰ্বতীয়া দেশ",
+        desc: "তুষাৰাবৃত সুউচ্চ শৃংগ, প্ৰাচীন তাৱাং বৌদ্ধ বিহাৰ আৰু অপূৰ্ব বাঁহ-বেতৰ হস্তশিল্পৰ দেশ।"
+      },
+      manipur: {
+        name: "মণিপুৰ",
+        theme: "শান্ত হ্ৰদ আৰু নৃত্যৰ মণি",
+        desc: "লোকটাক হ্ৰদৰ ওপঙা ফুmdi, অপূৰ্ব ৰাসলীলা নৃত্য আৰু পৱিত্ৰ পেনা বাদ্যযন্ত্ৰৰ বাবে প্ৰসিদ্ধ।"
+      },
+      meghalaya: {
+        name: "মেঘালয়",
+        theme: "মেঘৰ আলয় আৰু জীৱন্ত শিপাৰ দলং",
+        desc: "কুঁৱলীৰে আচ্ছন্ন পাইন পাহাৰ, প্ৰাকৃতিক শিপাৰ দলং, মনমোহা জলপ্ৰপাত আৰু খাচী ডুইতাৰাৰ সুৰ।"
+      },
+      mizoram: {
+        name: "মিজোৰাম",
+        theme: "ঢৌ খেলোৱা পাহাৰ আৰু বাঁহ নৃত্যৰ ছন্দ",
+        desc: "মনোৰম সেউজ পাহাৰ, ৰঙীন চেৰাও বাঁহ নৃত্য আৰু সুন্দৰ পৰম্পৰাগত পুয়ান বস্ত্ৰৰ দেশ।"
+      },
+      nagaland: {
+        name: "নাগালেণ্ড",
+        theme: "উৎসৱ আৰু কলাৰ ঐতিহ্যময় ভূমি",
+        desc: "ঐতিহাসিক হৰ্ণবিল উৎসৱ, যোদ্ধা শালৰ নকশা, প্ৰাচীন গাঁৱৰ ঐতিহ্য আৰু পাহাৰীয়া লোকগীত।"
+      },
+      tripura: {
+        name: "ত্ৰিপুৰা",
+        theme: "ৰাজকীয় প্ৰসাদ আৰু প্ৰাচীন শৈল খোদাই",
+        desc: "নীৰমহল জলপ্ৰসাদ, উনাকোটিৰ প্ৰাচীন শৈলভাস্কৰ্য আৰু হস্ততাঁতৰ ৰিগনাই বস্ত্ৰশিল্প।"
+      },
+      sikkim: {
+        name: "ছিক্কিম",
+        theme: "পৱিত্ৰ শৃংগ আৰু শান্ত বৌদ্ধ বিহাৰ",
+        desc: "মহিমামণ্ডিত কাঞ্চনজংঘা শৃংগ, শান্ত প্ৰাৰ্থনা পতাকা আৰু অনুপম জৈৱিক পাহাৰীয়া উপত্যকা।"
+      }
     },
     dashboard: {
       welcome: "পুনৰ স্বাগতম",
@@ -401,15 +541,85 @@ export const translations = {
       welcome: "স্বাগতম"
     },
     hero: {
-      title: "when memories meet care",
-      desc: "আমাদের প্রিয় প্রবীণদের জন্য স্মৃতি ও মনোযোগ উদ্দীপক ৫টি সহজ ও আনন্দময় ডিজিটাল খেলা।",
+      tagline: "যখন স্মৃতি পায় যত্নের ছোঁয়া",
+      title: "যখন স্মৃতি পায় যত্নের ছোঁয়া",
+      desc: "আমাদের প্রিয় প্রবীণদের আনন্দময় স্মৃতিচারণ, দৃষ্টিসংযোগ বৃদ্ধি এবং মৃদু স্মৃতি খেলার মাধ্যমে শব্দ মনে করার একটি উষ্ণ ও নির্ভরযোগ্য সাংস্কৃতিক প্ল্যাটফর্ম।",
+      listenIntro: "ভূমিকা শুনুন",
+      spokenIntro: "কগনিকেয়ারে স্বাগতম, যখন স্মৃতি পায় যত্নের ছোঁয়া। আমাদের প্রিয় প্রবীণদের আনন্দময় স্মৃতিচারণ ও মানসিক অনুশীলনের এক নির্ভরযোগ্য স্থান।",
       getStarted: "যাত্রা শুরু করুন",
       caretakerPortal: "কেয়ারটেকার ড্যাশবোর্ড",
-      tryDemo: "১-ক্লিক ডেমো দেখুন",
+      exploreGames: "৫টি কগনিটিভ খেলা দেখুন",
+      caretakerDashboard: "তত্ত্বাবধায়ক ড্যাশবোর্ড",
+      progressDashboard: "অগ্রগতির বিবরণ দেখুন",
+      demoCaregiver: "১-ক্লিকে ডেমো দেখুন",
       chooseLanguage: "ভাষা নির্বাচন করুন",
-      exploreHeritage: "উত্তর-পূর্বের ঐতিহ্য",
-      exploreHeritageSubtitle: "৮ রাজ্যের সমৃদ্ধ সংস্কৃতি।",
-      nonMedicalNotice: "🌿 এটি একটি জ্ঞান ও স্মৃতি অনুশীলনের প্ল্যাটফর্ম।"
+      chooseLanguageSub: "সকল পৃষ্ঠা, খেলা, অনুস্মারক এবং অডিওতে সাথে সাথে অনুবাদ প্রযোজ্য হয়",
+      exploreHeritage: "উত্তর-পূর্বের ঐতিহ্য অন্বেষণ করুন",
+      exploreHeritageSubtitle: "উত্তর-পূর্ব ভারতের ৮টি রাজ্যের সমৃদ্ধ সংস্কৃতি, ঐতিহ্যবাহী পোশাক ও স্মৃতির প্রতি শ্রদ্ধার্ঘ্য।",
+      activitiesTitle: "৫টি বিশেষ মানসিক খেলা",
+      activitiesSub: "🟢 সহজ, 🟡 মাঝারি, এবং 🔴 কঠিন স্তরের সমন্বয়ে স্কোর-ভিত্তিক অভিযোজিত খেলা।",
+      nonMedicalNotice: "🌿 এটি একটি জ্ঞান ও স্মৃতি অনুশীলনের প্ল্যাটফর্ম, রোগ নির্ণয়ের নয়।",
+      heritageBadge: "উত্তর-পূর্ব অঞ্চলের ঐতিহ্য"
+    },
+    gallery: {
+      badge: "প্রকৃত সাংস্কৃতিক আলোকচিত্র",
+      title: "প্রিয় ঐতিহ্যবাহী স্থান ও পার্বত্য প্রাকৃতিক দৃশ্য",
+      subtitle: "পবিত্র স্থাপত্য, শান্ত হ্রদ ও পাইন উপত্যকার বাস্তব চিত্র — যা সরাসরি জিগস পাজল হিসেবে খেলা যায়।",
+      playPuzzle: "পাজল খেলুন",
+      loktakTitle: "লোকটাক হ্রদ, মণিপুর",
+      loktakDesc: "স্ফটিকের মতো স্বচ্ছ নীল জল ও মৃদু সবুজ পাহাড়ের মাঝে বৃত্তাকার ভাসমান ফুmdi দ্বীপ।",
+      loktakBadge: "🌊 লোকটাক হ্রদ",
+      sunTempleTitle: "ঐতিহাসিক সূর্য মন্দির",
+      sunTempleDesc: "খোদাই করা প্রাচীন রথের চাকা এবং বিশাল পাথরের স্থাপত্য যা সাংস্কৃতিক গর্বের অনুপ্রেরণা যোগায়।",
+      sunTempleBadge: "🏛️ পবিত্র ঐতিহ্য",
+      redTempleTitle: "পবিত্র লাল মন্দির",
+      redTempleDesc: "গোধূলির আকাশের নিচে স্নিগ্ধ আলোয় উদ্ভাসিত লাল পাথরের প্রাচীন মন্দির, যা প্রশান্তি আনে।",
+      redTempleBadge: "🛕 সন্ধ্যা মন্দির",
+      valleyTitle: "হিমালয়ের পাইন উপত্যকা",
+      valleyDesc: "ভোরের নির্মল আলোয় স্নাত সবুজ পাহাড়ের খাঁজ, কুয়াশাচ্ছন্ন পাইন বন এবং শান্ত পাহাড়ি জনপদ।",
+      valleyBadge: "🌲 কুয়াশাচ্ছন্ন উপত্যকা"
+    },
+    states: {
+      assam: {
+        name: "আসাম",
+        theme: "সোনালী মুগা রেশম ও বিহুর সুর",
+        desc: "বিশাল ব্রহ্মপুত্র নদ, সবুজ চা বাগান এবং আনন্দের বিহু নবান্ন উৎসবের দেশ।"
+      },
+      arunachal: {
+        name: "অরুণাচল প্রদেশ",
+        theme: "সূর্যোদয়ের শান্ত পাহাড়ের দেশ",
+        desc: "তুষারশুভ্র পর্বতশৃঙ্গ, প্রাচীন তাওয়াং বৌদ্ধবিহার এবং ঐতিহ্যবাহী চমৎকার বেত-বাঁশের হস্তশিল্প।"
+      },
+      manipur: {
+        name: "মণিপুর",
+        theme: "শান্ত হ্রদ ও অনুপম নৃত্যের রত্ন",
+        desc: "লোকটাক হ্রদের ভাসমান ফুmdi, ধ্রুপদী রাসলীলা নৃত্য এবং সুরময় পেনা লোকসঙ্গীতের জন্য বিখ্যাত।"
+      },
+      meghalaya: {
+        name: "মেঘালয়",
+        theme: "মেঘের রাজ্য ও জীবন্ত শিকড়ের সেতু",
+        desc: "কুয়াশাঘেরা পাইন পাহাড়, জীবন্ত প্রাকৃতিক শিকড় সেতু, ঝর্ণাধারা এবং খাসি দুইতারা লোকসংগীত।"
+      },
+      mizoram: {
+        name: "মিজোরাম",
+        theme: "ঢেউ খেলানো পাহাড় ও বাঁশ নৃত্যের ছন্দ",
+        desc: "মনোরম সবুজ পাহাড়, বর্ণাঢ্য চেরাও বাঁশ নৃত্য এবং চমৎকার হাতে বোনা পুয়ান পোশাক।"
+      },
+      nagaland: {
+        name: "নাগাল্যান্ড",
+        theme: "উৎসব ও ঐতিহ্যময় লোকশিল্প",
+        desc: "বিখ্যাত হর্নবিল উৎসব, সমৃদ্ধ যোদ্ধা শালের নকশা, প্রাচীন গ্রামীণ সংস্কৃতি এবং পাহাড়ের গান।"
+      },
+      tripura: {
+        name: "ত্রিপুরা",
+        theme: "রাজপ্রাসাদ ও প্রাচীন শিলা খোদাই",
+        desc: "নীরমহল জলপ্রাসাদ, উনাকোটির প্রাচীন পাথরের ভাস্কর্য এবং ঐতিহ্যবাহী রিগনই তাঁতশিল্প।"
+      },
+      sikkim: {
+        name: "সিকিম",
+        theme: "পবিত্র পর্বতশৃঙ্গ ও শান্ত বৌদ্ধবিহার",
+        desc: "মহিমান্বিত কাঞ্চনজঙ্ঘা পর্বত, রঙিন প্রার্থনা পতাকা এবং মনোমুগ্ধকর নির্ভেজাল পাহাড়ি উপত্যকা।"
+      }
     },
     dashboard: {
       welcome: "স্বাগতম",
@@ -585,15 +795,85 @@ export const translations = {
       welcome: "बराइबाय"
     },
     hero: {
-      title: "when memories meet care",
-      desc: "बैसो गोराफोरनि थाखाय गोसोखांथि आरो गोसो होनाय बांहोनो ५ टा मोजां गेलेनाय।",
+      tagline: "जेब्ला गोसोखांथिआ यत्नजों लोगो लायो",
+      title: "जेब्ला गोसोखांथिआ यत्नजों लोगो लायो",
+      desc: "जोंनि अनसुला गोजाम मानसिफोरनि थाखाय गोजोन गोसोखांथि, मेगननि गोसो होनाय आरो गोरलै गेलेनायजों सोदोब गोसोखांफिननो थाखाय मोनसे गोजोन जायगा।",
+      listenIntro: "सिनायथि खोनासं",
+      spokenIntro: "कग्निकियारआव बरायबाय, जेब्ला गोसोखांथिआ यत्नजों लोगो लायो। बैसो गोराफोरनि थाखाय गोजोन गोसोखांथि आरो गेलेनायनि जायगा।",
       getStarted: "जागाय",
       caretakerPortal: "केयारटेकार डेशबर्ड",
-      tryDemo: "१-क्लिक डेमो नाय",
-      chooseLanguage: "राव सायख'",
+      exploreGames: "५ गोसो गेलेनाय नाय",
+      caretakerDashboard: "सामलायग्रा देसबर्ड",
+      progressDashboard: "थासारि नाय",
+      demoCaregiver: "१-क्लिक देमो सामलायग्रा",
+      chooseLanguage: "नोंथांनि रावखौ सायख'",
+      chooseLanguageSub: "गासै बिलाइ, गेलेनाय, गोसोखांथि आरो अड़िअआव लोगो लोगोनो सोलायो",
       exploreHeritage: "सानजा-सा रायजोफोरनि हारिमु",
-      exploreHeritageSubtitle: "८ रायजोफोरनि मोजां हारिमु।",
-      nonMedicalNotice: "🌿 बेयो गोसोखांथि बांहोनायनि थाखायसो।"
+      exploreHeritageSubtitle: "८ सानजा-सा रायजोफोरनि मोजां हारिमु आरो गामिनि सोदोमस्रिखौ मान होनाय।",
+      activitiesTitle: "५ गोसोनि जुनिया गेलेनायफोर",
+      activitiesSub: "🟢 गोरलै, 🟡 गेजेर, आरो 🔴 गोब्राब थाखोफोरजों।",
+      nonMedicalNotice: "🌿 बेयो गोसोखांथि बांहोनायनि थाखायसो, फाहामथायनि नङा।",
+      heritageBadge: "सानजा-सा हारिमु"
+    },
+    gallery: {
+      badge: "हारिमुनि मोजां फोटो",
+      title: "हारिमुनि समायना जायगा आरो हाजोनि नुथाय",
+      subtitle: "पवित्र नोबोर, गोजोन बिलो आरो पाइम हाबिलाफोरनि फोटो — जिगस' गेलेनो हागौ।",
+      playPuzzle: "पजल गेले",
+      loktakTitle: "लोकताक बिलो, मनिपुर",
+      loktakDesc: "नील दै आरो हाजो गेजेरआव बोहैनाय फुmdi द्विपफोर।",
+      loktakBadge: "🌊 लोकताक बिलो",
+      sunTempleTitle: "सान मन्दिर",
+      sunTempleDesc: "गोजाम गथ' मन्दिर आरो अनथाइनि सिनायथि।",
+      sunTempleBadge: "🏛️ हारिमुनि सम्पद",
+      redTempleTitle: "गोजा मन्दिर",
+      redTempleDesc: "बेलासे समाव गोजोन रोखोमनि गोजा अनथाइ मन्दिर।",
+      redTempleBadge: "🛕 बेलासे मन्दिर",
+      valleyTitle: "हिमालय पाइम हाबिला",
+      valleyDesc: "फुंनि स्रां समाव सोमखोर हाजो आरो पाइम बिफांफोर।",
+      valleyBadge: "🌲 कुहा गोनां हाबिला"
+    },
+    states: {
+      assam: {
+        name: "आसाम",
+        theme: "मुगा सि आरो बिहु मेथाय",
+        desc: "ब्रह्मपुत्र दैमा, साहा बागान आरो बिहु फोरबोनि समायना जायगा।"
+      },
+      arunachal: {
+        name: "अरुणाचल प्रदेश",
+        theme: "सान ओंखारनाय हाजोनि रायजो",
+        desc: "बरफ गोनां हाजो, तावांग गुम्फा आरो औवा-बेथनि सिनायथि।"
+      },
+      manipur: {
+        name: "मनिपुर",
+        theme: "बिलो आरो मोसानायनि मनि",
+        desc: "लोकताक बिलोनि फुmdi, रासलीला मोसानाय आरो पेना मेथाय।"
+      },
+      meghalaya: {
+        name: "मेघालय",
+        theme: "जोमदै आरो रोदा दालांनि रायजो",
+        desc: "कुहा गोनां पाइम हाजो, जिउ गोनां रोदा दालां आरो दैखार।"
+      },
+      mizoram: {
+        name: "मिजोराम",
+        theme: "हाजो आरो औवा मोसानाय",
+        desc: "सोमखोर हाजो, चेराव औवा मोसानाय आरो पुवान सि।"
+      },
+      nagaland: {
+        name: "नागालेण्ड",
+        theme: "फोरबो आरो हारिमुनि जायगा",
+        desc: "हर्नबिल फोरबो, दावहायारु गामसा आरो हाजोनि मेथाय।"
+      },
+      tripura: {
+        name: "त्रिपुरा",
+        theme: "राजप्रासाद आरो गोजाम अनथाइ",
+        desc: "नीरमहल दै राजप्रासाद, उनाकोटि आरो रिगनाइ सि।"
+      },
+      sikkim: {
+        name: "सिक्किम",
+        theme: "पवित्र हाजो आरो गुम्फा",
+        desc: "कांचनजंघा हाजो, बौद्ध गुम्फा आरो समायना हाजो हाबिला।"
+      }
     },
     dashboard: {
       welcome: "बराइबाय",
@@ -769,15 +1049,85 @@ export const translations = {
       welcome: "তরাম্না ওকচরি"
     },
     hero: {
-      title: "when memories meet care",
-      desc: "ঐখোয়গী ইকায়খুম্নরবা অহলশিংগীদমক নীংশিংবা অমসুং ৱাখল চেৎশিলহন্নবা শান্নবা ৫।",
+      tagline: "মতমদা নীংশিংবা অসিনা য়েন্নবাগা উন্নবা",
+      title: "মতমদা নীংশিংবা অসিনা য়েন্নবাগা উন্নবা",
+      desc: "ঐখোয়গী নুংশিজরবা অহলশিংগীদমক নুঙাইরবা নীংশিংবা হঞ্জিনবা, মিৎয়েং চংবা হেঙ্গৎহনবা অমসুং লাইরবা ৱাহৈ নীংশিংবগীদমক শেম্বা শেংলবা মফম।",
+      listenIntro: "পাউতাক তাখিগেরা",
+      spokenIntro: "কগনিকেয়ারদা তরাম্না ওকচরি, মতমদা নীংশিংবা অসিনা য়েন্নবাগা উন্নবা। অহলশিংগীদমক নীংশিংবা অমসুং ৱাখল চেৎশিলহন্নবা মফম।",
       getStarted: "চৎপা হৌসি",
       caretakerPortal: "য়েনশিনবগী ডেশবোর্দ",
-      tryDemo: "১-ক্লিক দেমো য়েংবা",
-      chooseLanguage: "লোন খনবিউ",
+      exploreGames: "৫ কগনিটিভ শানপোৎ য়েংবীয়ু",
+      caretakerDashboard: "কেয়ারটেকার দেশবোর্দ",
+      progressDashboard: "চাউখৎলকপা য়েংবা",
+      demoCaregiver: "১-ক্লিক দেমো য়েংবা",
+      chooseLanguage: "নহাক্কী লোন খনবীয়ু",
+      chooseLanguageSub: "পেজ, শানপোৎ, নীংশিংবা অমসুং অডিও পুম্নমক্তা মতিক চানা লোন্দোল হোংই",
       exploreHeritage: "অৱাং-নোংপোক্কী নাৎ",
-      exploreHeritageSubtitle: "৮ রাজ্যগী নাৎ।",
-      nonMedicalNotice: "🌿 মসি ৱাখল নুংঙাইহন্নবা শেম্বনি।"
+      exploreHeritageSubtitle: "অৱাং-নোংপোক ভারতকী রাজ্য ৮ গী অশেংবা নাৎ, ফী-রোই অমসুং চৎনবীশিংবু ইকায়খুম্নবা।",
+      activitiesTitle: "৫ তোপ-তোপ্পা কগনিটিভ শানপোৎশিং",
+      activitiesSub: "🟢 লাইবা, 🟡 ময়ায় ওম্বা, অমসুং 🔴 লুবা থাকশিংগা লোয়ননা।",
+      nonMedicalNotice: "🌿 শান্তিময় ওইবা নীংশিংবা অমসুং ৱাখলগী মতেং পাংবা প্লেটফোর্ম, লায়না য়েংথোকপগী নত্তে।",
+      heritageBadge: "অৱাং-নোংপোক লমদমগী নাৎ"
+    },
+    gallery: {
+      badge: "অশেংবা কলচরেল ফোতোগ্রাফি",
+      title: "নুংশিজরবা হেরিতেজ অমসুং চীংশাংগী শক্তমশিং",
+      subtitle: "শেংলবা য়ুমশক, শান্তিময় ওইবা পাত অমসুং পাইন উপত্যকাগী অশেংবা ফোতোশিং — জিগস' পজলদা শানবা য়াই।",
+      playPuzzle: "পজল শানবীয়ু",
+      loktakTitle: "লোকতাক পাত, মণিপুর",
+      loktakDesc: "অতেন্বা শেংলবা নীলা ইশিং অমসুং অশেংবা চীংশাংনা কোইশিল্লবা লোকতাক পাতকী তোপ-তোপ্পা ফুমদীশিং।",
+      loktakBadge: "🌊 লোকতাক পাত",
+      sunTempleTitle: "সান তেম্পল",
+      sunTempleDesc: "নাকোন্না শাবা অরিবা রথকী চাকা অমসুং নুংগী শেংলবা খুদম।",
+      sunTempleBadge: "🏛️ শেংলবা হেরিতেজ",
+      redTempleTitle: "অঙাংবা তেম্পল",
+      redTempleDesc: "নুমিৎ তাথরবগী অতোপ্পা নুংশিরবা অঙাংবা নুংগী শেংলবা তেম্পল।",
+      redTempleBadge: "🛕 নুমিৎ তাথরবগী তেম্পল",
+      valleyTitle: "হিমালয়ান পাইন উপত্যকা",
+      valleyDesc: "অয়ুক্কী অহিংবদা শেংলবা পাইন উমং অমসুং চীংশাংগী শান্তিময় খুঙ্গং।",
+      valleyBadge: "🌲 লৈচিন কোইবা উপত্যকা"
+    },
+    states: {
+      assam: {
+        name: "আসাম",
+        theme: "মুগা ফী অমসুং বিহু ঈশৈ",
+        desc: "ব্রহ্মপুত্র তুরেল, চাহ বাগিচা অমসুং বিহু কুহ্মৈগী অপেনবা লমদম।"
+      },
+      arunachal: {
+        name: "অরুণাচল প্রদেশ",
+        theme: "নুমিৎ থোকপগী চীংশাং লমদম",
+        desc: "উনুংগী চীংশাং, তাৱাং গোম্পা অমসুং ৱা-উগী খুৎশাইবা শিন্মীশিং।"
+      },
+      manipur: {
+        name: "মণিপুর",
+        theme: "শান্তিময় পাত অমসুং জগোইগী মণি",
+        desc: "লোকতাক পাতকী ফুমদী, রাস লীলা জগোই অমসুং পেনা ঈশৈগীদমক মমিং চৎপা।"
+      },
+      meghalaya: {
+        name: "মেঘালয়",
+        theme: "লৈচিলগী য়ুম অমসুং হিংলিবা মরী থোং",
+        desc: "পাইন চীংশাং, হিংলিবা মরীগী থোং, ঈশিং চাওবা অমসুং খাসি দুইতারা।"
+      },
+      mizoram: {
+        name: "মিজোরাম",
+        theme: "চীংশাং অমসুং ৱা জগোই",
+        desc: "অশেংবা চীংশাং, চেরাও ৱা জগোই অমসুং পুয়ান ফী।"
+      },
+      nagaland: {
+        name: "নাগাল্যান্ড",
+        theme: "কুহ্মৈ অমসুং নাৎকী হেরিতেজ",
+        desc: "হর্নবিল কুহ্মৈ, লান্মীগী শাফী, অরিবা খুঙ্গংগী চৎনবী অমসুং চীংশাং ঈশৈ।"
+      },
+      tripura: {
+        name: "ত্রিপুরা",
+        theme: "কোনিুং অমসুং অরিবা নুংগী শক্তম",
+        desc: "নীরমহল ঈশিং কোনিুং, উনাকোতি নুংগী কলা অমসুং রিগনাই ফী।"
+      },
+      sikkim: {
+        name: "সিকিম",
+        theme: "শেংলবা চীং অমসুং গোম্পা",
+        desc: "কাঞ্চনজঙ্ঘা চীংশাং, প্রার্থনা ফী অমসুং শেংলবা নেচারেল উপত্যকা।"
+      }
     },
     dashboard: {
       welcome: "তরাম্না ওকচরি",
@@ -953,15 +1303,85 @@ export const translations = {
       welcome: "स्वागत छ"
     },
     hero: {
-      title: "when memories meet care",
-      desc: "हाम्रा आदरणीय वृद्धवृद्धाहरूका लागि एकाग्रता, शब्द पहिचान र स्मृतिका लागि ५ वटा सरल र रमाइला खेलहरू।",
+      tagline: "जब सम्झनाहरूले हेरचाह पाउँछन्",
+      title: "जब सम्झनाहरूले हेरचाह पाउँछन्",
+      desc: "हाम्रा आदरणीय ज्येष्ठ नागरिकहरूका लागि सुखद सम्झनाहरू ताजा गर्न, ध्यान केन्द्रित गर्न र सरल खेलहरूद्वारा शब्द सम्झन बनाइएको न्यानो र शान्त ठाउँ।",
+      listenIntro: "परिचय सुन्नुहोस्",
+      spokenIntro: "कग्निकेयरमा स्वागत छ, जब सम्झनाहरूले हेरचाह पाउँछन्। हाम्रा आदरणीय वृद्धवृद्धाहरूका लागि सम्झना र मानसिक अभ्यासको शान्त ठाउँ।",
       getStarted: "यात्रा सुरु गर्नुहोस्",
       caretakerPortal: "हेरचाहकर्ता ड्यासबोर्ड",
-      tryDemo: "१-क्लिक डेमो हेर्नुहोस्",
+      exploreGames: "५ वटा दिमागी खेल खेल्नुहोस्",
+      caretakerDashboard: "हेरचाहकर्ता ड्यासबोर्ड",
+      progressDashboard: "प्रगति विवरण हेर्नुहोस्",
+      demoCaregiver: "१-क्लिक डेमो हेर्नुहोस्",
       chooseLanguage: "भाषा छान्नुहोस्",
+      chooseLanguageSub: "सबै पृष्ठ, खेल, सम्झौता र अडियोमा तत्काल अनुवाद लागू हुन्छ",
       exploreHeritage: "उत्तर-पूर्वको संस्कृति",
-      exploreHeritageSubtitle: "८ राज्यहरूको संस्कृति।",
-      nonMedicalNotice: "🌿 यो मानसिक शान्ति र स्मृतिको अभ्यास हो।"
+      exploreHeritageSubtitle: "उत्तर-पूर्वी भारतका ८ राज्यहरूको मौलिक संस्कृति, पोसाक र परम्पराको सम्मान।",
+      activitiesTitle: "५ विशेष दिमागी गतिविधिहरू",
+      activitiesSub: "🟢 सजिलो, 🟡 मध्यम, र 🔴 गाह्रो स्तरहरूसँग।",
+      nonMedicalNotice: "🌿 यो मानसिक शान्ति र स्मृतिको अभ्यास हो, रोग निदान होइन।",
+      heritageBadge: "उत्तर-पूर्वी क्षेत्रको सम्पदा"
+    },
+    gallery: {
+      badge: "मौलिक सांस्कृतिक तस्बिरहरू",
+      title: "प्रिय सम्पदा स्थलहरू र हिमाली दृश्यहरू",
+      subtitle: "पवित्र वास्तुकला, शान्त ताल र सल्लाका वनहरूको वास्तविक तस्बिरहरू — जिगस प puzzle मा खेल्न सकिने।",
+      playPuzzle: "पजल खेल्नुहोस्",
+      loktakTitle: "लोकताक ताल, मणिपुर",
+      loktakDesc: "स्वच्छ नीलो पानी र हरियाली पहाडहरू बीच तैरिरहेका अद्वितीय फूमदी टापुहरू।",
+      loktakBadge: "🌊 लोकताक ताल",
+      sunTempleTitle: "भव्य सूर्य मन्दिर",
+      sunTempleDesc: "प्राचीन रथका पाङ्ग्रा र भव्य ढुङ्गाको वास्तुकला जसले सांस्कृतिक गौरव जगाउँछ।",
+      sunTempleBadge: "🏛️ पवित्र सम्पदा",
+      redTempleTitle: "पवित्र रातो मन्दिर",
+      redTempleDesc: "गोधूलि साँझको आकाशमुनि चम्किरहेको रातो ढुङ्गाको शान्त मन्दिर।",
+      redTempleBadge: "🛕 साँझको मन्दिर",
+      valleyTitle: "हिमाली सल्लाको उपत्यका",
+      valleyDesc: "बिहानको स्वच्छ घाममा चम्किएका हरिया पहाड र सल्लाका रुखहरूले भरिएको शान्त बस्ती।",
+      valleyBadge: "🌲 कुहिरोले ढाकिएको उपत्यका"
+    },
+    states: {
+      assam: {
+        name: "असम",
+        theme: "सुनौलो मुगा रेशम र बिहू धुन",
+        desc: "विशाल ब्रह्मपुत्र नदी, हरियाली चिया बगान र रमाइलो बिहू बाली उत्सवको भूमि।"
+      },
+      arunachal: {
+        name: "अरुणाचल प्रदेश",
+        theme: "उदीयमान सूर्य र पहाडहरूको भूमि",
+        desc: "हिउँले ढाकिएका चुचुराहरू, प्राचीन तवाङ गुम्बा र उत्कृष्ट बाँस-बेतका हस्तकला।"
+      },
+      manipur: {
+        name: "मणिपुर",
+        theme: "शान्त ताल र शास्त्रीय नृत्यको मणी",
+        desc: "लोकताक तालको तैरिने फूमदी, शास्त्रीय रासलीला नृत्य र पेना लोक संगीतका लागि प्रसिद्ध।"
+      },
+      meghalaya: {
+        name: "मेघालय",
+        theme: "बादलको घर र जीवित जराको पुल",
+        desc: "कुहिरोले ढाकिएका सल्लाका पहाड, प्राकृतिक जराका पुल, झरना र खासी दुइतारा धुन।"
+      },
+      mizoram: {
+        name: "मिजोरम",
+        theme: "मनोरम पहाड र बाँस नृत्यको ताल",
+        desc: "सुन्दर हरिया पहाड, जीवन्त चेराव बाँस नृत्य र रंगीन हातेबुना पुवान वस्त्र।"
+      },
+      nagaland: {
+        name: "नागाल्याण्ड",
+        theme: "चाडपर्व र मौलिक कलाको सम्पदा",
+        desc: "प्रसिद्ध हर्नबिल उत्सव, समृद्ध योद्धा खास्टो, प्राचीन गाउँले परम्परा र पहाडी गीत।"
+      },
+      tripura: {
+        name: "त्रिपुरा",
+        theme: "राजदरबार र प्राचीन ढुङ्गाका मूर्तिहरू",
+        desc: "नीरमहल जलमहल, उनाकोटीको प्राचीन ढुङ्गाका मूर्ति र परम्परागत रिग्नाई कपडा।"
+      },
+      sikkim: {
+        name: "सिक्किम",
+        theme: "पवित्र चुचुरा र शान्त गुम्बाहरू",
+        desc: "भव्य कञ्चनजङ्घा हिमाल, शान्त बौद्ध प्रार्थना झण्डा र सुन्दर जैविक उपत्यका।"
+      }
     },
     dashboard: {
       welcome: "स्वागत छ",

@@ -46,89 +46,83 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
     { title: '🧩 ' + (t.games?.jigsawTitle || 'Jigsaw Puzzle'), desc: t.games?.jigsawDesc || 'Arrange puzzle pieces correctly to complete a picture and exercise visual-spatial thinking.' }
   ];
 
-  // 8 North-Eastern States Heritage Data with Real Photos
-  const northEastStates = [
+  // 8 North-Eastern States Heritage Data with Real Photos & Dynamic Language Support
+  const stateConfigs = [
     {
-      name: "Assam",
+      key: "assam",
       nativeName: "অসম",
-      theme: "Golden Muga Silk & Bihu Melodies",
-      desc: "Home to the mighty Brahmaputra river, lush tea plantations, and joyful Bihu folk harvest celebrations.",
       icon: "🦏",
       image: assamImg,
       color: "from-amber-500/20 to-yellow-600/20",
       border: "border-amber-300"
     },
     {
-      name: "Arunachal Pradesh",
+      key: "arunachal",
       nativeName: "অৰুণাচল প্ৰদেশ",
-      theme: "Land of the Dawn-Lit Mountains",
-      desc: "Pristine snow peaks, ancient Tawang monastery, and exquisite traditional tribal cane and bamboo handicrafts.",
       icon: "🏔️",
       image: arunachalImg,
       color: "from-emerald-500/20 to-teal-600/20",
       border: "border-emerald-300"
     },
     {
-      name: "Manipur",
+      key: "manipur",
       nativeName: "মণিপুর",
-      theme: "The Jewel of Serene Lakes & Dance",
-      desc: "Famous for the floating phumdis of Loktak Lake, classical Raas Leela dance, and sacred Pena folk string music.",
       icon: "🌸",
       image: manipurImg,
       color: "from-purple-500/20 to-indigo-600/20",
       border: "border-purple-300"
     },
     {
-      name: "Meghalaya",
+      key: "meghalaya",
       nativeName: "মেঘালয়",
-      theme: "The Abode of Clouds & Living Bridges",
-      desc: "Misty pine hills, indigenous living root bridges, cascading waterfalls, and melodic Khasi Duitara folk tunes.",
       icon: "🌧️",
       image: meghalayaImg,
       color: "from-sky-500/20 to-blue-600/20",
       border: "border-sky-300"
     },
     {
-      name: "Mizoram",
+      key: "mizoram",
       nativeName: "মিজোৰাম",
-      theme: "Rolling Hills & Bamboo Rhythm",
-      desc: "Land of gentle rolling hills, vibrant Cheraw bamboo dance, and colorful handwoven traditional Puan textiles.",
       icon: "🎋",
       image: mizoramImg,
       color: "from-rose-500/20 to-amber-600/20",
       border: "border-rose-300"
     },
     {
-      name: "Nagaland",
+      key: "nagaland",
       nativeName: "নাগালেণ্ড",
-      theme: "Heritage of Festivals & Artistry",
-      desc: "Celebrated for the grand Hornbill festival, rich warrior shawl motifs, ancient village traditions, and hill songs.",
       icon: "🥁",
       image: nagalandImg,
       color: "from-red-500/20 to-orange-600/20",
       border: "border-red-300"
     },
     {
-      name: "Tripura",
+      key: "tripura",
       nativeName: "ত্রিপুরা",
-      theme: "Royal Palaces & Ancient Carvings",
-      desc: "Water palace of Neermahal, ancient rock carvings of Unakoti, and vibrant handloom Rignai weaving traditions.",
       icon: "🏰",
       image: tripuraImg,
       color: "from-teal-500/20 to-cyan-600/20",
       border: "border-teal-300"
     },
     {
-      name: "Sikkim",
+      key: "sikkim",
       nativeName: "सिक्किम",
-      theme: "Sacred Peaks & Peaceful Monasteries",
-      desc: "Guarded by the majestic Mount Kanchenjunga, serene prayer flags, organic alpine valleys, and sacred heritage.",
       icon: "☸️",
       image: sikkimImg,
       color: "from-blue-500/20 to-violet-600/20",
       border: "border-blue-300"
     }
   ];
+
+  const northEastStates = stateConfigs.map(st => {
+    const data = t.states?.[st.key] || {};
+    return {
+      ...st,
+      name: data.name || st.key,
+      theme: data.theme || "",
+      desc: data.desc || ""
+    };
+  });
 
   return (
     <div className="bg-[#FAF7F0] min-h-screen">
@@ -146,23 +140,61 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
           <div className="absolute inset-0 flex flex-col items-center justify-end pb-[5.5%] sm:pb-[6%] md:pb-[6.5%]">
             <button
               onClick={() => {
-                const text = "Welcome to CogniCare, when memories meet care. A warm, peaceful, culturally rooted space designed for our beloved elders to revisit joyful memories, exercise visual attention, and stimulate word recall with gentle cognitive games.";
                 if ('speechSynthesis' in window) {
+                  const speechText = t.hero?.spokenIntro || t.hero?.desc || "Welcome to CogniCare, when memories meet care. A warm, peaceful, culturally rooted space designed for our beloved elders to revisit joyful memories, exercise visual attention, and stimulate word recall with gentle cognitive games.";
                   window.speechSynthesis.cancel();
-                  const utterance = new SpeechSynthesisUtterance(text);
+                  const utterance = new SpeechSynthesisUtterance(speechText);
                   utterance.rate = 0.9;
+                  const langMap = { as: 'as-IN', bn: 'bn-IN', brx: 'hi-IN', mni: 'mni-IN', ne: 'ne-NP', en: 'en-US' };
+                  if (langMap[currentLang]) utterance.lang = langMap[currentLang];
                   window.speechSynthesis.speak(utterance);
                 }
               }}
-              title="Listen to Introduction"
+              title={t.hero?.listenIntro || "Listen to Introduction"}
               className="px-5 py-2 sm:px-7 sm:py-2.5 rounded-full bg-[#1B3B2B] hover:bg-[#132E20] text-white font-medium text-xs sm:text-sm shadow-lg border border-[#C99E32]/50 inline-flex items-center gap-2 cursor-pointer transition-all hover:scale-105 active:scale-95"
             >
               <Volume2 className="w-4 h-4 text-amber-300" />
-              <span>Listen to Introduction</span>
+              <span>{t.hero?.listenIntro || "Listen to Introduction"}</span>
             </button>
           </div>
-        </div>
-      </section>
+
+            {/* Dynamic Localized Hero Overlay for non-English languages */}
+            {currentLang !== 'en' && (
+              <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-6 bg-black/25">
+                <div className="bg-[#FAF7F0]/95 backdrop-blur-md border-2 border-[#C99E32] rounded-3xl p-5 sm:p-8 max-w-2xl text-center shadow-2xl space-y-3 transform translate-y-[-2%] animate-fadeIn">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#1B3B2B] text-amber-200 text-xs font-bold uppercase tracking-wider">
+                    <span>🌿 {t.hero?.tagline || t.tagline || "when memories meet care"}</span>
+                  </div>
+                  <h1 className="font-serif font-bold text-2xl sm:text-4xl text-[#1B3B2B] leading-tight">
+                    {t.hero?.title || "when memories meet care"}
+                  </h1>
+                  <p className="text-xs sm:text-sm md:text-base text-stone-700 leading-relaxed font-medium max-w-xl mx-auto">
+                    {t.hero?.desc}
+                  </p>
+                  <div className="pt-2">
+                    <button
+                      onClick={() => {
+                        const speechText = t.hero?.spokenIntro || t.hero?.desc;
+                        if ('speechSynthesis' in window) {
+                          window.speechSynthesis.cancel();
+                          const utterance = new SpeechSynthesisUtterance(speechText);
+                          utterance.rate = 0.9;
+                          const langMap = { as: 'as-IN', bn: 'bn-IN', brx: 'hi-IN', mni: 'mni-IN', ne: 'ne-NP', en: 'en-US' };
+                          if (langMap[currentLang]) utterance.lang = langMap[currentLang];
+                          window.speechSynthesis.speak(utterance);
+                        }
+                      }}
+                      className="px-6 py-2.5 rounded-full bg-[#1B3B2B] hover:bg-[#132E20] text-white font-bold text-xs sm:text-sm shadow-md border border-[#C99E32] inline-flex items-center gap-2 cursor-pointer transition-all hover:scale-105 active:scale-95"
+                    >
+                      <Volume2 className="w-4 h-4 text-amber-300" />
+                      <span>{t.hero?.listenIntro || "Listen to Introduction"}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
 
       {/* Quick Action Navigation Bar */}
       <section className="py-6 bg-white border-b border-[#E5DFD5]">
@@ -173,7 +205,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
               className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-sm border-2 border-[#C99E32] shadow-sm hover:shadow-md transition-all active:scale-98 cursor-pointer"
             >
               <Gamepad2 className="w-4 h-4 text-amber-300" />
-              <span>Explore 5 Cognitive Games</span>
+              <span>{t.hero?.exploreGames || "Explore 5 Cognitive Games"}</span>
               <ArrowRight className="w-4 h-4 text-amber-300" />
             </button>
 
@@ -184,7 +216,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold text-sm border-2 border-amber-300 shadow-sm transition-all cursor-pointer"
                 >
                   <Heart className="w-4 h-4 text-amber-700" />
-                  <span>Caretaker Dashboard</span>
+                  <span>{t.hero?.caretakerDashboard || "Caretaker Dashboard"}</span>
                 </button>
 
                 <button
@@ -192,7 +224,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-950 font-bold text-sm border-2 border-emerald-300 shadow-sm transition-all cursor-pointer"
                 >
                   <BarChart3 className="w-4 h-4 text-emerald-700" />
-                  <span>View Progress Dashboard</span>
+                  <span>{t.hero?.progressDashboard || "View Progress Dashboard"}</span>
                 </button>
               </>
             ) : (
@@ -201,7 +233,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white hover:bg-amber-50 text-stone-900 font-bold text-sm border-2 border-stone-300 shadow-sm transition-all cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 text-amber-600" />
-                <span>1-Click Demo Caregiver</span>
+                <span>{t.hero?.demoCaregiver || "1-Click Demo Caregiver"}</span>
               </button>
             )}
           </div>
@@ -216,7 +248,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
               🌿 {t.hero?.chooseLanguage || "Choose Your Language"}
             </h2>
             <p className="text-xs text-stone-500 mt-0.5">
-              Instant translation applies to all pages, games, reminders, and audio
+              {t.hero?.chooseLanguageSub || "Instant translation applies to all pages, games, reminders, and audio"}
             </p>
           </div>
 
@@ -251,152 +283,80 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
           <div className="text-center mb-8 space-y-1.5">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-100 text-[#7C3218] font-bold text-xs">
               <ImageIcon className="w-3.5 h-3.5 text-amber-700" />
-              <span>Authentic Cultural Photography</span>
+              <span>{t.gallery?.badge || "Authentic Cultural Photography"}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#1B3B2B]">
-              Cherished Heritage Sights & Mountain Landscapes
+              {t.gallery?.title || "Cherished Heritage Sights & Mountain Landscapes"}
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 max-w-2xl mx-auto">
-              Real high-definition photographs celebrating sacred architecture, serene lakes, and pine valleys — playable directly in the Jigsaw Puzzle.
+              {t.gallery?.subtitle || "Real high-definition photographs celebrating sacred architecture, serene lakes, and pine valleys — playable directly in the Jigsaw Puzzle."}
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Card 1: Loktak Lake Manipur */}
-            <div className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
-              <div>
-                <div className="relative h-44 overflow-hidden">
-                  <img
-                    src={loktakLake}
-                    alt="Loktak Lake & Floating Phumdis"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 bg-[#051C26]/90 backdrop-blur-xs text-amber-200 text-[11px] px-3 py-1 rounded-full font-bold border border-amber-300/40">
-                    🌊 Loktak Lake
+            {[
+              {
+                badge: t.gallery?.loktakBadge || "🌊 Loktak Lake",
+                title: t.gallery?.loktakTitle || "Loktak Lake, Manipur",
+                desc: t.gallery?.loktakDesc || "Iconic circular floating islands (phumdis) on crystal blue waters surrounded by gentle rolling green hills.",
+                image: loktakLake,
+                bg: "bg-[#051C26]/90"
+              },
+              {
+                badge: t.gallery?.sunTempleBadge || "🏛️ Sacred Heritage",
+                title: t.gallery?.sunTempleTitle || "Grand Sun Temple",
+                desc: t.gallery?.sunTempleDesc || "Carved ancient chariot wheels and majestic stone architecture inspiring cultural pride and peaceful reminiscence.",
+                image: heroBg,
+                bg: "bg-[#1B3B2B]/90"
+              },
+              {
+                badge: t.gallery?.redTempleBadge || "🛕 Twilight Sanctum",
+                title: t.gallery?.redTempleTitle || "Sacred Red Temple",
+                desc: t.gallery?.redTempleDesc || "Atmospheric sacred red stone temple glowing gently under the twilight evening sky, bringing soothing nostalgia.",
+                image: sacredTemple,
+                bg: "bg-[#1B3B2B]/90"
+              },
+              {
+                badge: t.gallery?.valleyBadge || "🌲 Misty Valleys",
+                title: t.gallery?.valleyTitle || "Himalayan Pine Valley",
+                desc: t.gallery?.valleyDesc || "Rolling emerald mountain ridges, misty pine canopies, and serene hill settlement bathed in pure morning light.",
+                image: mountainValley,
+                bg: "bg-[#1B3B2B]/90"
+              }
+            ].map((card, idx) => (
+              <div key={idx} className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
+                <div>
+                  <div className="relative h-44 overflow-hidden">
+                    <img
+                      src={card.image}
+                      alt={card.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className={`absolute top-3 left-3 ${card.bg} backdrop-blur-xs text-amber-200 text-[11px] px-3 py-1 rounded-full font-bold border border-amber-300/40`}>
+                      {card.badge}
+                    </div>
+                  </div>
+                  <div className="p-4 space-y-1.5">
+                    <h3 className="font-serif font-bold text-base text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
+                      {card.title}
+                    </h3>
+                    <p className="text-xs text-stone-600 leading-relaxed line-clamp-3">
+                      {card.desc}
+                    </p>
                   </div>
                 </div>
-                <div className="p-4 space-y-1.5">
-                  <h3 className="font-serif font-bold text-base text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
-                    Loktak Lake, Manipur
-                  </h3>
-                  <p className="text-xs text-stone-600 leading-relaxed line-clamp-3">
-                    Iconic circular floating islands (phumdis) on crystal blue waters surrounded by gentle rolling green hills.
-                  </p>
+                <div className="p-4 pt-0">
+                  <button
+                    onClick={() => setActivePage('games')}
+                    className="w-full py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <Gamepad2 className="w-3.5 h-3.5 text-amber-700" />
+                    <span>{t.gallery?.playPuzzle || "Play as Puzzle"}</span>
+                    <ArrowRight className="w-3 h-3 text-amber-700" />
+                  </button>
                 </div>
               </div>
-              <div className="p-4 pt-0">
-                <button
-                  onClick={() => setActivePage('games')}
-                  className="w-full py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
-                >
-                  <Gamepad2 className="w-3.5 h-3.5 text-amber-700" />
-                  <span>Play as Puzzle</span>
-                  <ArrowRight className="w-3 h-3 text-amber-700" />
-                </button>
-              </div>
-            </div>
-
-            {/* Card 2: Ancient Sun Temple */}
-            <div className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
-              <div>
-                <div className="relative h-44 overflow-hidden">
-                  <img
-                    src={heroBg}
-                    alt="Ancient Sun Temple Architecture"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 bg-[#1B3B2B]/90 backdrop-blur-xs text-amber-200 text-[11px] px-3 py-1 rounded-full font-bold border border-amber-300/40">
-                    🏛️ Sacred Heritage
-                  </div>
-                </div>
-                <div className="p-4 space-y-1.5">
-                  <h3 className="font-serif font-bold text-base text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
-                    Grand Sun Temple
-                  </h3>
-                  <p className="text-xs text-stone-600 leading-relaxed line-clamp-3">
-                    Carved ancient chariot wheels and majestic stone architecture inspiring cultural pride and peaceful reminiscence.
-                  </p>
-                </div>
-              </div>
-              <div className="p-4 pt-0">
-                <button
-                  onClick={() => setActivePage('games')}
-                  className="w-full py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
-                >
-                  <Gamepad2 className="w-3.5 h-3.5 text-amber-700" />
-                  <span>Play as Puzzle</span>
-                  <ArrowRight className="w-3 h-3 text-amber-700" />
-                </button>
-              </div>
-            </div>
-
-            {/* Card 3: Sacred Twilight Temple */}
-            <div className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
-              <div>
-                <div className="relative h-44 overflow-hidden">
-                  <img
-                    src={sacredTemple}
-                    alt="Sacred Twilight Stone Temple"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 bg-[#1B3B2B]/90 backdrop-blur-xs text-amber-200 text-[11px] px-3 py-1 rounded-full font-bold border border-amber-300/40">
-                    🛕 Twilight Sanctum
-                  </div>
-                </div>
-                <div className="p-4 space-y-1.5">
-                  <h3 className="font-serif font-bold text-base text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
-                    Sacred Red Temple
-                  </h3>
-                  <p className="text-xs text-stone-600 leading-relaxed line-clamp-3">
-                    Atmospheric sacred red stone temple glowing gently under the twilight evening sky, bringing soothing nostalgia.
-                  </p>
-                </div>
-              </div>
-              <div className="p-4 pt-0">
-                <button
-                  onClick={() => setActivePage('games')}
-                  className="w-full py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
-                >
-                  <Gamepad2 className="w-3.5 h-3.5 text-amber-700" />
-                  <span>Play as Puzzle</span>
-                  <ArrowRight className="w-3 h-3 text-amber-700" />
-                </button>
-              </div>
-            </div>
-
-            {/* Card 4: Mountain Valley & Pine Hills */}
-            <div className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
-              <div>
-                <div className="relative h-44 overflow-hidden">
-                  <img
-                    src={mountainValley}
-                    alt="Himalayan Valley & Pine Hills"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 bg-[#1B3B2B]/90 backdrop-blur-xs text-amber-200 text-[11px] px-3 py-1 rounded-full font-bold border border-amber-300/40">
-                    🌲 Misty Valleys
-                  </div>
-                </div>
-                <div className="p-4 space-y-1.5">
-                  <h3 className="font-serif font-bold text-base text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
-                    Himalayan Pine Valley
-                  </h3>
-                  <p className="text-xs text-stone-600 leading-relaxed line-clamp-3">
-                    Rolling emerald mountain ridges, misty pine canopies, and serene hill settlement bathed in pure morning light.
-                  </p>
-                </div>
-              </div>
-              <div className="p-4 pt-0">
-                <button
-                  onClick={() => setActivePage('games')}
-                  className="w-full py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors"
-                >
-                  <Gamepad2 className="w-3.5 h-3.5 text-amber-700" />
-                  <span>Play as Puzzle</span>
-                  <ArrowRight className="w-3 h-3 text-amber-700" />
-                </button>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -406,7 +366,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
         <div className="text-center mb-10 space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-[#7C3218] font-bold text-xs">
             <MapPin className="w-3.5 h-3.5" />
-            <span>North-Eastern Region Heritage</span>
+            <span>{t.hero?.heritageBadge || "North-Eastern Region Heritage"}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#1B3B2B]">
@@ -476,10 +436,10 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#1B3B2B]">
-              5 Tailored Cognitive Activities
+              {t.hero?.activitiesTitle || "5 Tailored Cognitive Activities"}
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 mt-1">
-              Featuring 🟢 Easy, 🟡 Medium, and 🔴 Hard tiers with immediate score-based adaptive difficulty.
+              {t.hero?.activitiesSub || "Featuring 🟢 Easy, 🟡 Medium, and 🔴 Hard tiers with immediate score-based adaptive difficulty."}
             </p>
           </div>
 
