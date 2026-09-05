@@ -137,10 +137,10 @@ export const OddOneOutGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) 
                   setFeedback(null);
                   setIsLocked(false);
                 }}
-                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all ${
+                className={`btn-pill px-3 py-1 text-xs font-bold transition-all ${
                   currentLevel === lvl
-                    ? 'bg-[#1B3B2B] text-amber-200 shadow-sm border border-amber-300'
-                    : 'bg-stone-100 text-stone-600 hover:bg-amber-100'
+                    ? 'bg-[#1B3B2B] text-amber-200 shadow-xs border border-[#C99E32]'
+                    : 'bg-stone-100 text-stone-600 hover:bg-amber-100 hover:text-stone-900'
                 }`}
               >
                 Lvl {lvl}
@@ -184,10 +184,10 @@ export const OddOneOutGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) 
               key={item.id}
               onClick={() => handleItemClick(index)}
               disabled={isLocked}
-              className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl text-3xl sm:text-4xl flex items-center justify-center transition-all cursor-pointer border-2 shadow-xs active:scale-90 ${
+              className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl text-3xl sm:text-4xl flex items-center justify-center transition-all duration-150 cursor-pointer border-2 shadow-xs hover:shadow-md select-none active:scale-90 hover:scale-105 ${
                 isLocked && item.isOdd
                   ? 'bg-emerald-200 border-emerald-500 scale-105 ring-4 ring-emerald-300'
-                  : 'bg-amber-50 hover:bg-amber-100 border-amber-200/80 hover:border-[#1B3B2B]'
+                  : 'bg-amber-50/90 hover:bg-amber-100 border-amber-200/90 hover:border-[#1B3B2B]'
               }`}
             >
               <span>{item.symbol}</span>
@@ -208,13 +208,13 @@ export const OddOneOutGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) 
               <span>Restart?</span>
               <button
                 onClick={initGame}
-                className="px-2.5 py-1 rounded-lg bg-[#1B3B2B] text-white cursor-pointer"
+                className="btn-primary px-3 py-1 rounded-lg text-xs"
               >
                 Yes
               </button>
               <button
                 onClick={() => setShowRestartConfirm(false)}
-                className="px-2.5 py-1 rounded-lg bg-stone-200 text-stone-800 cursor-pointer"
+                className="btn-ghost px-3 py-1 rounded-lg text-xs"
               >
                 No
               </button>
@@ -222,9 +222,9 @@ export const OddOneOutGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) 
           ) : (
             <button
               onClick={() => setShowRestartConfirm(true)}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
+              className="btn-ghost inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl text-xs font-bold"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-3.5 h-3.5 icon-spin-hover text-stone-600" />
               <span>{t.games?.restartGame || "Restart"}</span>
             </button>
           )}
@@ -232,7 +232,7 @@ export const OddOneOutGame = ({ difficulty = 'EASY', onCompleteRound, onExit }) 
           {onExit && (
             <button
               onClick={onExit}
-              className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
+              className="btn-ghost px-3.5 py-1.5 rounded-xl text-xs font-bold"
             >
               {t.games?.exitGame || "Exit"}
             </button>

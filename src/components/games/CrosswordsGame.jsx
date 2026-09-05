@@ -610,10 +610,10 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
               <button
                 key={k}
                 onClick={() => k === '⌫' ? handleBackspace() : handleKeyPress(k)}
-                className={`py-2 px-2.5 sm:px-3 rounded-xl font-bold text-sm sm:text-base border transition-all active:scale-90 cursor-pointer ${
+                className={`btn-pill py-2 px-2.5 sm:px-3 rounded-xl font-bold text-sm sm:text-base border shadow-xs transition-all duration-150 select-none active:scale-90 ${
                   k === '⌫'
-                    ? 'bg-rose-100 text-rose-950 border-rose-300'
-                    : 'bg-stone-50 hover:bg-amber-100 text-stone-900 border-stone-200'
+                    ? 'bg-rose-100 hover:bg-rose-200 text-rose-950 border-rose-300'
+                    : 'bg-gradient-to-b from-white to-stone-50 hover:from-amber-50 hover:to-amber-100 text-stone-900 border-stone-300 hover:border-amber-400'
                 }`}
               >
                 {k}
@@ -627,9 +627,9 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
       <div className="flex justify-between items-center bg-white border border-stone-200 rounded-2xl p-4">
         <button
           onClick={handleHint}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold text-xs sm:text-sm border border-amber-300 shadow-xs active:scale-95 transition-all cursor-pointer"
+          className="btn-secondary inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-xs"
         >
-          <Lightbulb className="w-4 h-4 text-amber-700" />
+          <Lightbulb className="w-4 h-4 text-amber-700 icon-spin-hover" />
           <span>{t.games?.needHint || "Need a Hint?"} ({hintsUsed} {t.games?.used || "used"})</span>
         </button>
 
@@ -639,13 +639,13 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
               <span>Restart?</span>
               <button
                 onClick={initPuzzle}
-                className="px-2.5 py-1 rounded-lg bg-[#1B3B2B] text-white cursor-pointer"
+                className="btn-primary px-3 py-1 rounded-lg text-xs"
               >
                 Yes
               </button>
               <button
                 onClick={() => setShowRestartConfirm(false)}
-                className="px-2.5 py-1 rounded-lg bg-stone-200 text-stone-800 cursor-pointer"
+                className="btn-ghost px-3 py-1 rounded-lg text-xs"
               >
                 No
               </button>
@@ -653,9 +653,9 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
           ) : (
             <button
               onClick={() => setShowRestartConfirm(true)}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
+              className="btn-ghost inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl text-xs font-bold"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-3.5 h-3.5 icon-spin-hover text-stone-600" />
               <span>{t.games?.restartGame || "Restart"}</span>
             </button>
           )}
@@ -663,7 +663,7 @@ export const CrosswordsGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
           {onExit && (
             <button
               onClick={onExit}
-              className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
+              className="btn-ghost px-3.5 py-1.5 rounded-xl text-xs font-bold"
             >
               {t.games?.exitGame || "Exit"}
             </button>

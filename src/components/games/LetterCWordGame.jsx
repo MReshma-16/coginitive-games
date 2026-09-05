@@ -443,7 +443,7 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
           <button
             onClick={handleSubmitMultiSelect}
             disabled={isLocked || multiSelected.length === 0}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-base border-2 border-[#C99E32] shadow-sm disabled:opacity-50 transition-all active:scale-95 cursor-pointer"
+            className="btn-primary w-full sm:w-auto px-8 py-3.5 rounded-2xl text-base font-bold shadow-md disabled:opacity-50"
           >
             {t.games?.submitSelection || "Submit Selection"} ({multiSelected.length} {t.games?.selected || "selected"})
           </button>
@@ -467,7 +467,7 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
                   key={letterOpt}
                   onClick={() => handleSelectSingleOption(letterOpt)}
                   disabled={isLocked}
-                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-amber-100 hover:bg-amber-200 text-stone-900 font-serif font-black text-2xl sm:text-3xl border-2 border-amber-300 hover:border-[#1B3B2B] hover:scale-105 active:scale-95 shadow-sm transition-all flex items-center justify-center cursor-pointer disabled:opacity-60"
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 hover:from-amber-100 hover:to-amber-200 text-stone-900 font-serif font-black text-2xl sm:text-3xl border-2 border-amber-300 hover:border-[#1B3B2B] hover:scale-105 active:scale-90 shadow-sm transition-all duration-150 flex items-center justify-center cursor-pointer select-none disabled:opacity-60"
                 >
                   {letterOpt}
                 </button>
@@ -481,9 +481,9 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
       <div className="flex flex-wrap justify-between items-center bg-white border border-stone-200 rounded-2xl p-4 gap-3">
         <button
           onClick={handleChooseAnotherLetter}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold text-xs sm:text-sm border border-amber-300 shadow-xs cursor-pointer transition-all"
+          className="btn-secondary inline-flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs sm:text-sm shadow-xs"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-4 h-4 icon-slide-left text-amber-900" />
           <span>{t.games?.chooseAnotherLetter || "Choose Another Letter"}</span>
         </button>
 
@@ -493,13 +493,13 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
               <span>Restart?</span>
               <button
                 onClick={handleRestartLetter}
-                className="px-2.5 py-1 rounded-lg bg-[#1B3B2B] text-white cursor-pointer"
+                className="btn-primary px-3 py-1 rounded-lg text-xs"
               >
                 Yes
               </button>
               <button
                 onClick={() => setShowRestartConfirm(false)}
-                className="px-2.5 py-1 rounded-lg bg-stone-200 text-stone-800 cursor-pointer"
+                className="btn-ghost px-3 py-1 rounded-lg text-xs"
               >
                 No
               </button>
@@ -507,9 +507,9 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
           ) : (
             <button
               onClick={() => setShowRestartConfirm(true)}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
+              className="btn-ghost inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl text-xs font-bold"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-3.5 h-3.5 icon-spin-hover text-stone-600" />
               <span>{t.games?.restartGame || "Restart"}</span>
             </button>
           )}
@@ -517,7 +517,7 @@ export const LetterCWordGame = ({ difficulty = 'EASY', onCompleteRound, onExit }
           {onExit && (
             <button
               onClick={onExit}
-              className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
+              className="btn-ghost px-3.5 py-1.5 rounded-xl text-xs font-bold"
             >
               {t.games?.exitGame || "Exit"}
             </button>

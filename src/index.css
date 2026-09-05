@@ -33,14 +33,181 @@ body.high-contrast button {
   border: 2px solid #FFD700 !important;
 }
 
-/* Clean, Smooth Interaction Styles */
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-  outline: 3px solid #C99E32;
-  outline-offset: 2px;
+/* Enhanced Focus-Visible for All Interactive Elements */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(201, 158, 50, 0.7), 0 0 0 5px rgba(27, 59, 43, 0.25) !important;
 }
 
 .no-select {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
+}
+
+/* ==========================================================================
+   MODERN ANIMATED BUTTON SYSTEM (North-Eastern Cultural Palette)
+   ========================================================================== */
+
+/* Universal Button Interactivity Defaults */
+button {
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Shimmer Sheen & Glow Keyframes */
+@keyframes btn-shimmer {
+  0% {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(220%) skewX(-20deg);
+  }
+}
+
+@keyframes btn-pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(201, 158, 50, 0.45), 0 4px 14px rgba(27, 59, 43, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(201, 158, 50, 0), 0 6px 20px rgba(27, 59, 43, 0.35);
+  }
+}
+
+@keyframes btn-gentle-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@layer components {
+  /* Core Base Button */
+  .btn-base {
+    @apply relative inline-flex items-center justify-center font-bold tracking-wide transition-all duration-200 ease-out select-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none active:scale-[0.97] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[#C99E32] focus-visible:ring-offset-2 overflow-hidden;
+  }
+
+  /* 1. PRIMARY CTA (Forest Green + Gold Border + Subtle Shimmer + Depth Lift) */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center font-bold text-white bg-gradient-to-r from-[#1B3B2B] via-[#244E38] to-[#132E20] border-2 border-[#C99E32] shadow-md hover:shadow-xl hover:shadow-[#1B3B2B]/25 hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0 active:scale-[0.97] transition-all duration-200 ease-out cursor-pointer overflow-hidden select-none;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+    transform: translateX(-150%) skewX(-20deg);
+    pointer-events: none;
+  }
+  .btn-primary:hover::after {
+    animation: btn-shimmer 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* 2. SECONDARY / CAREGIVER (Warm Cream & Silk + Amber Border) */
+  .btn-secondary {
+    @apply relative inline-flex items-center justify-center font-bold text-[#451A03] bg-gradient-to-r from-amber-50 to-amber-100/90 border-2 border-amber-300 hover:border-[#C99E32] hover:bg-amber-100 shadow-sm hover:shadow-md hover:shadow-amber-800/10 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] transition-all duration-200 ease-out cursor-pointer select-none;
+  }
+
+  /* 3. ACCENT GOLDEN SILK (Muga Silk + Dark Forest Text) */
+  .btn-gold {
+    @apply relative inline-flex items-center justify-center font-bold text-[#1B3B2B] bg-gradient-to-r from-[#E6C687] via-[#DFB96C] to-[#C99E32] border-2 border-[#8C6D3B] shadow-sm hover:shadow-lg hover:shadow-amber-600/20 hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0 active:scale-[0.97] transition-all duration-200 ease-out cursor-pointer select-none;
+  }
+
+  /* 4. EMERALD / WELLNESS (Lush Green + Positive Feedback) */
+  .btn-emerald {
+    @apply relative inline-flex items-center justify-center font-bold text-white bg-gradient-to-r from-[#047857] via-[#059669] to-[#065F46] border-2 border-emerald-300/60 shadow-sm hover:shadow-lg hover:shadow-emerald-900/20 hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0 active:scale-[0.97] transition-all duration-200 ease-out cursor-pointer select-none;
+  }
+
+  /* 5. DESTRUCTIVE / LOGOUT (Crimson) */
+  .btn-danger {
+    @apply relative inline-flex items-center justify-center font-bold text-white bg-gradient-to-r from-[#991B1B] to-[#7F1D1D] border-2 border-rose-400/50 shadow-sm hover:shadow-md hover:shadow-rose-950/20 hover:-translate-y-0.5 hover:bg-[#881337] active:translate-y-0 active:scale-[0.97] transition-all duration-200 ease-out cursor-pointer select-none;
+  }
+
+  /* 6. GHOST / SOFT OUTLINE */
+  .btn-ghost {
+    @apply relative inline-flex items-center justify-center font-bold text-stone-700 bg-white/90 hover:bg-amber-50/80 border-2 border-stone-200 hover:border-amber-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] transition-all duration-200 ease-out cursor-pointer select-none;
+  }
+
+  /* 7. INTERACTIVE PILL (Difficulty, Language, Tabs) */
+  .btn-pill {
+    @apply inline-flex items-center justify-center font-bold rounded-full transition-all duration-200 ease-out cursor-pointer hover:scale-105 active:scale-95 select-none focus-visible:ring-2 focus-visible:ring-[#C99E32];
+  }
+
+  /* 8. TACTILE ICON BUTTON */
+  .btn-icon {
+    @apply inline-flex items-center justify-center transition-all duration-200 ease-out cursor-pointer hover:scale-110 active:scale-90 select-none;
+  }
+
+  /* 9. HERO VOICE SPEECH BUTTON (Glowing Pulsing Pill) */
+  .btn-voice {
+    @apply relative inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#1B3B2B] hover:bg-[#132E20] text-white font-bold text-xs sm:text-sm shadow-lg border-2 border-[#C99E32] transition-all duration-200 ease-out cursor-pointer hover:scale-105 active:scale-95 select-none overflow-hidden;
+    animation: btn-pulse-glow 3s infinite ease-in-out;
+  }
+}
+
+/* Micro-Animations for Child Icons Inside Modern Buttons */
+.btn-primary svg,
+.btn-secondary svg,
+.btn-gold svg,
+.btn-emerald svg,
+.btn-danger svg,
+.btn-ghost svg {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Sliding Right Arrow on Hover */
+.group:hover .icon-slide-right,
+button:hover .icon-slide-right {
+  transform: translateX(3.5px);
+}
+
+/* Sliding Left Arrow on Hover */
+.group:hover .icon-slide-left,
+button:hover .icon-slide-left {
+  transform: translateX(-3.5px);
+}
+
+/* Rotating Sparkle / Settings on Hover */
+.group:hover .icon-spin-hover,
+button:hover .icon-spin-hover {
+  transform: rotate(20deg) scale(1.1);
+}
+
+/* Bouncing Down / Download on Hover */
+.group:hover .icon-bounce-down,
+button:hover .icon-bounce-down {
+  transform: translateY(2.5px);
+}
+
+/* Pulsing Soundwave on Hover */
+.group:hover .icon-pulse-wave,
+button:hover .icon-pulse-wave {
+  transform: scale(1.15);
+}
+
+/* Respect User Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .btn-primary:hover::after {
+    animation: none !important;
+  }
+  .btn-voice {
+    animation: none !important;
+  }
 }

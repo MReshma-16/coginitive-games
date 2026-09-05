@@ -337,11 +337,11 @@ export const QuestionnairePage = ({ setActivePage }) => {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-4 px-6 rounded-2xl bg-[#1E432A] hover:bg-[#2C5E3B] text-white font-bold text-lg border-2 border-[#C99E32] shadow-xl transition-all active:scale-98 flex items-center justify-center gap-3"
+              className="btn-primary w-full py-4 px-6 rounded-2xl font-bold text-lg shadow-xl flex items-center justify-center gap-3"
             >
-              <Sparkles className="w-6 h-6 text-amber-300" />
+              <Sparkles className="w-6 h-6 text-amber-300 icon-spin-hover" />
               <span>{t.questionnaire?.submitBtn || "Generate Memory Activity Profile"}</span>
-              <ArrowRight className="w-6 h-6" />
+              <ArrowRight className="w-6 h-6 text-amber-300 icon-slide-right" />
             </button>
           </div>
         </form>

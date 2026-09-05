@@ -28,23 +28,23 @@ export const VoiceButton = ({ textToRead, label, className = '' }) => {
     <button
       type="button"
       onClick={handleSpeak}
-      className={`inline-flex items-center gap-2 px-3 py-2 rounded-full border-2 transition-all font-medium ${
+      className={`btn-pill inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border-2 transition-all duration-200 font-bold shadow-xs hover:shadow-md ${
         speaking
-          ? 'bg-amber-500 text-white border-amber-600 animate-pulse shadow-md'
-          : 'bg-amber-100/90 text-amber-900 border-amber-300 hover:bg-amber-200'
+          ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white border-amber-400 shadow-md ring-3 ring-amber-300/50 animate-pulse'
+          : 'bg-gradient-to-r from-amber-50 to-amber-100/90 text-[#78350F] border-amber-300 hover:border-[#C99E32] hover:bg-amber-100'
       } ${className}`}
       title={label || t.games?.readInstruction || 'Listen aloud'}
       aria-label={label || 'Listen aloud'}
     >
       {speaking ? (
         <>
-          <VolumeX className="w-5 h-5 animate-bounce" />
-          <span className="text-sm font-semibold">{t.dashboard?.listenVoice || 'Speaking...'}</span>
+          <VolumeX className="w-4 h-4 animate-bounce" />
+          <span className="text-xs sm:text-sm font-bold">{t.dashboard?.listenVoice || 'Speaking...'}</span>
         </>
       ) : (
         <>
-          <Volume2 className="w-5 h-5 text-amber-800" />
-          {label && <span className="text-sm">{label}</span>}
+          <Volume2 className="w-4 h-4 text-amber-800 icon-pulse-wave" />
+          {label && <span className="text-xs sm:text-sm">{label}</span>}
         </>
       )}
     </button>

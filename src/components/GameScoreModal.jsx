@@ -137,15 +137,15 @@ export const GameScoreModal = ({
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={onPlayNextRound}
-            className="flex-1 py-3.5 px-5 rounded-2xl bg-[#1E432A] hover:bg-[#2C5E3B] text-white font-bold text-base border-2 border-[#C99E32] transition-all shadow-md active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
+            className="btn-primary flex-1 py-4 px-6 rounded-2xl text-base font-bold shadow-lg flex items-center justify-center gap-2"
           >
             <span>Play Next Level ({nextBadge.label})</span>
-            <ArrowRight className="w-5 h-5 text-amber-300" />
+            <ArrowRight className="w-5 h-5 text-amber-300 icon-slide-right" />
           </button>
 
           <button
             onClick={onClose}
-            className="py-3.5 px-5 rounded-2xl bg-stone-200 hover:bg-stone-300 text-stone-800 font-bold text-sm transition-all cursor-pointer"
+            className="btn-ghost py-4 px-6 rounded-2xl text-stone-800 font-bold text-sm shadow-xs"
           >
             {t.games?.backToGames || "Back to Games"}
           </button>

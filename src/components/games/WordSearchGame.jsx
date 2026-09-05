@@ -363,10 +363,10 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
                   onMouseDown={() => handleCellMouseDown(r, c)}
                   onMouseEnter={() => handleCellMouseEnter(r, c)}
                   onClick={() => handleCellClick(r, c)}
-                  className={`w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-2xl font-bold text-sm sm:text-lg flex items-center justify-center transition-all cursor-pointer border ${
+                  className={`w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-2xl font-bold text-sm sm:text-lg flex items-center justify-center transition-all duration-150 cursor-pointer border select-none active:scale-90 ${
                     selected
-                      ? 'bg-amber-300 border-[#1B3B2B] text-[#1B3B2B] scale-105 shadow-md ring-2 ring-amber-400 font-black'
-                      : 'bg-stone-50 border-stone-200 text-stone-900 hover:bg-amber-100'
+                      ? 'bg-gradient-to-br from-amber-300 to-amber-400 border-2 border-[#1B3B2B] text-[#1B3B2B] scale-105 shadow-md ring-2 ring-amber-400 font-black'
+                      : 'bg-stone-50 border-stone-200 text-stone-900 hover:bg-amber-100 hover:scale-105 hover:border-amber-300'
                   }`}
                 >
                   {letter}
@@ -389,13 +389,13 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
               <span>Restart?</span>
               <button
                 onClick={initPuzzle}
-                className="px-2.5 py-1 rounded-lg bg-[#1B3B2B] text-white cursor-pointer"
+                className="btn-primary px-3 py-1 rounded-lg text-xs"
               >
                 Yes
               </button>
               <button
                 onClick={() => setShowRestartConfirm(false)}
-                className="px-2.5 py-1 rounded-lg bg-stone-200 text-stone-800 cursor-pointer"
+                className="btn-ghost px-3 py-1 rounded-lg text-xs"
               >
                 No
               </button>
@@ -403,9 +403,9 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
           ) : (
             <button
               onClick={() => setShowRestartConfirm(true)}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
+              className="btn-ghost inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl text-xs font-bold"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-3.5 h-3.5 icon-spin-hover text-stone-600" />
               <span>{t.games?.restartGame || "Restart"}</span>
             </button>
           )}
@@ -413,7 +413,7 @@ export const WordSearchGame = ({ difficulty = 'EASY', onCompleteRound, onExit })
           {onExit && (
             <button
               onClick={onExit}
-              className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
+              className="btn-ghost px-3.5 py-1.5 rounded-xl text-xs font-bold"
             >
               {t.games?.exitGame || "Exit"}
             </button>

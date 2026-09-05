@@ -88,9 +88,9 @@ export const RemindersPage = ({ setActivePage }) => {
 
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-5 py-3 rounded-2xl bg-[#1E432A] hover:bg-[#2C5E3B] text-white font-bold text-sm border-2 border-[#C99E32] transition-all shadow-md active:scale-95 flex items-center gap-2"
+            className="btn-primary px-5 py-3 rounded-2xl text-sm font-bold shadow-md flex items-center gap-2"
           >
-            <Plus className="w-5 h-5 text-amber-300" />
+            <Plus className="w-5 h-5 text-amber-300 icon-spin-hover" />
             <span>{t.reminders?.addReminder || "Add New Reminder"}</span>
           </button>
         </div>
@@ -253,13 +253,13 @@ export const RemindersPage = ({ setActivePage }) => {
                   <button
                     type="button"
                     onClick={() => setShowAddModal(false)}
-                    className="px-5 py-2.5 rounded-2xl bg-stone-200 hover:bg-stone-300 text-stone-800 font-bold text-sm"
+                    className="btn-ghost px-5 py-2.5 rounded-2xl text-stone-800 font-bold text-sm shadow-xs"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2.5 rounded-2xl bg-[#1E432A] hover:bg-[#2C5E3B] text-white font-bold text-sm border-2 border-[#C99E32] shadow"
+                    className="btn-primary px-6 py-2.5 rounded-2xl text-white font-bold text-sm shadow-md"
                   >
                     Save Reminder
                   </button>

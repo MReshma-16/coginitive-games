@@ -151,9 +151,9 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
                 }
               }}
               title={t.hero?.listenIntro || "Listen to Introduction"}
-              className="px-5 py-2 sm:px-7 sm:py-2.5 rounded-full bg-[#1B3B2B] hover:bg-[#132E20] text-white font-medium text-xs sm:text-sm shadow-lg border border-[#C99E32]/50 inline-flex items-center gap-2 cursor-pointer transition-all hover:scale-105 active:scale-95"
+              className="btn-voice px-6 py-2.5 sm:px-8 sm:py-3 shadow-xl"
             >
-              <Volume2 className="w-4 h-4 text-amber-300" />
+              <Volume2 className="w-4 h-4 text-amber-300 icon-pulse-wave" />
               <span>{t.hero?.listenIntro || "Listen to Introduction"}</span>
             </button>
           </div>
@@ -184,9 +184,9 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
                           window.speechSynthesis.speak(utterance);
                         }
                       }}
-                      className="px-6 py-2.5 rounded-full bg-[#1B3B2B] hover:bg-[#132E20] text-white font-bold text-xs sm:text-sm shadow-md border border-[#C99E32] inline-flex items-center gap-2 cursor-pointer transition-all hover:scale-105 active:scale-95"
+                      className="btn-voice px-7 py-3 shadow-lg"
                     >
-                      <Volume2 className="w-4 h-4 text-amber-300" />
+                      <Volume2 className="w-4 h-4 text-amber-300 icon-pulse-wave" />
                       <span>{t.hero?.listenIntro || "Listen to Introduction"}</span>
                     </button>
                   </div>
@@ -202,37 +202,37 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => setActivePage('games')}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-sm border-2 border-[#C99E32] shadow-sm hover:shadow-md transition-all active:scale-98 cursor-pointer"
+              className="btn-primary px-7 py-3.5 rounded-2xl text-sm font-bold inline-flex items-center gap-2.5"
             >
               <Gamepad2 className="w-4 h-4 text-amber-300" />
               <span>{t.hero?.exploreGames || "Explore 5 Cognitive Games"}</span>
-              <ArrowRight className="w-4 h-4 text-amber-300" />
+              <ArrowRight className="w-4 h-4 text-amber-300 icon-slide-right" />
             </button>
 
             {isAuthenticated ? (
               <>
                 <button
                   onClick={() => setActivePage('dashboard')}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold text-sm border-2 border-amber-300 shadow-sm transition-all cursor-pointer"
+                  className="btn-secondary px-6 py-3.5 rounded-2xl text-sm font-bold inline-flex items-center gap-2"
                 >
-                  <Heart className="w-4 h-4 text-amber-700" />
+                  <Heart className="w-4 h-4 text-amber-800" />
                   <span>{t.hero?.caretakerDashboard || "Caretaker Dashboard"}</span>
                 </button>
 
                 <button
                   onClick={() => setActivePage('progress')}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-950 font-bold text-sm border-2 border-emerald-300 shadow-sm transition-all cursor-pointer"
+                  className="btn-emerald px-6 py-3.5 rounded-2xl text-sm font-bold inline-flex items-center gap-2"
                 >
-                  <BarChart3 className="w-4 h-4 text-emerald-700" />
+                  <BarChart3 className="w-4 h-4 text-emerald-200" />
                   <span>{t.hero?.progressDashboard || "View Progress Dashboard"}</span>
                 </button>
               </>
             ) : (
               <button
                 onClick={handleDemoStart}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white hover:bg-amber-50 text-stone-900 font-bold text-sm border-2 border-stone-300 shadow-sm transition-all cursor-pointer"
+                className="btn-gold px-6 py-3.5 rounded-2xl text-sm font-bold inline-flex items-center gap-2"
               >
-                <Sparkles className="w-4 h-4 text-amber-600" />
+                <Sparkles className="w-4 h-4 text-amber-900 icon-spin-hover" />
                 <span>{t.hero?.demoCaregiver || "1-Click Demo Caregiver"}</span>
               </button>
             )}
@@ -259,15 +259,15 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
                 <button
                   key={lang.code}
                   onClick={() => setLanguage(lang.code)}
-                  className={`p-3 rounded-2xl border-2 transition-all flex flex-col items-center gap-1 cursor-pointer ${
+                  className={`btn-pill p-3.5 rounded-2xl border-2 transition-all duration-200 flex flex-col items-center gap-1.5 cursor-pointer shadow-xs hover:shadow-md hover:-translate-y-0.5 ${
                     isSelected
-                      ? 'bg-[#1B3B2B] text-white border-[#C99E32] shadow-md ring-2 ring-amber-300/40 scale-102'
-                      : 'bg-white hover:bg-amber-50/70 text-stone-800 border-stone-200'
+                      ? 'bg-gradient-to-br from-[#1B3B2B] via-[#224A35] to-[#132E20] text-white border-[#C99E32] shadow-lg ring-3 ring-amber-300/60 scale-102'
+                      : 'bg-white hover:bg-amber-50/80 text-stone-800 border-stone-200 hover:border-amber-300'
                   }`}
                 >
-                  <span className="text-xl">{lang.flag}</span>
+                  <span className="text-xl transition-transform duration-200 group-hover:scale-110">{lang.flag}</span>
                   <span className="font-sans font-bold text-sm">{lang.native}</span>
-                  <span className={`text-[10px] ${isSelected ? 'text-amber-200' : 'text-stone-400'}`}>
+                  <span className={`text-[10px] ${isSelected ? 'text-amber-300 font-bold' : 'text-stone-400'}`}>
                     {lang.name}
                   </span>
                 </button>
@@ -324,7 +324,7 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
                 bg: "bg-[#1B3B2B]/90"
               }
             ].map((card, idx) => (
-              <div key={idx} className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between">
+              <div key={idx} className="bg-white rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col justify-between hover:-translate-y-1">
                 <div>
                   <div className="relative h-44 overflow-hidden">
                     <img
@@ -348,11 +348,11 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
                 <div className="p-4 pt-0">
                   <button
                     onClick={() => setActivePage('games')}
-                    className="w-full py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#1B3B2B] font-bold text-xs border border-amber-300 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    className="btn-secondary w-full py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs"
                   >
-                    <Gamepad2 className="w-3.5 h-3.5 text-amber-700" />
+                    <Gamepad2 className="w-3.5 h-3.5 text-amber-800" />
                     <span>{t.gallery?.playPuzzle || "Play as Puzzle"}</span>
-                    <ArrowRight className="w-3 h-3 text-amber-700" />
+                    <ArrowRight className="w-3.5 h-3.5 text-amber-800 icon-slide-right" />
                   </button>
                 </div>
               </div>
@@ -448,14 +448,20 @@ export const LandingPage = ({ setActivePage, onOpenCulture }) => {
               <div
                 key={idx}
                 onClick={() => setActivePage('games')}
-                className="bg-white border-2 border-[#E5DFD5] hover:border-[#C99E32] rounded-3xl p-5 shadow-sm hover:shadow-md cursor-pointer transition-all space-y-1.5"
+                className="bg-white border-2 border-[#E5DFD5] hover:border-[#C99E32] rounded-3xl p-5 shadow-xs hover:shadow-lg hover:-translate-y-1 active:translate-y-0 active:scale-98 cursor-pointer transition-all duration-200 space-y-2 group flex flex-col justify-between"
               >
-                <h3 className="font-serif font-bold text-base text-[#1B3B2B]">
-                  {g.title}
-                </h3>
-                <p className="text-xs text-stone-600 leading-relaxed">
-                  {g.desc}
-                </p>
+                <div className="space-y-1.5">
+                  <h3 className="font-serif font-bold text-base text-[#1B3B2B] group-hover:text-[#A84B29] transition-colors">
+                    {g.title}
+                  </h3>
+                  <p className="text-xs text-stone-600 leading-relaxed">
+                    {g.desc}
+                  </p>
+                </div>
+                <div className="pt-2 flex items-center gap-1 text-xs font-bold text-amber-800 group-hover:text-[#1B3B2B] transition-colors">
+                  <span>Play Activity</span>
+                  <ArrowRight className="w-3.5 h-3.5 icon-slide-right text-[#C99E32]" />
+                </div>
               </div>
             ))}
           </div>

@@ -190,9 +190,9 @@ Notice: This summary tracks cognitive engagement and comfort with familiar activ
 
           <button
             onClick={handleExportSummary}
-            className="px-5 py-3 rounded-2xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-sm border-2 border-[#C99E32] transition-all shadow-md active:scale-95 flex items-center gap-2"
+            className="btn-primary px-6 py-3.5 rounded-2xl text-sm font-bold shadow-md flex items-center gap-2.5"
           >
-            <Download className="w-5 h-5 text-amber-300" />
+            <Download className="w-5 h-5 text-amber-300 icon-bounce-down" />
             <span>{t.progress?.exportSummary || "Download Caregiver Summary"}</span>
           </button>
         </div>

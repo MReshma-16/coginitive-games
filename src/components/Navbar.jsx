@@ -88,13 +88,13 @@ export const Navbar = ({ activePage, setActivePage }) => {
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full font-medium text-xs sm:text-sm transition-all cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full font-bold text-xs sm:text-sm transition-all duration-200 cursor-pointer select-none group hover:-translate-y-0.5 active:translate-y-0 active:scale-95 ${
                     isActive
-                      ? 'bg-[#1B3B2B] text-white shadow-xs'
-                      : 'text-stone-700 hover:text-[#1B3B2B] hover:bg-stone-100/70'
+                      ? 'bg-gradient-to-r from-[#1B3B2B] to-[#244E38] text-white shadow-sm border border-[#C99E32]/50'
+                      : 'text-stone-700 hover:text-[#1B3B2B] hover:bg-amber-50/80 hover:border hover:border-amber-200/70'
                   }`}
                 >
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-stone-500'}`} />
+                  <Icon className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-110 ${isActive ? 'text-amber-300' : 'text-stone-500'}`} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -107,17 +107,17 @@ export const Navbar = ({ activePage, setActivePage }) => {
             <div className="relative">
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-stone-300 text-stone-800 font-medium text-xs hover:border-[#1B3B2B] shadow-xs transition-all cursor-pointer"
+                className="group flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white hover:bg-amber-50/90 border border-stone-300 hover:border-[#C99E32] text-stone-800 font-bold text-xs shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all duration-200 cursor-pointer"
                 title="Change Language"
               >
-                <Globe className="w-3.5 h-3.5 text-stone-600" />
+                <Globe className="w-3.5 h-3.5 text-stone-600 icon-spin-hover" />
                 <span>🌿</span>
-                <span className="font-sans font-medium">{currentLangObj.name}</span>
+                <span className="font-sans font-bold">{currentLangObj.name}</span>
               </button>
 
               {langDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-white border border-stone-200 rounded-2xl shadow-xl py-1.5 z-50 animate-fadeIn">
-                  <div className="px-3 py-1 border-b border-stone-100 text-[10px] font-bold text-stone-500 uppercase">
+                <div className="absolute right-0 mt-2 w-56 bg-white border-2 border-amber-200/80 rounded-2xl shadow-xl py-1.5 z-50 animate-fadeIn backdrop-blur-md">
+                  <div className="px-3.5 py-1 border-b border-stone-100 text-[10px] font-bold text-stone-500 uppercase tracking-wider">
                     Select Language
                   </div>
                   <div className="max-h-64 overflow-y-auto">
@@ -128,17 +128,17 @@ export const Navbar = ({ activePage, setActivePage }) => {
                           setLanguage(lang.code);
                           setLangDropdownOpen(false);
                         }}
-                        className={`w-full text-left px-3.5 py-2 flex items-center justify-between text-xs cursor-pointer ${
+                        className={`w-full text-left px-3.5 py-2 flex items-center justify-between text-xs transition-all duration-150 cursor-pointer active:scale-98 ${
                           currentLang === lang.code
-                            ? 'bg-[#1B3B2B] text-white font-bold'
-                            : 'text-stone-800 hover:bg-amber-50'
+                            ? 'bg-gradient-to-r from-[#1B3B2B] to-[#244E38] text-white font-bold'
+                            : 'text-stone-800 hover:bg-amber-50 font-medium'
                         }`}
                       >
                         <span className="flex items-center gap-2">
-                          <span>{lang.flag}</span>
+                          <span className="text-sm">{lang.flag}</span>
                           <span className="font-sans">{lang.native}</span>
                         </span>
-                        <span className={`text-[10px] ${currentLang === lang.code ? 'text-amber-300' : 'text-stone-400'}`}>
+                        <span className={`text-[10px] ${currentLang === lang.code ? 'text-amber-300 font-bold' : 'text-stone-400'}`}>
                           {lang.name}
                         </span>
                       </button>
@@ -152,7 +152,7 @@ export const Navbar = ({ activePage, setActivePage }) => {
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
                 {/* Username Pill */}
-                <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FDE68A] border border-amber-300 text-[#78350F] text-xs font-bold shadow-xs">
+                <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#FDE68A] to-amber-200 border border-amber-300 text-[#78350F] text-xs font-bold shadow-xs">
                   <User className="w-3.5 h-3.5 text-[#78350F]" />
                   <span className="truncate max-w-[100px]">{caretaker?.fullName || 'Caretaker'}</span>
                 </div>
@@ -160,19 +160,19 @@ export const Navbar = ({ activePage, setActivePage }) => {
                 {/* Logout Pill */}
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-[#991B1B] hover:bg-[#7F1D1D] text-white font-bold text-xs shadow-xs transition-all cursor-pointer"
+                  className="btn-danger flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-bold"
                   title="Logout"
                 >
-                  <LogOut className="w-3.5 h-3.5" />
+                  <LogOut className="w-3.5 h-3.5 icon-slide-left" />
                   <span>Logout</span>
                 </button>
               </div>
             ) : (
               <button
                 onClick={() => setActivePage('auth')}
-                className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-xs shadow-xs transition-all cursor-pointer border border-[#C99E32]"
+                className="btn-primary flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold"
               >
-                <LogIn className="w-3.5 h-3.5 text-amber-300" />
+                <LogIn className="w-3.5 h-3.5 text-amber-300 icon-slide-right" />
                 <span>{t.nav?.login || "Caretaker Login"}</span>
               </button>
             )}
@@ -180,7 +180,7 @@ export const Navbar = ({ activePage, setActivePage }) => {
             {/* Mobile Menu Toggle Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-1.5 rounded-xl bg-white border border-stone-300 text-stone-800 hover:bg-stone-100"
+              className="btn-icon md:hidden p-2 rounded-xl bg-white border border-stone-300 text-stone-800 hover:bg-amber-50 hover:border-[#C99E32] shadow-xs"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -191,7 +191,7 @@ export const Navbar = ({ activePage, setActivePage }) => {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#FAF7F0] border-t border-[#E5DFD5] px-4 pt-2 pb-4 space-y-1 animate-fadeIn">
+        <div className="md:hidden bg-[#FAF7F0] border-t border-[#E5DFD5] px-4 pt-2 pb-4 space-y-1.5 animate-fadeIn">
           {navItems.map((item) => {
             if (item.requireAuth && !isAuthenticated) return null;
             const Icon = item.icon;
@@ -200,10 +200,10 @@ export const Navbar = ({ activePage, setActivePage }) => {
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl font-bold text-sm transition-all ${
+                className={`w-full flex items-center gap-2.5 px-4 py-2.5 rounded-2xl font-bold text-sm transition-all duration-200 active:scale-98 ${
                   isActive
-                    ? 'bg-[#1B3B2B] text-white'
-                    : 'text-stone-800 hover:bg-amber-100'
+                    ? 'bg-gradient-to-r from-[#1B3B2B] to-[#244E38] text-white shadow-sm border border-[#C99E32]/50'
+                    : 'text-stone-800 hover:bg-amber-100/80'
                 }`}
               >
                 <Icon className={`w-4 h-4 ${isActive ? 'text-amber-300' : 'text-stone-600'}`} />
@@ -218,9 +218,9 @@ export const Navbar = ({ activePage, setActivePage }) => {
                 setActivePage('auth');
                 setMobileMenuOpen(false);
               }}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#1B3B2B] text-white font-bold text-sm mt-2"
+              className="btn-primary w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-sm mt-2"
             >
-              <LogIn className="w-4 h-4 text-amber-300" />
+              <LogIn className="w-4 h-4 text-amber-300 icon-slide-right" />
               <span>{t.nav?.login || "Caretaker Login / Register"}</span>
             </button>
           )}

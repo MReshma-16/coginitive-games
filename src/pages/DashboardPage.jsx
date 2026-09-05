@@ -228,17 +228,17 @@ export const DashboardPage = ({ setActivePage, setSelectedGame }) => {
             <div className="pt-3 border-t border-amber-100 flex gap-2">
               <button
                 onClick={() => setActivePage('patient-setup')}
-                className="flex-1 py-2.5 px-3 rounded-xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-xs border border-[#C99E32] shadow-xs transition-all flex items-center justify-center gap-1 cursor-pointer"
+                className="btn-primary flex-1 py-2.5 px-3.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs"
               >
-                <Edit3 className="w-3.5 h-3.5 text-amber-300" />
+                <Edit3 className="w-3.5 h-3.5 text-amber-300 icon-spin-hover" />
                 <span>{t.dashboard?.editProfile || "Edit Profile"}</span>
               </button>
 
               <button
                 onClick={() => setActivePage('questionnaire')}
-                className="py-2.5 px-3 rounded-xl bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold text-xs border border-amber-300 transition-all flex items-center justify-center gap-1 cursor-pointer"
+                className="btn-secondary py-2.5 px-3.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs"
               >
-                <Smile className="w-3.5 h-3.5 text-amber-800" />
+                <Smile className="w-3.5 h-3.5 text-amber-800 icon-spin-hover" />
                 <span>{t.dashboard?.dailyCheckin || "Daily Check-in"}</span>
               </button>
             </div>
@@ -264,9 +264,9 @@ export const DashboardPage = ({ setActivePage, setSelectedGame }) => {
 
             <button
               onClick={() => setActivePage('games')}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-xs border border-[#C99E32] shadow-xs transition-all cursor-pointer self-start sm:self-auto"
+              className="btn-primary inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold shadow-xs self-start sm:self-auto"
             >
-              <Gamepad2 className="w-3.5 h-3.5 text-amber-300" />
+              <Gamepad2 className="w-3.5 h-3.5 text-amber-300 icon-spin-hover" />
               <span>{t.dashboard?.exploreAllGames || "Explore All 5 Games"}</span>
             </button>
           </div>

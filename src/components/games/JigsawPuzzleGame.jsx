@@ -321,10 +321,10 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
             <button
               key={lvl}
               onClick={() => setCurrentLevel(lvl)}
-              className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+              className={`btn-pill px-3 py-1 text-xs font-bold transition-all cursor-pointer ${
                 currentLevel === lvl
-                  ? 'bg-[#1B3B2B] text-white shadow-xs scale-105'
-                  : 'bg-stone-100 hover:bg-stone-200 text-stone-700'
+                  ? 'bg-[#1B3B2B] text-amber-200 shadow-xs border border-[#C99E32]'
+                  : 'bg-stone-100 hover:bg-amber-100 text-stone-700'
               }`}
             >
               Lvl {lvl}
@@ -521,13 +521,13 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
               <span>Restart?</span>
               <button
                 onClick={initPuzzle}
-                className="px-2.5 py-1 rounded-lg bg-[#1B3B2B] text-white cursor-pointer"
+                className="btn-primary px-3 py-1 rounded-lg text-xs"
               >
                 Yes
               </button>
               <button
                 onClick={() => setShowRestartConfirm(false)}
-                className="px-2.5 py-1 rounded-lg bg-stone-200 text-stone-800 cursor-pointer"
+                className="btn-ghost px-3 py-1 rounded-lg text-xs"
               >
                 No
               </button>
@@ -535,9 +535,9 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
           ) : (
             <button
               onClick={() => setShowRestartConfirm(true)}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
+              className="btn-ghost inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl text-xs font-bold"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-3.5 h-3.5 icon-spin-hover text-stone-600" />
               <span>{t.games?.restartGame || "Restart"}</span>
             </button>
           )}
@@ -545,7 +545,7 @@ export const JigsawPuzzleGame = ({ difficulty = 'EASY', onCompleteRound, onExit 
           {onExit && (
             <button
               onClick={onExit}
-              className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold border border-stone-300 transition-all cursor-pointer"
+              className="btn-ghost px-3.5 py-1.5 rounded-xl text-xs font-bold"
             >
               {t.games?.exitGame || "Exit"}
             </button>

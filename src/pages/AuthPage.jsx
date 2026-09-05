@@ -167,9 +167,9 @@ export const AuthPage = ({ setActivePage }) => {
             type="button"
             onClick={handleDemoLogin}
             disabled={loading}
-            className="w-full py-2.5 px-4 rounded-2xl bg-[#1E432A] hover:bg-[#2C5E3B] text-amber-200 font-bold text-sm border border-[#C99E32] transition-all shadow active:scale-98 flex items-center justify-center gap-2"
+            className="btn-primary w-full py-3 px-4 rounded-2xl text-amber-200 font-bold text-sm border-2 border-[#C99E32] flex items-center justify-center gap-2 shadow-sm"
           >
-            <Sparkles className="w-4 h-4 text-amber-300" />
+            <Sparkles className="w-4 h-4 text-amber-300 icon-spin-hover" />
             <span>{t.auth?.demoLoginBtn || '1-Click Demo Caretaker Login'}</span>
           </button>
         </div>
@@ -346,16 +346,16 @@ export const AuthPage = ({ setActivePage }) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 px-4 rounded-2xl bg-[#1E432A] hover:bg-[#2C5E3B] text-white font-bold text-lg border-2 border-[#C99E32] shadow-md transition-all active:scale-98 flex items-center justify-center gap-2 mt-4"
+              className="btn-primary w-full py-3.5 px-4 rounded-2xl font-bold text-base shadow-md flex items-center justify-center gap-2 mt-4"
             >
               {isRegisterMode ? (
                 <>
-                  <UserPlus className="w-5 h-5 text-amber-300" />
+                  <UserPlus className="w-5 h-5 text-amber-300 icon-slide-right" />
                   <span>{t.auth?.registerBtn || 'Create Caretaker Account'}</span>
                 </>
               ) : (
                 <>
-                  <LogIn className="w-5 h-5 text-amber-300" />
+                  <LogIn className="w-5 h-5 text-amber-300 icon-slide-right" />
                   <span>{t.auth?.loginBtn || 'Sign In'}</span>
                 </>
               )}
@@ -371,7 +371,7 @@ export const AuthPage = ({ setActivePage }) => {
                 setErrorMsg('');
                 setSuccessMsg('');
               }}
-              className="text-sm font-bold text-[#A84B29] hover:underline"
+              className="btn-pill px-4 py-1.5 text-sm font-bold text-[#A84B29] hover:text-[#7C3218] hover:bg-amber-100/70"
             >
               {isRegisterMode
                 ? (t.auth?.haveAccount || 'Already have an account? Sign In')

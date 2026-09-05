@@ -157,9 +157,9 @@ export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
             <div className="bg-white border-2 border-[#E5DFD5] rounded-3xl p-4 sm:p-5 shadow-sm flex items-center justify-between">
               <button
                 onClick={() => setSelectedGameId(null)}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-sm border border-stone-300 transition-all cursor-pointer"
+                className="btn-ghost inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-xs sm:text-sm font-bold shadow-xs"
               >
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-4 h-4 icon-slide-left text-stone-600" />
                 <span>{t.games?.allGames || 'All Games'}</span>
               </button>
 
@@ -172,15 +172,15 @@ export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
               </div>
 
               {/* Difficulty Switcher during game */}
-              <div className="hidden sm:flex items-center gap-1 bg-stone-100 p-1 rounded-xl border border-stone-200 text-xs font-bold">
+              <div className="hidden sm:flex items-center gap-1 bg-stone-100 p-1.5 rounded-2xl border border-stone-200 text-xs font-bold">
                 {['EASY', 'MEDIUM', 'HARD'].map(lvl => (
                   <button
                     key={lvl}
                     onClick={() => setSelectedDifficulty(lvl)}
-                    className={`px-2.5 py-1 rounded-lg transition-all ${
+                    className={`btn-pill px-3 py-1 text-xs font-bold ${
                       selectedDifficulty === lvl
-                        ? 'bg-[#1B3B2B] text-white shadow-xs'
-                        : 'text-stone-600 hover:bg-stone-200'
+                        ? 'bg-[#1B3B2B] text-amber-200 shadow-xs ring-1 ring-[#C99E32]'
+                        : 'text-stone-600 hover:bg-stone-200/80'
                     }`}
                   >
                     {lvl}
@@ -270,17 +270,17 @@ export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
                     <div className="pt-5 border-t border-stone-100 mt-5 space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-semibold text-stone-500">Difficulty:</span>
-                        <div className="flex gap-1 text-xs">
+                        <div className="flex gap-1.5 text-xs">
                           {['EASY', 'MEDIUM', 'HARD'].map(lvl => (
                             <button
                               key={lvl}
                               onClick={() => handleStartGame(g.id, lvl)}
-                              className={`px-2 py-0.5 rounded-md font-bold text-[11px] border cursor-pointer ${
+                              className={`btn-pill px-2.5 py-1 text-[11px] font-bold border transition-all ${
                                 lvl === 'HARD'
-                                  ? 'hover:bg-rose-100 hover:text-rose-900 border-rose-200'
+                                  ? 'bg-rose-50 hover:bg-rose-100 text-rose-900 border-rose-200'
                                   : lvl === 'MEDIUM'
-                                  ? 'hover:bg-amber-100 hover:text-amber-900 border-amber-200'
-                                  : 'hover:bg-emerald-100 hover:text-emerald-900 border-emerald-200'
+                                  ? 'bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-200'
+                                  : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border-emerald-200'
                               }`}
                             >
                               {lvl === 'EASY' ? '🟢 Easy' : lvl === 'MEDIUM' ? '🟡 Med' : '🔴 Hard'}
@@ -291,9 +291,9 @@ export const GamesHubPage = ({ initialGame = null, setActivePage }) => {
 
                       <button
                         onClick={() => handleStartGame(g.id, 'EASY')}
-                        className="w-full py-3.5 px-4 rounded-2xl bg-[#1B3B2B] hover:bg-[#2C5E3B] text-white font-bold text-sm border-2 border-[#C99E32] shadow-sm transition-all active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
+                        className="btn-primary w-full py-3.5 px-4 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 shadow-sm"
                       >
-                        <Play className="w-4 h-4 text-amber-300" />
+                        <Play className="w-4 h-4 text-amber-300 icon-slide-right" />
                         <span>{t.games?.playNow || "Play Now"}</span>
                       </button>
                     </div>

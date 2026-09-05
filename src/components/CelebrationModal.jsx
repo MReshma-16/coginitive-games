@@ -87,19 +87,19 @@ export const CelebrationModal = ({
           {onPlayAgain && (
             <button
               onClick={onPlayAgain}
-              className="flex-1 inline-flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-amber-200/80 hover:bg-amber-300 text-amber-950 font-bold text-lg border-2 border-amber-400 transition-all shadow-md active:scale-98"
+              className="btn-secondary flex-1 py-4 px-6 rounded-2xl text-base font-bold shadow-md flex items-center justify-center gap-2"
             >
-              <RotateCcw className="w-6 h-6" />
+              <RotateCcw className="w-5 h-5 icon-spin-hover text-amber-800" />
               <span>{t.games?.playAgain || "Play Again"}</span>
             </button>
           )}
 
           <button
             onClick={onNext || onClose}
-            className="flex-1 inline-flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-[#1E432A] hover:bg-[#2C5E3B] text-white font-bold text-lg border-2 border-[#C99E32] transition-all shadow-lg active:scale-98"
+            className="btn-primary flex-1 py-4 px-6 rounded-2xl text-base font-bold shadow-lg flex items-center justify-center gap-2"
           >
             <span>{t.games?.backToGames || "Continue"}</span>
-            <ArrowRight className="w-6 h-6" />
+            <ArrowRight className="w-5 h-5 text-amber-300 icon-slide-right" />
           </button>
         </div>
       </div>

@@ -286,7 +286,7 @@ export const SettingsPage = ({ setActivePage }) => {
               <div className="flex justify-end pt-2">
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-[#1E432A] hover:bg-[#2C5E3B] text-white font-bold text-sm"
+                  className="btn-primary px-6 py-2.5 rounded-xl font-bold text-sm shadow-sm"
                 >
                   Save Profile
                 </button>
@@ -309,18 +309,18 @@ export const SettingsPage = ({ setActivePage }) => {
           <div className="flex items-center gap-3">
             <button
               onClick={handleResetDemo}
-              className="px-4 py-2.5 rounded-2xl bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold text-sm border border-amber-300 flex items-center gap-1.5"
+              className="btn-secondary px-4 py-2.5 rounded-2xl font-bold text-sm shadow-xs flex items-center gap-1.5"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-4 h-4 icon-spin-hover text-amber-900" />
               <span>{demoResetDone ? "Restored!" : "Restore Demo"}</span>
             </button>
 
             {caretaker && (
               <button
                 onClick={handleExplicitLogout}
-                className="px-5 py-2.5 rounded-2xl bg-[#A84B29] hover:bg-[#7C3218] text-white font-bold text-sm shadow transition-all flex items-center gap-1.5"
+                className="btn-danger px-5 py-2.5 rounded-2xl font-bold text-sm shadow flex items-center gap-1.5"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-4 h-4 icon-slide-left" />
                 <span>{t.nav?.logout || "Logout"}</span>
               </button>
             )}
